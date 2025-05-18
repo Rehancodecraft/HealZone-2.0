@@ -1,0 +1,63 @@
+# Build Artifacts
+target/
+build/
+out/
+dist/
+*.jar
+*.war
+
+# Maven
+.mvn/
+!mvnw
+!mvnw.cmd
+!.mvn/wrapper/maven-wrapper.jar
+
+# Large Files and Dependencies
+*.zip
+*.so
+*.tar.gz
+**Libraries/**
+**openjfx*/
+**javafx-sdk*/
+**sdk*/
+
+# IntelliJ IDEA
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# Eclipse
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# NetBeans
+/nbproject/
+/nbbuild/
+/nbdist/
+/.nb-gradle/
+
+# VS Code
+.vscode/
+
+# Mac OS
+.DS_Store
+
+# Temporary Files
+*.log
+*.tmp
+*.bak
+*.swp
+*~
+
+# Java
+*.class
+
+# Database and Config Files (if sensitive)
+*.sql
+*.properties

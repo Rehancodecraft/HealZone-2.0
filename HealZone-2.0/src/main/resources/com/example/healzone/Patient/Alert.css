@@ -1,0 +1,28 @@
+/* styles.css */
+
+.alert {
+    -fx-background-color: #5775d3;
+    -fx-font-size: 16px;
+    -fx-padding: 20px;
+}
+
+.alert-header {
+    -fx-font-weight: bold;
+    -fx-font-size: 18px;
+    -fx-text-fill: darkblue;
+}
+
+.alert-content {
+    -fx-font-size: 20px;
+    -fx-text-fill: #109f1a;
+}
+
+.button {
+    -fx-background-color: #173ea8;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.button:hover {
+    -fx-background-color: #123367;
+}

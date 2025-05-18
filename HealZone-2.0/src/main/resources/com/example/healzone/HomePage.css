@@ -1,0 +1,103 @@
+.side-bar {
+    -fx-background-color: #1E3A8A;
+    -fx-transition: background-color 0.3s ease-in-out;
+    /*-fx-border-radius: 10px;*/
+    /*-fx-background-radius: 10px;*/
+}
+.welcomeBar {
+    -fx-background-color: linear-gradient(to right, rgba(106, 180, 255, 0.8), rgba(58, 141, 255, 0.8));
+    -fx-padding: 20px;
+    /*-fx-background-radius: 10px;*/
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0.5, 0, 4);
+    -fx-text-fill: #ffffff;
+    /*-fx-border-radius: 10px;*/
+    -fx-border-color: transparent;
+    -fx-border-width: 1px;
+    -fx-transition: background-color 0.3s ease-in-out, transform 0.2s;
+}
+
+
+.welcomeBar:hover {
+    -fx-background-color: linear-gradient(to right, rgba(58, 141, 255, 0.8), rgba(106, 180, 255, 0.8));
+    -fx-transform: scale(1.02); /* Slightly zooms in */
+}
+.sideBarButton{
+    -fx-background-color: #1E3A8A;
+}
+.sideBarButton:hover {
+    -fx-background-color: #07173e;
+}
+.searchBar {
+    -fx-background-color: #dbd7d7;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 8 8 8 30;
+    -fx-border-color: #6a7998;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+    -fx-transition: all 0.3s ease-in-out;
+}
+.search-bar .text {
+    -fx-fill: #000000;
+    -fx-font-size: 20;
+}
+
+/* Hover effect */
+.searchBar:hover {
+    -fx-border-color: #17337b;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 6, 0, 0, 2);
+}
+.searchBarIcon{
+    -fx-background-color: #1E3A8A;
+    -fx-background-radius: 10 0 0 10;
+}
+.button {
+    -fx-background-color: #4c6088;
+    -fx-text-fill: #ffffff;
+    /*-fx-padding: 10px 10px 10px 40px;*/
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+
+.button:hover {
+    -fx-background-color: #354E96; /* hover color */
+}
+
+/* When focused, override hover */
+.button:focused {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1E3A8A;
+    -fx-border-color: transparent;
+}
+
+/* Override hover when also focused */
+.button:focused:hover {
+    -fx-background-color: #ffffff; /* same as focused */
+    -fx-text-fill: #1E3A8A;
+}
+.loginLink{
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+    -fx-background-color: #1E3A8A;
+    -fx-text-fill: #ffffff;
+
+}
+.loginLink:hover{
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1E3A8A;
+}
+.loginLink:focused:hover{
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1E3A8A;
+}
+.loginIcon{
+    -fx-background-radius: 50;
+    -fx-border-radius: 50;
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1E3A8A;
+
+}
+.loginIcon:hover{
+    -fs-background-color: #b3b0b0;
+}
+

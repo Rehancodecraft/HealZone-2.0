@@ -1,0 +1,25 @@
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.image.Image?>
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.PatientLoginController">
+    <children>
+        <!-- Background image -->
+        <ImageView fx:id="backgroundImageView" preserveRatio="true" pickOnBounds="true">
+            <image>
+                <Image url="@../Images/login.jpg" />
+            </image>
+        </ImageView>
+
+        <!-- Scrollable form -->
+        <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent;">
+            <content>
+                <VBox alignment="TOP_CENTER" spacing="20" style="-fx-padding: 40;">
+                    <!-- Add your Labels, TextFields, Buttons here -->
+                    <!-- This VBox will scroll if content is too tall -->
+                </VBox>
+            </content>
+        </ScrollPane>
+    </children>
+</StackPane>

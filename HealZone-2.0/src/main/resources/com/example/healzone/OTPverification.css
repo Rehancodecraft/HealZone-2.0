@@ -1,0 +1,32 @@
+.OTPfield{
+    -fx-background-color: #0d2160;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
+    -fx-padding: 5 5 5 20;
+    -fx-font-size: 20px;
+    -fx-transition: all 0.3s ease-in-out;
+}
+.OTPfield:focused{
+
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #ffffff;
+}
+.OTPverificationButton {
+    -fx-background-color: #0d2160;
+    -fx-text-fill: #ffffff;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+.OTPverificationButton:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #0d2160;/* hover color */
+}
+.OTPLinks{
+    -fx-text-fill: #c7c7c7;
+}
+.OTPLinks:hover{
+    -fx-text-fill: #ffffff;
+}
