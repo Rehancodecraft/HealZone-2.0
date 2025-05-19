@@ -24,26 +24,6 @@ public class HomePageController {
     private Button loginLink;
 
     @FXML
-//    protected void toggleSideBar(){
-//        Boolean isSidebarVisible = sideBar.isVisible();
-//        TranslateTransition slide = new TranslateTransition();
-//        slide.setNode(sideBar);
-//        slide.setDuration(Duration.millis(300));
-//
-//        if (!isSidebarVisible) {
-//            // Slide in
-//            sideBar.setVisible(true);
-//            slide.setFromX(-sideBar.getPrefWidth());
-//            slide.setToX(0);
-//        } else {
-//            // Slide out
-//            slide.setFromX(0);
-//            slide.setToX(-sideBar.getPrefWidth());
-//            slide.setOnFinished(event -> sideBar.setVisible(false)); // Hide after slide
-//        }
-//
-//        slide.play();
-//    }
     protected void toggleSideBar() {
         boolean isSidebarVisible = sideBar.isVisible();
         double height = sideBar.getPrefHeight();
