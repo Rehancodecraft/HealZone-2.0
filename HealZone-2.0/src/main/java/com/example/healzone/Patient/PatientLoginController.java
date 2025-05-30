@@ -1,24 +1,19 @@
 package com.example.healzone.Patient;
 
 import com.example.healzone.*;
-import javafx.animation.FadeTransition;
-import javafx.animation.ParallelTransition;
+import com.example.healzone.StartView.MainViewController;
 import javafx.animation.PauseTransition;
-import javafx.animation.ScaleTransition;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.scene.Parent;
-
 
 
 import java.io.IOException;
@@ -34,6 +29,8 @@ public class PatientLoginController  {
     private TextField password;
     @FXML
     private Button loginButton;
+    @FXML
+    private Label patientLoginErrorMessage;
     @FXML
     public void onSignUpLinkClicked(ActionEvent event) throws IOException {
 //
@@ -52,15 +49,38 @@ public class PatientLoginController  {
         }
     }
     @FXML
-    public void onLoginButtonClicked(ActionEvent event) throws IOException {
-        boolean loggedIn = getCurrentPatient(patientEmail.getText(), password.getText());
-        if (loggedIn) {
-            SessionManager.logIn(Patient.getName());
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Login Successful");
-            closeLogInUpStage();
+    public void onForgetPasswordLinkClicked(ActionEvent event) throws IOException {
+        try {
+            StackPane root = (StackPane) ((Node) event.getSource()).getScene().getRoot();
+            MainViewController mainController = (MainViewController) root.getProperties().get("controller");
 
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Failed", "Login Failed");
+            if (mainController != null) {
+                mainController.loadPatientEmailVerification();
+            } else {
+                System.err.println("MainViewController not found in root properties.");
+            }
+        } catch (Exception e) {
+            System.err.println("Error loading PatientLogin: ");
+            e.printStackTrace();
+        }
+    }
+    @FXML
+    public void onLoginButtonClicked(ActionEvent event) throws IOException {
+        if(patientEmail.getText().isEmpty()|| password.getText().isEmpty()){
+            patientLoginErrorMessage.setText("⚠️ Please fill in all fields!");
+            return;
+        }else {
+            boolean loggedIn = getCurrentPatient(patientEmail.getText(), password.getText());
+            if (loggedIn) {
+                SessionManager.logIn(Patient.getName());
+                System.out.println("Logged IN Successfully");
+                System.out.println(Patient.getName());
+                patientLoginErrorMessage.setText("⚠️ Logged IN As"+Patient.getName());
+                return;
+
+            } else {
+                patientLoginErrorMessage.setText("⚠️ Logged IN FAILED");
+            }
         }
     }
 

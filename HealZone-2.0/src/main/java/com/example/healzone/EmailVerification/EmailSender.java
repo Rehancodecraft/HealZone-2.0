@@ -1,13 +1,17 @@
-package com.example.healzone;
+package com.example.healzone.EmailVerification;
 
+import com.example.healzone.Patient.Patient;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+
+
 public class EmailSender {
 
+    public static String receiverEmail;
     private final String fromEmail = "healzoon@gmail.com";
     private final String password = "gzvz kvej hcps lonp"; // App Password
 
@@ -18,7 +22,7 @@ public class EmailSender {
         props.put("mail.smtp.host", "smtp.gmail.com");
         props.put("mail.smtp.port", "587");
 
-        Session session = Session.getInstance(props, new jakarta.mail.Authenticator() {
+        Session session = Session.getInstance(props, new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(fromEmail, password);
@@ -143,6 +147,17 @@ public class EmailSender {
             return false;
         } catch (UnsupportedEncodingException e) {
             throw new RuntimeException(e);
+        }
+    }
+    public static void sendOTPToEmail(String email, String name) {
+        String generatedOTP = OTPgenerator.generateOTP();
+        EmailSender emailSender = new EmailSender();
+        boolean success = emailSender.sendOtp(email, generatedOTP, name);
+
+        if (success) {
+            System.out.println("OTP sent successfully.");
+        } else {
+            System.out.println("Failed to send OTP.");
         }
     }
 }

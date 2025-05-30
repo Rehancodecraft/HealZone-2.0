@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorSignUpController">
+   <children>
+      <Button fx:id="PracticeInformationNextButton" layoutX="847.0" layoutY="565.0" mnemonicParsing="false" onAction="#onPracticeInformationNextButtonClicked" prefHeight="44.0" prefWidth="139.0" styleClass="signUpbutton" stylesheets="@../../Design/SignUp.css" text="Next">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Label layoutX="678.0" layoutY="163.0" text="Practice Information" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="621.0" layoutY="253.0" text="Hospital/Clinic" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <TextField fx:id="hospitalNameField" layoutX="620.0" layoutY="287.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Hospital/Clinic" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <Label layoutX="620.0" layoutY="334.0" text="Address" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <TextField fx:id="hospitalAddressField" layoutX="620.0" layoutY="370.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Address" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <Label layoutX="623.0" layoutY="432.0" text="Consultation Fee" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <TextField fx:id="consultationFeeField" layoutX="620.0" layoutY="471.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Fee in PKR (e.g., 1000)" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <FontIcon iconColor="WHITE" iconLiteral="fas-hospital" iconSize="100" layoutX="760.0" layoutY="134.0" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-hospital" iconSize="30" layoutX="629.0" layoutY="321.0" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-address-card" iconSize="30" layoutX="628.0" layoutY="405.0" />
+      <Button fx:id="PracticeInformationGoBackButton" layoutX="622.0" layoutY="565.0" mnemonicParsing="false" onAction="#onPracticeInformationBackButtonClicked" prefHeight="44.0" prefWidth="139.0" styleClass="signUpbutton" stylesheets="@../../Design/SignUp.css" text="Go Back">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <HBox alignment="CENTER" layoutX="623.0" layoutY="538.0" prefHeight="22.0" prefWidth="362.0">
+         <children>
+            <Label fx:id="practiceInformationErrorMessage" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-credit-card" iconSize="30" layoutX="628.0" layoutY="505.0" />
+   </children>
+</AnchorPane>

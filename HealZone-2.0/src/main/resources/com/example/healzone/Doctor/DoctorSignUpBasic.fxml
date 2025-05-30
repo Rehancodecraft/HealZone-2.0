@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorSignUpController" maxHeight="600" fitToWidth="true" style="-fx-background-color: transparent;">
+    <VBox spacing="15" alignment="CENTER">
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20" />
+        </padding>
+        <FontIcon iconLiteral="fas-user-md" iconSize="100" />
+        <Label text="Create Account" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3b82f6;" />
+        <Label text="Join us to manage your appointments" style="-fx-font-size: 14px; -fx-text-fill: #6b7280;" />
+
+        <!-- Personal Information -->
+        <Label text="Personal Information" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e40af;" />
+        <HBox spacing="10">
+            <VBox>
+                <Label text="First Name" />
+                <TextField fx:id="firstNameField" promptText="Enter Your First Name" style="-fx-pref-width: 250px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+            </VBox>
+            <VBox>
+                <Label text="Last Name" />
+                <TextField fx:id="lastNameField" promptText="Enter Your Last Name" style="-fx-pref-width: 250px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+            </VBox>
+        </HBox>
+        <HBox spacing="10">
+            <VBox>
+                <Label text="Email" />
+                <TextField fx:id="emailField" promptText="Enter Your Email" style="-fx-pref-width: 250px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+            </VBox>
+            <VBox>
+                <Label text="Phone" />
+                <TextField fx:id="phoneField" promptText="Enter Your Phone (e.g., +923001234567)" style="-fx-pref-width: 250px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+            </VBox>
+        </HBox>
+        <VBox>
+            <Label text="Government ID (e.g., CNIC or Passport)" />
+            <TextField fx:id="governmentIdField" promptText="Enter Your Government ID" style="-fx-pref-width: 515px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+        </VBox>
+
+        <!-- Professional Details -->
+        <Label text="Professional Details" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e40af;" />
+        <VBox>
+            <Label text="Specialization" />
+            <ComboBox fx:id="specializationField" promptText="Select Specialization" style="-fx-pref-width: 515px; -fx-background-color: #1e40af; -fx-text-fill: white;">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Cardiology" />
+                        <String fx:value="Neurology" />
+                        <String fx:value="General Medicine" />
+                        <String fx:value="Pediatrics" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </VBox>
+        <VBox>
+            <Label text="Degrees" />
+            <TextField fx:id="degreesField" promptText="Enter Your Degrees (e.g., MBBS, MD)" style="-fx-pref-width: 515px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+        </VBox>
+        <VBox>
+            <Label text="Medical License Number" />
+            <TextField fx:id="licenseNumberField" promptText="Enter Your License Number" style="-fx-pref-width: 515px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+        </VBox>
+
+        <!-- Practice Information -->
+        <Label text="Practice Information" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e40af;" />
+        <VBox>
+            <Label text="Hospital/Clinic" />
+            <TextField fx:id="hospitalField" promptText="Enter Your Hospital/Clinic" style="-fx-pref-width: 515px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+        </VBox>
+        <VBox>
+            <Label text="Address" />
+            <TextArea fx:id="addressField" promptText="Enter Your Address" style="-fx-pref-width: 515px; -fx-pref-height: 80px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+        </VBox>
+        <VBox>
+            <Label text="Consultation Fee" />
+            <TextField fx:id="feeField" promptText="Enter Fee in PKR (e.g., 1000)" style="-fx-pref-width: 515px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+        </VBox>
+
+        <!-- Additional Details -->
+        <Label text="Additional Details" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e40af;" />
+        <VBox>
+            <Label text="Document Upload" />
+            <Button fx:id="documentUploadButton" text="Upload Document (PDF/PNG/JPG)"  style="-fx-pref-width: 515px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+        </VBox>
+        <VBox>
+            <Label text="Availability" />
+            <ComboBox fx:id="availabilityField" promptText="Select Days" style="-fx-pref-width: 515px; -fx-background-color: #1e40af; -fx-text-fill: white;">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Monday" />
+                        <String fx:value="Tuesday" />
+                        <String fx:value="Wednesday" />
+                        <String fx:value="Thursday" />
+                        <String fx:value="Friday" />
+                        <String fx:value="Saturday" />
+                        <String fx:value="Sunday" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </VBox>
+        <VBox>
+            <Label text="Bio" />
+            <TextArea fx:id="bioField" promptText="Enter Your Bio (max 500 chars)" style="-fx-pref-width: 515px; -fx-pref-height: 80px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+        </VBox>
+
+        <!-- Security -->
+        <Label text="Security" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #1e40af;" />
+        <HBox spacing="10">
+            <VBox>
+                <Label text="Password" />
+                <PasswordField fx:id="passwordField" promptText="Enter Your Password" style="-fx-pref-width: 250px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+            </VBox>
+            <VBox>
+                <Label text="Confirm Password" />
+                <PasswordField fx:id="confirmPasswordField" promptText="Confirm Your Password" style="-fx-pref-width: 250px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+            </VBox>
+        </HBox>
+
+        <!-- Consent -->
+        <CheckBox fx:id="consentCheckbox" text="I agree to the Terms of Service and Privacy Policy" style="-fx-text-fill: #1e40af;" />
+
+        <!-- Submit Button -->
+        <Button fx:id="signUpButton" text="Sign Up" style="-fx-pref-width: 200px; -fx-pref-height: 40px; -fx-background-color: #3b82f6; -fx-text-fill: white; -fx-font-size: 16px;" />
+
+        <!-- Status and Timer Labels -->
+        <Label fx:id="statusLabel" text="" style="-fx-text-fill: #1e40af;" />
+        <Label fx:id="timerLabel" text="" style="-fx-text-fill: red;" />
+    </VBox>
+</ScrollPane>

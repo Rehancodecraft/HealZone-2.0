@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<AnchorPane prefHeight="494.0" prefWidth="1115.0" stylesheets="@../Design/Login.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.EmailVerification.DoctorOTPverificationController">
+   <children>
+      <Label layoutX="660.0" layoutY="189.0" text="Email Verification" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="29.0" />
+         </font>
+      </Label>
+      <TextField fx:id="otpField" layoutX="730.0" layoutY="328.0" prefHeight="31.0" prefWidth="142.0" promptText="Enter OTP" styleClass="OTPfield" stylesheets="@../Design/OTPverification.css" />
+      <Button fx:id="verifityOTPButton" layoutX="768.0" layoutY="402.0" mnemonicParsing="false" onAction="#verifyOTPAndSignup" prefHeight="26.0" prefWidth="77.0" styleClass="OTPverificationButton" stylesheets="@../Design/OTPverification.css" text="Verify" />
+      <Label layoutX="715.0" layoutY="247.0" text="Enter the OTP sent to" textFill="WHITE">
+         <font>
+            <Font size="17.0" />
+         </font></Label>
+      <HBox alignment="CENTER" layoutX="598.0" layoutY="281.0" prefHeight="24.0" prefWidth="385.0">
+         <children>
+            <Label fx:id="receiverEmailDisplay" textFill="#e2e7dd">
+               <font>
+                  <Font name="System Bold" size="17.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <Hyperlink layoutX="846.0" layoutY="444.0" onAction="#onResendOTPLinkClicked" styleClass="OTPLinks" stylesheets="@../Design/OTPverification.css" text="Resend OTP" />
+      <FontIcon iconColor="WHITE" iconLiteral="fas-envelope-open-text" iconSize="100" layoutX="738.0" layoutY="176.0" selectionEnd="0" selectionStart="0" />
+      <Label layoutX="707.0" layoutY="447.0" text="Did'nt received OTP?" />
+      <HBox alignment="CENTER" layoutX="664.0" layoutY="375.0" prefHeight="22.0" prefWidth="274.0">
+         <children>
+            <Label fx:id="errorMessage" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+   </children>
+</AnchorPane>

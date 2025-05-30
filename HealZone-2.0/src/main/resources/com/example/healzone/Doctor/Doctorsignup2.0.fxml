@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<ScrollPane fitToWidth="true" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorSignUpController">
+    <VBox alignment="CENTER" spacing="15">
+        <padding>
+            <Insets bottom="20" left="20" right="20" top="20" />
+        </padding>
+        <FontIcon iconColor="WHITE" iconLiteral="fas-user-md" iconSize="100" />
+        <Label text="Create Account" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="28.0" />
+            </font>
+        </Label>
+        <Label style="-fx-font-size: 14px; -fx-text-fill: #6b7280;" text="Join us to manage your appointments" textFill="#c1c1c1" />
+
+        <!-- Personal Information -->
+        <Label text="Personal Information" textFill="WHITE">
+            <font>
+                <Font size="24.0" />
+            </font>
+        </Label>
+        <HBox prefHeight="82.0" spacing="10">
+            <VBox>
+                <Label text="First Name" textFill="WHITE">
+                    <font>
+                        <Font size="19.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="firstNameField" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your First Name" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+            </VBox>
+            <VBox prefHeight="122.0" prefWidth="379.0">
+                <Label text="Last Name" textFill="WHITE">
+                    <font>
+                        <Font size="19.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="lastNameField" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Last Name" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+            </VBox>
+        </HBox>
+        <HBox spacing="10">
+            <VBox>
+                <Label text="Email" textFill="WHITE">
+                    <font>
+                        <Font size="19.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="emailField" prefHeight="46.0" prefWidth="368.0" promptText="name@gmail.com" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+            </VBox>
+            <VBox>
+                <Label text="Phone" textFill="WHITE">
+                    <font>
+                        <Font size="19.0" />
+                    </font>
+                </Label>
+                <TextField fx:id="phoneField" prefHeight="46.0" prefWidth="368.0" promptText="Phone (e.g., +923001234567)" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+            </VBox>
+        </HBox>
+        <VBox prefHeight="74.0" prefWidth="538.0">
+            <Label text="Government ID (e.g., CNIC or Passport)" textFill="WHITE">
+                <font>
+                    <Font size="19.0" />
+                </font>
+            </Label>
+            <TextField fx:id="governmentIdField" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Government ID" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+        </VBox>
+
+        <!-- Professional Details -->
+        <Label text="Professional Details" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <VBox>
+            <Label text="Specialization" textFill="WHITE">
+                <font>
+                    <Font size="19.0" />
+                </font>
+            </Label>
+            <ComboBox fx:id="specializationField" prefWidth="368.0" promptText="Select Specialization" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Cardiology" />
+                        <String fx:value="Neurology" />
+                        <String fx:value="General Medicine" />
+                        <String fx:value="Pediatrics" />
+                        <String fx:value="Anesthesiology" />
+                        <String fx:value="Cardiology" />
+                        <String fx:value="Dermatology" />
+                        <String fx:value="Emergency Medicine" />
+                        <String fx:value="Endocrinology" />
+                        <String fx:value="Family Medicine" />
+                        <String fx:value="Gastroenterology" />
+                        <String fx:value="General Medicine" />
+                        <String fx:value="Geriatrics" />
+                        <String fx:value="Gynecology" />
+                        <String fx:value="Hematology" />
+                        <String fx:value="Infectious Disease" />
+                        <String fx:value="Internal Medicine" />
+                        <String fx:value="Nephrology" />
+                        <String fx:value="Neurology" />
+                        <String fx:value="Oncology" />
+                        <String fx:value="Ophthalmology" />
+                        <String fx:value="Orthopedics" />
+                        <String fx:value="Otolaryngology (ENT)" />
+                        <String fx:value="Pediatrics" />
+                        <String fx:value="Psychiatry" />
+                        <String fx:value="Pulmonology" />
+                        <String fx:value="Radiology" />
+                        <String fx:value="Rheumatology" />
+                        <String fx:value="Surgery - General" />
+                        <String fx:value="Urology" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </VBox>
+        <VBox>
+            <Label text="Degrees" textFill="WHITE">
+                <font>
+                    <Font size="19.0" />
+                </font>
+            </Label>
+            <TextField fx:id="degreesField" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Degrees (e.g., MBBS, MD)" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+        </VBox>
+        <VBox>
+            <Label text="Medical License Number" textFill="WHITE">
+                <font>
+                    <Font size="19.0" />
+                </font>
+            </Label>
+            <TextField fx:id="licenseNumberField" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your License Number" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+        </VBox>
+
+        <!-- Practice Information -->
+        <Label text="Practice Information" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <VBox>
+            <Label text="Hospital/Clinic" textFill="WHITE">
+                <font>
+                    <Font size="19.0" />
+                </font>
+            </Label>
+            <TextField fx:id="hospitalField" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Hospital/Clinic" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+        </VBox>
+        <VBox>
+            <Label text="Address" textFill="WHITE">
+                <font>
+                    <Font size="19.0" />
+                </font>
+            </Label>
+            <TextField fx:id="addressField" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Address" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+        </VBox>
+        <VBox>
+            <Label text="Consultation Fee" textFill="WHITE">
+                <font>
+                    <Font size="19.0" />
+                </font>
+            </Label>
+            <TextField fx:id="feeField" prefHeight="46.0" prefWidth="368.0" promptText="Enter Fee in PKR (e.g., 1000)" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+        </VBox>
+
+        <!-- Additional Details -->
+        <Label text="Additional Details" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <HBox alignment="TOP_RIGHT">
+            <children>
+                <VBox alignment="BOTTOM_LEFT" prefHeight="72.0" prefWidth="376.0">
+                    <children>
+                        <AnchorPane prefHeight="66.0" prefWidth="459.0">
+                            <children>
+                                <CheckBox layoutX="224.0" layoutY="32.0" mnemonicParsing="false" text="Fri" textFill="WHITE" />
+                                <CheckBox layoutX="112.0" layoutY="32.0" mnemonicParsing="false" text="Wed" textFill="WHITE" />
+                                <CheckBox contentDisplay="RIGHT" layoutX="322.0" layoutY="32.0" mnemonicParsing="false" text="Sun" textFill="WHITE" />
+                                <CheckBox layoutX="57.0" layoutY="32.0" mnemonicParsing="false" text="Tue" textFill="WHITE" />
+                                <CheckBox layoutX="270.0" layoutY="32.0" mnemonicParsing="false" text="Sat" textFill="WHITE" />
+                                <CheckBox layoutY="32.0" mnemonicParsing="false" text="Mon" textFill="WHITE" />
+                                <CheckBox layoutX="169.0" layoutY="32.0" mnemonicParsing="false" text="Thu" textFill="WHITE" />
+                                <Label layoutX="1.0" layoutY="-5.0" text="Available Days" textFill="WHITE">
+                                    <font>
+                                        <Font size="19.0" />
+                                    </font>
+                                </Label>
+                            </children>
+                        </AnchorPane>
+                    </children>
+                </VBox>
+                <VBox alignment="CENTER_LEFT" prefHeight="72.0" prefWidth="379.0">
+                    <Label text="Available Slots" textFill="WHITE">
+                        <font>
+                            <Font size="19.0" />
+                        </font>
+                    </Label>
+                    <HBox prefHeight="44.0" prefWidth="363.0">
+                        <children>
+                            <ComboBox fx:id="specializationField1" prefHeight="44.0" prefWidth="163.0" promptText="Start" styleClass="signUpSlots" stylesheets="@../Design/SignUp.css">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="12:00 AM" />
+                                        <String fx:value="01:00 AM" />
+                                        <String fx:value="02:00 AM" />
+                                        <String fx:value="03:00 AM" />
+                                        <String fx:value="04:00 AM" />
+                                        <String fx:value="05:00 AM" />
+                                        <String fx:value="06:00 AM" />
+                                        <String fx:value="07:00 AM" />
+                                        <String fx:value="08:00 AM" />
+                                        <String fx:value="09:00 AM" />
+                                        <String fx:value="10:00 AM" />
+                                        <String fx:value="11:00 AM" />
+                                        <String fx:value="12:00 PM" />
+                                        <String fx:value="01:00 PM" />
+                                        <String fx:value="02:00 PM" />
+                                        <String fx:value="03:00 PM" />
+                                        <String fx:value="04:00 PM" />
+                                        <String fx:value="05:00 PM" />
+                                        <String fx:value="06:00 PM" />
+                                        <String fx:value="07:00 PM" />
+                                        <String fx:value="08:00 PM" />
+                                        <String fx:value="09:00 PM" />
+                                        <String fx:value="10:00 PM" />
+                                        <String fx:value="11:00 PM" />
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                            <VBox alignment="CENTER">
+                                <children>
+                                    <Label prefHeight="18.0" prefWidth="36.0" text="To">
+                                        <font>
+                                            <Font size="21.0" />
+                                        </font>
+                                    </Label>
+                                </children>
+                            </VBox>
+                            <ComboBox fx:id="specializationField11" prefHeight="44.0" prefWidth="163.0" promptText="End" styleClass="signUpSlots" stylesheets="@../Design/SignUp.css">
+                                <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                        <String fx:value="12:00 AM" />
+                                        <String fx:value="01:00 AM" />
+                                        <String fx:value="02:00 AM" />
+                                        <String fx:value="03:00 AM" />
+                                        <String fx:value="04:00 AM" />
+                                        <String fx:value="05:00 AM" />
+                                        <String fx:value="06:00 AM" />
+                                        <String fx:value="07:00 AM" />
+                                        <String fx:value="08:00 AM" />
+                                        <String fx:value="09:00 AM" />
+                                        <String fx:value="10:00 AM" />
+                                        <String fx:value="11:00 AM" />
+                                        <String fx:value="12:00 PM" />
+                                        <String fx:value="01:00 PM" />
+                                        <String fx:value="02:00 PM" />
+                                        <String fx:value="03:00 PM" />
+                                        <String fx:value="04:00 PM" />
+                                        <String fx:value="05:00 PM" />
+                                        <String fx:value="06:00 PM" />
+                                        <String fx:value="07:00 PM" />
+                                        <String fx:value="08:00 PM" />
+                                        <String fx:value="09:00 PM" />
+                                        <String fx:value="10:00 PM" />
+                                        <String fx:value="11:00 PM" />
+                                    </FXCollections>
+                                </items>
+                            </ComboBox>
+                        </children>
+                    </HBox>
+                </VBox>
+            </children>
+        </HBox>
+        <VBox>
+            <Label text="Bio" textFill="WHITE">
+                <font>
+                    <Font size="19.0" />
+                </font>
+            </Label>
+            <TextArea fx:id="bioField" promptText="Enter Your Bio (max 500 chars)" style="-fx-pref-width: 368.0; -fx-pref-height: 80px; -fx-background-color: #1e40af; -fx-text-fill: white;" />
+        </VBox>
+
+        <!-- Security -->
+        <Label text="Security" textFill="WHITE">
+            <font>
+                <Font name="System Bold" size="24.0" />
+            </font>
+        </Label>
+        <HBox spacing="10">
+            <VBox stylesheets="@../Design/SignUp.css">
+                <Label text="Password" textFill="WHITE">
+                    <font>
+                        <Font size="19.0" />
+                    </font>
+                </Label>
+                <PasswordField fx:id="passwordField" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Password" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+            </VBox>
+            <VBox>
+                <Label text="Confirm Password" textFill="WHITE">
+                    <font>
+                        <Font size="19.0" />
+                    </font>
+                </Label>
+                <PasswordField fx:id="confirmPasswordField" prefHeight="46.0" prefWidth="368.0" promptText="Confirm Your Password" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+            </VBox>
+        </HBox>
+
+        <!-- Consent -->
+        <CheckBox fx:id="consentCheckbox" style="-fx-text-fill: #1e40af;" text="I agree to the Terms of Service and Privacy Policy" />
+
+        <!-- Submit Button -->
+        <Button fx:id="signUpButton" prefHeight="49.0" prefWidth="210.0" styleClass="signUpbutton" stylesheets="@../Design/SignUp.css" text="Sign Up">
+            <font>
+                <Font name="System Bold" size="29.0" />
+            </font>
+        </Button>
+
+        <!-- Status and Timer Labels -->
+        <Label fx:id="statusLabel" style="-fx-text-fill: #1e40af;" text="" />
+        <Label fx:id="timerLabel" style="-fx-text-fill: red;" text="" />
+    </VBox>
+</ScrollPane>

@@ -13,19 +13,19 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.MainViewController">
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.StartView.MainViewController">
 
     <!-- Background image -->
     <ImageView fitHeight="810.0" fitWidth="1550.0" preserveRatio="false">
         <image>
-            <Image url="@Images/login.jpg" />
+            <Image url="@../Images/login.jpg" />
         </image>
     </ImageView>
 
     <!-- Foreground layout -->
-    <BorderPane prefHeight="800.0" prefWidth="1550.0">
+    <BorderPane>
       <top>
-         <ToolBar styleClass="welcomeBar" stylesheets="@MainView.css" BorderPane.alignment="CENTER">
+         <ToolBar styleClass="welcomeBar" stylesheets="@../Design/MainView.css" BorderPane.alignment="CENTER">
             <items>
                <HBox prefHeight="100.0" prefWidth="1354.0">
                   <children>
@@ -42,17 +42,20 @@
                                  <Font size="17.0" />
                               </font>
                            </Label>
+                           <ImageView fitHeight="70.0" fitWidth="70.0" layoutX="21.0" layoutY="15.0" pickOnBounds="true" preserveRatio="true" />
                         </children>
                      </AnchorPane>
                      <AnchorPane prefHeight="100.0" prefWidth="537.0">
                         <children>
-                           <ToggleButton fx:id="doctorLoginToggle" layoutX="332.0" layoutY="28.0" onAction="#loadDoctorLogin" prefHeight="42.0" prefWidth="130.0" selected="true" styleClass="button" stylesheets="@HomePage.css" text="Login As Doctor">
+                            <ToggleButton fx:id="patientLoginToggle" layoutX="39.0" layoutY="29.0" onAction="#loadPatientLogin" prefHeight="42.0" prefWidth="130.0" selected="true" styleClass="button" stylesheets="@../Design/HomePage.css" text="Login As Patient">
+
+                            </ToggleButton>
+                           <ToggleButton fx:id="doctorLoginToggle" layoutX="332.0" layoutY="28.0" onAction="#loadDoctorLogin" prefHeight="42.0" prefWidth="130.0" styleClass="button" stylesheets="@../Design/HomePage.css" text="Login As Doctor">
+                               <toggleGroup>
+                                   <ToggleGroup fx:id="loginToggleGroup" />
+                               </toggleGroup>
                            </ToggleButton>
-                           <ToggleButton fx:id="patientLoginToggle" layoutX="39.0" layoutY="29.0" onAction="#loadPatientLogin" prefHeight="42.0" prefWidth="130.0" styleClass="button" stylesheets="@HomePage.css" text="Login As Patient">
-                              <toggleGroup>
-                                      <ToggleGroup fx:id="loginToggleGroup" />
-                              </toggleGroup>
-                           </ToggleButton>
+
                         </children>
                      </AnchorPane>
                   </children>
@@ -61,7 +64,7 @@
          </ToolBar>
       </top>
       <center>
-            <StackPane fx:id="contentPane" prefHeight="677.0" prefWidth="1550.0" BorderPane.alignment="CENTER" />
+            <StackPane fx:id="contentPane" BorderPane.alignment="CENTER" />
       </center>
 
     </BorderPane>

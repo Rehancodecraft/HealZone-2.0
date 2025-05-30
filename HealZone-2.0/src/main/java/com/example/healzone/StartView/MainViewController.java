@@ -1,4 +1,4 @@
-package com.example.healzone;
+package com.example.healzone.StartView;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
@@ -19,6 +19,8 @@ public class MainViewController {
     private StackPane contentPane;
     @FXML
     private ToggleGroup loginToggleGroup;
+    @FXML
+    private StackPane root;
 
     public void initialize() {
         System.out.println("Inside initialize: contentPane = " + contentPane);
@@ -26,19 +28,53 @@ public class MainViewController {
     }
 
     public void loadPatientLogin() {
+
         loadView("/com/example/healzone/Patient/PatientLogin.fxml");
     }
 
     public void loadDoctorLogin() {
+
         loadView("/com/example/healzone/Doctor/DoctorLogin.fxml");
     }
 
     public void loadPatientSignup() {
         loadView("/com/example/healzone/Patient/PatientSignUp.fxml");
     }
-
-    public void loadDoctorSignup() {
-        loadView("/com/example/healzone/Doctor/DoctorSignUp.fxml");
+    public void loadPatientEmailVerification() {
+        loadView("/com/example/healzone/ResetPassword/VerifyPatientEmail.fxml");
+    }
+    public void loadDoctorEmailVerification() {
+        loadView("/com/example/healzone/ResetPassword/VerifyDoctorEmail.fxml");
+    }
+    public void loadEmailVerificationForRegister() {
+        loadView("/com/example/healzone/ResetPassword/VerifyEmailForRegister.fxml");
+    }
+    public void loadDoctorPersonalDetails() {
+        loadView("/com/example/healzone/Doctor/Signup/PersonalDetails.fxml");
+    }
+    public void loadDoctorPracticeInformation() {
+        loadView("/com/example/healzone/Doctor/Signup/PracticeInformation.fxml");
+    }
+    public void loadDoctorProfessionalDetails() {
+        loadView("/com/example/healzone/Doctor/Signup/ProfessionalDetails.fxml");
+    }
+    public void loadDoctorSecurity() {
+        loadView("/com/example/healzone/Doctor/Signup/Security.fxml");
+    }
+    public void loadDoctorTimeTable() {
+        loadView("/com/example/healzone/Doctor/Signup/TimeTable.fxml");
+    }
+    public void loadOTPVerification(){
+        loadView("/com/example/healzone/EmailVerification/OTPverification.fxml");
+    }
+    public void loadDoctorOTPVerification(){
+        loadView("/com/example/healzone/EmailVerification/DoctorOTPverification.fxml");
+    }
+    public void loadPatientOTPVerification(){
+        loadView("/com/example/healzone/EmailVerification/PatientOTPverification.fxml");
+    }
+    public void loadHomePage(){
+        loadView("/com/example/healzone/StartView/HomePage.fxml");
     }
 
     protected void loadView(String fxmlPath) {
@@ -50,7 +86,10 @@ public class MainViewController {
 
             // Load the new view
             Parent newView = FXMLLoader.load(getClass().getResource(fxmlPath));
-
+//            DoctorSignUpController controller = new DoctorSignUpController();
+//            if((Doctor.getFirstName() != null) && (Doctor.getLastName() != null) && (Doctor.getPhone() != null) && (Doctor.getEmail()!=null) && (Doctor.getGovtID() !=null)){
+//                controller.prefillFieldsFromDoctor();
+//            }
             // Set initial opacity and scale
             newView.setOpacity(0);
             newView.setScaleX(0.98);

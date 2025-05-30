@@ -5,22 +5,17 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
+
 <StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.PatientLoginController">
    <children>
       <Pane>
          <children>
-            <ImageView fitHeight="810.0" fitWidth="1550.0" pickOnBounds="true" visible="false">
-               <image>
-                  <Image url="@../Images/login.jpg" />
-               </image>
-            </ImageView>
             <FontIcon iconColor="WHITE" iconLiteral="fas-users" iconSize="100" layoutX="695.0" layoutY="114.0" selectionEnd="0" selectionStart="0" wrappingWidth="130.6499786376953" />
             <Label layoutX="659.0" layoutY="127.0" text="Welcome Back" textFill="WHITE">
                <font>
@@ -28,28 +23,28 @@
                </font>
             </Label>
             <Label layoutX="678.0" layoutY="158.0" text="Please Enter Your details" textFill="#d9c8c8" />
-            <TextField fx:id="patientEmail" layoutX="587.0" layoutY="238.0" prefHeight="59.0" prefWidth="368.0" promptText="name@gmail.com" styleClass="logintexfield" stylesheets="@../Login.css">
+            <TextField fx:id="patientEmail" layoutX="587.0" layoutY="238.0" prefHeight="59.0" prefWidth="368.0" promptText="name@gmail.com" styleClass="logintexfield" stylesheets="@../Design/Login.css">
                <font>
                   <Font size="20.0" />
                </font>
             </TextField>
-            <PasswordField fx:id="password" layoutX="587.0" layoutY="342.0" prefHeight="59.0" prefWidth="368.0" promptText="Enter Your Password" styleClass="logintexfield" stylesheets="@../Login.css" />
-            <Hyperlink fx:id="forgetPasswordLink" layoutX="816.0" layoutY="417.0" styleClass="loginLinks" stylesheets="@../Login.css" text="Forget Password?" textFill="WHITE">
+            <PasswordField fx:id="password" layoutX="587.0" layoutY="342.0" prefHeight="59.0" prefWidth="368.0" promptText="Enter Your Password" styleClass="logintexfield" stylesheets="@../Design/Login.css" />
+            <Hyperlink fx:id="forgetPasswordLink" layoutX="816.0" layoutY="417.0" onAction="#onForgetPasswordLinkClicked" styleClass="loginLinks" stylesheets="@../Design/Login.css" text="Forget Password?" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
             </Hyperlink>
-            <Button fx:id="loginButton" layoutX="587.0" layoutY="468.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" prefHeight="60.0" prefWidth="368.0" styleClass="loginbutton" stylesheets="@../Login.css" text="Log In" textFill="WHITE">
+            <Button fx:id="loginButton" layoutX="587.0" layoutY="468.0" mnemonicParsing="false" onAction="#onLoginButtonClicked" prefHeight="60.0" prefWidth="368.0" styleClass="loginbutton" stylesheets="@../Design/Login.css" text="Log In" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="30.0" />
                </font>
             </Button>
-            <Label layoutX="604.0" layoutY="546.0" text="Don't have an account? " textFill="#a9a2a2">
+            <Label layoutX="612.0" layoutY="553.0" text="Don't have an account? " textFill="#a9a2a2">
                <font>
                   <Font size="16.0" />
                </font>
             </Label>
-            <Hyperlink fx:id="signUpLink" layoutX="862.0" layoutY="542.0" onAction="#onSignUpLinkClicked" onMouseClicked="#onSignUpLinkClicked" styleClass="loginLinks" stylesheets="@../Login.css" text="Sign Up" textFill="WHITE">
+            <Hyperlink fx:id="signUpLink" layoutX="828.0" layoutY="549.0" onAction="#onSignUpLinkClicked" onMouseClicked="#onSignUpLinkClicked" styleClass="loginLinks" stylesheets="@../Design/Login.css" text="Sign Up" textFill="WHITE">
                <font>
                   <Font size="16.0" />
                </font>
@@ -59,13 +54,22 @@
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <Label layoutX="583.0" layoutY="310.0" text="Password" textFill="WHITE">
+            <Label layoutX="587.0" layoutY="309.0" text="Password" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="19.0" />
                </font>
             </Label>
-            <FontIcon iconColor="#7e7777" iconLiteral="fas-user" iconSize="30" layoutX="602.0" layoutY="278.0" selectionEnd="0" selectionStart="0" text="" />
             <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="602.0" layoutY="382.0" selectionEnd="0" selectionStart="0" text="" />
+            <FontIcon iconColor="#7e7777" iconLiteral="fas-envelope" iconSize="30" layoutX="598.0" layoutY="278.0" />
+            <HBox alignment="CENTER" layoutY="562.0" prefHeight="22.0" prefWidth="1550.0">
+               <children>
+                  <Label fx:id="patientLoginErrorMessage" textFill="WHITE">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
          </children>
       </Pane>
    </children>

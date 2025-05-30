@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorSignUpController">
+   <children>
+      <Label layoutX="212.0" layoutY="139.0" text="Security" textFill="WHITE">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label layoutX="85.0" layoutY="213.0" text="Password" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="passwordField" layoutX="86.0" layoutY="249.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Password" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <Label layoutX="85.0" layoutY="324.0" text="Confirm Password" textFill="WHITE">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+      <PasswordField fx:id="confirmPasswordField" layoutX="86.0" layoutY="358.0" prefHeight="46.0" prefWidth="368.0" promptText="Confirm Your Password" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <CheckBox fx:id="userAgreement" layoutX="88.0" layoutY="439.0" text="I agree to the Terms of Service and Privacy Policy" textFill="WHITE">
+         <font>
+            <Font size="16.0" />
+         </font>
+      </CheckBox>
+      <Button fx:id="SignUpButton" layoutX="315.0" layoutY="553.0" mnemonicParsing="false" onAction="#onSignUpButtonClicked" prefHeight="44.0" prefWidth="139.0" styleClass="signUpbutton" stylesheets="@../../Design/SignUp.css" text="Sign Up">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <Button fx:id="SecurityGoBackButton" layoutX="86.0" layoutY="553.0" mnemonicParsing="false" onAction="#onSecurityBackButtonClicked" prefHeight="44.0" prefWidth="139.0" styleClass="signUpbutton" stylesheets="@../../Design/SignUp.css" text="Go Back">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Button>
+      <FontIcon iconColor="WHITE" iconLiteral="fas-lock" iconSize="100" layoutX="205.0" layoutY="109.0" x="11.0" />
+      <FontIcon iconColor="#8f9094" iconLiteral="fas-key" iconSize="50" layoutX="226.0" layoutY="114.0" rotate="42.1" x="11.0" />
+      <HBox alignment="CENTER" layoutX="83.0" layoutY="515.0" prefHeight="22.0" prefWidth="368.0">
+         <children>
+            <Label fx:id="securityErrorMessage" textFill="WHITE">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="95.0" layoutY="283.0" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="95.0" layoutY="392.0" />
+   </children>
+</AnchorPane>

@@ -1,0 +1,52 @@
+.signUptexfield{
+    -fx-background-color:  #1b0599;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
+    -fx-padding: 0 0 0 60px;
+    -fx-font-size: 20px;
+    -fx-transition: all 0.3s ease-in-out;
+}
+.signUptexfield:focused{
+
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #ffffff;
+}
+.signUpSlots{
+    -fx-background-color: #1b0599;
+    -fx-background-radius: 10px;
+    -fx-text-fill: #ffffff;
+    -fx-border-radius: 10px;
+    -fx-border-color: gray;
+    -fx-border-width: 1px;
+    /*-fx-padding: 0 0 0 0px;*/
+    -fx-font-size: 20px;
+    -fx-transition: all 0.3s ease-in-out;
+}
+.signUpSlots:focused{
+
+    -fx-text-fill: #ffffff;
+    -fx-border-color: #ffffff;
+}
+.signUpbutton {
+    -fx-background-color: #1b0599;
+    -fx-text-fill: #ffffff;
+    /*-fx-padding: 10px 10px 10px 40px;*/
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+}
+.signUpbutton:hover {
+    -fx-background-color: #ffffff;
+    -fx-text-fill: #1b0599;/* hover color */
+}
+.signUpLinks{
+    -fx-text-fill: #c7c7c7;
+}
+.signUpLinks:hover{
+    -fx-text-fill: #ffffff;
+}
+.scroll-pane{
+    -fx-background-color: transparent;
+}

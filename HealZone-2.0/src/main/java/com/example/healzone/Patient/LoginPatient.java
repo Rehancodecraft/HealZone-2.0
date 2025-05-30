@@ -1,26 +1,23 @@
 package com.example.healzone.Patient;
 
+import com.example.healzone.Doctor.Doctor;
+import com.example.healzone.Doctor.TimeSlot;
 import com.example.healzone.Main;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalTime;
 
-import static com.example.healzone.DatabaseConnection.getCurrentPatientDetails;
+import static com.example.healzone.DatabaseConnection.DatabaseConnection.connection;
+import static com.example.healzone.DatabaseConnection.Patients.getCurrentPatientDetails;
+import static com.example.healzone.DatabaseConnection.Patients.getCurrentPatientDetails;
 
 public class LoginPatient {
-    public static void appearPatientLoginPage() throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("Patient/PatientLogin.fxml"));
-        Stage stage = new Stage();
-        Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Login");
-        stage.setScene(scene);
-        stage.setResizable(false);
-        stage.show();
-    }
 
 
     public static boolean getCurrentPatient(String email, String password) {
@@ -42,5 +39,4 @@ public class LoginPatient {
             return false;
         }
     }
-
 }

@@ -1,6 +1,7 @@
 package com.example.healzone;
 
 
+import com.example.healzone.StartView.MainViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -8,7 +9,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 
-import static com.example.healzone.DatabaseConnection.connectToDatabase;
+import static com.example.healzone.DatabaseConnection.DatabaseConnection.connectToDatabase;
 
 public class Main extends Application {
         @Override
@@ -16,7 +17,7 @@ public class Main extends Application {
             connectToDatabase();
 
             // Load MainView.fxml and let FXMLLoader create the controller
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource("MainView.fxml"));
+            FXMLLoader loader = new FXMLLoader(Main.class.getResource("StartView/MainView.fxml"));
             StackPane root = loader.load();
 
             // Get the controller instance created by FXMLLoader
