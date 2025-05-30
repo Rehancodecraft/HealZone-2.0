@@ -1,8 +1,14 @@
 package com.example.healzone;
 
 import javafx.animation.ParallelTransition;
+import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.AnchorPane;
 import javafx.util.Duration;
@@ -51,9 +57,29 @@ public class HomePageController {
     }
 
     @FXML
-    protected void onLogOutButtonClicked() throws IOException {
-        SessionManager.logOut();
-        loginLink.setVisible(true);
+    protected void onLogOutButtonClicked(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/MainView.fxml"));
+        Parent homePage = loader.load();
+        homePage.setOpacity(0);
+        homePage.setScaleX(0.98);
+        homePage.setScaleY(0.98);
+
+        Scene scene = ((Node) event.getSource()).getScene();
+        scene.setRoot(homePage);
+
+        // Fade + scale animation
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), homePage);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        ScaleTransition scaleIn = new ScaleTransition(Duration.millis(300), homePage);
+        scaleIn.setFromX(0.98);
+        scaleIn.setToX(1);
+        scaleIn.setFromY(0.98);
+        scaleIn.setToY(1);
+
+        ParallelTransition transition = new ParallelTransition(fadeIn, scaleIn);
+        transition.play();
     }
     @FXML
     protected void initialize() {

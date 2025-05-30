@@ -21,8 +21,14 @@ module com.example.healzone {
     opens com.example.healzone.StartView to javafx.fxml;
     exports com.example.healzone.ResetPassword;
     opens com.example.healzone.ResetPassword to javafx.fxml;
-    exports com.example.healzone.EmailVerification;
-    opens com.example.healzone.EmailVerification to javafx.fxml;
+    exports com.example.healzone.EmailVerificationForRegistration;
+    opens com.example.healzone.EmailVerificationForRegistration to javafx.fxml;
     exports com.example.healzone.Checks;
     opens com.example.healzone.Checks to javafx.fxml;
+    exports com.example.healzone.EmailVerificationForResetPasssword;
+    opens com.example.healzone.EmailVerificationForResetPasssword to javafx.fxml;
+    exports com.example.healzone.OTPVerificationForResetPassword;
+    opens com.example.healzone.OTPVerificationForResetPassword to javafx.fxml;
+    exports com.example.healzone.OTPVerificationForRegisteration;
+    opens com.example.healzone.OTPVerificationForRegisteration to javafx.fxml;
 }

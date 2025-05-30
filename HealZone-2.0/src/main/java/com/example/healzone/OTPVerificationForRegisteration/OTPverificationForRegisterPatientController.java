@@ -1,4 +1,4 @@
-package com.example.healzone.EmailVerification;
+package com.example.healzone.OTPVerificationForRegisteration;
 
 import com.example.healzone.Patient.Patient;
 import com.example.healzone.Patient.signUpController;
@@ -15,11 +15,11 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 import static com.example.healzone.DatabaseConnection.Patients.registerPatient;
-import static com.example.healzone.EmailVerification.EmailSender.receiverEmail;
-import static com.example.healzone.EmailVerification.OTPgenerator.isCooldown;
-import static com.example.healzone.EmailVerification.OTPgenerator.validateOTP;
+import static com.example.healzone.EmailVerificationForRegistration.EmailSender.receiverEmail;
+import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.isCooldown;
+import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.validateOTP;
 
-public class PatientOTPverificationController extends signUpController {
+public class OTPverificationForRegisterPatientController extends signUpController {
     @FXML
     private Button verifityOTPButton;
     @FXML
@@ -33,13 +33,24 @@ public class PatientOTPverificationController extends signUpController {
         receiverEmailDisplay.setText(receiverEmail);
     }
 
-    public  void verifyOTPAndSignup() {
+    public  void verifyOTPAndSignup(ActionEvent event) {
         System.out.println(generatedOTP);
         String enteredOtp = otpField.getText();
         if(validateOTP(enteredOtp)){
             System.out.println("OTP verified. Proceed to create account.");
             registerPatient(Patient.getName(), Patient.getFatherName(), Patient.getPhone(), Patient.getEmail(), Patient.getAge(), Patient.getGender(), Patient.getPassword());
-            closeVerifyOTPStage();
+            try {
+                StackPane root = (StackPane) ((Node) event.getSource()).getScene().getRoot();
+                MainViewController mainController = (MainViewController) root.getProperties().get("controller");
+                if (mainController != null) {
+                    mainController.loadPatientLogin();
+                } else {
+                    System.err.println("MainViewController not found in root properties.");
+                }
+            } catch (Exception e) {
+                System.err.println("Error loading PatientLogin: ");
+                e.printStackTrace();
+            }
         } else {
             System.out.println("Invalid OTP.");
             errorMessage.setText("⚠️ Wrong OTP");
@@ -57,7 +68,7 @@ public class PatientOTPverificationController extends signUpController {
                 MainViewController mainController = (MainViewController) root.getProperties().get("controller");
 
                 if (mainController != null) {
-                    mainController.loadPatientEmailVerification();
+                    mainController.loadEmailVerificationForRegister();
                 } else {
                     System.err.println("MainViewController not found in root properties.");
                 }

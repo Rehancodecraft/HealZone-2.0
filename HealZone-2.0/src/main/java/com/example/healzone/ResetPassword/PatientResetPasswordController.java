@@ -1,7 +1,12 @@
 package com.example.healzone.ResetPassword;
 
 import com.example.healzone.Patient.Patient;
+import com.example.healzone.StartView.MainViewController;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
+
 import java.awt.*;
 
 import static com.example.healzone.Checks.ChecksForPatient.isPasswordMatch;
@@ -16,7 +21,7 @@ public class PatientResetPasswordController {
     @FXML
     private Label resetPasswordErrorMessage;
     @FXML
-    private void onClickResetPasswordButton() {
+    private void onClickResetPasswordButton(ActionEvent event) {
         Patient.setPassword(password.getText());
         Patient.setConfirmPassword(confirmPassword.getText());
         if (!isPasswordMatch()) {
@@ -27,6 +32,18 @@ public class PatientResetPasswordController {
             return;
         } else {
             resetPassword(Patient.getPassword(), Patient.getEmail());
+            try {
+                StackPane root = (StackPane) ((Node) event.getSource()).getScene().getRoot();
+                MainViewController mainController = (MainViewController) root.getProperties().get("controller");
+                if (mainController != null) {
+                    mainController.loadPatientLogin();
+                } else {
+                    System.err.println("MainViewController not found in root properties.");
+                }
+            } catch (Exception e) {
+                System.err.println("Error loading PatientLogin: ");
+                e.printStackTrace();
+            }
         }
     }
 }

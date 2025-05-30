@@ -10,7 +10,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.EmailVerificationForResetPasssword.VerifyPatientEmailController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.EmailVerificationForRegistration.VerifyEmailForRegisterPatientController">
    <children>
       <ImageView fitHeight="600.0" fitWidth="1500.0" pickOnBounds="true" preserveRatio="true" visible="false">
          <image>
@@ -22,7 +22,7 @@
             <Font size="20.0" />
          </font>
       </TextField>
-      <Button fx:id="OTPsendButton" layoutX="714.0" layoutY="442.0" mnemonicParsing="false" onAction="#onOTPSendButtonClicked" prefHeight="48.0" prefWidth="201.0" styleClass="loginbutton" stylesheets="@../Design/Login.css" text="Send OTP" textFill="WHITE">
+      <Button fx:id="OTPsendButton" layoutX="710.0" layoutY="333.0" mnemonicParsing="false" onAction="#onOTPSendButtonClicked" prefHeight="48.0" prefWidth="201.0" styleClass="loginbutton" stylesheets="@../Design/Login.css" text="Send OTP" textFill="WHITE">
          <font>
             <Font name="System Bold" size="20.0" />
          </font>
@@ -39,7 +39,7 @@
             <Font name="SansSerif Bold" size="28.0" />
          </font>
       </Label>
-      <HBox alignment="CENTER" layoutX="614.0" layoutY="412.0" prefHeight="22.0" prefWidth="368.0">
+      <HBox alignment="CENTER" layoutX="617.0" layoutY="309.0" prefHeight="22.0" prefWidth="368.0">
          <children>
             <Label fx:id="errorMessage" textFill="WHITE">
                <font>
@@ -48,16 +48,5 @@
             </Label>
          </children>
       </HBox>
-      <TextField fx:id="resetPasswordPhone" layoutX="614.0" layoutY="342.0" prefHeight="59.0" prefWidth="368.0" promptText="eg.03016567902" styleClass="logintexfield" stylesheets="@../Design/Login.css">
-         <font>
-            <Font size="20.0" />
-         </font>
-      </TextField>
-      <Label layoutX="617.0" layoutY="314.0" text="Phone" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="19.0" />
-         </font>
-      </Label>
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-phone" iconSize="30" layoutX="628.0" layoutY="382.0" />
    </children>
 </AnchorPane>

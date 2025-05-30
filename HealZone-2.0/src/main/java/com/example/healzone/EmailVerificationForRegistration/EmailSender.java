@@ -1,6 +1,5 @@
-package com.example.healzone.EmailVerification;
+package com.example.healzone.EmailVerificationForRegistration;
 
-import com.example.healzone.Patient.Patient;
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
 

@@ -10,15 +10,14 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.control.*;
 
-import javax.print.Doc;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Map;
 import static com.example.healzone.Checks.ChecksForDoctor.*;
 import static com.example.healzone.DatabaseConnection.Doctors.*;
 import static com.example.healzone.Doctor.Doctor.*;
-import static com.example.healzone.EmailVerification.EmailSender.receiverEmail;
-import static com.example.healzone.EmailVerification.EmailSender.sendOTPToEmail;
+import static com.example.healzone.EmailVerificationForRegistration.EmailSender.receiverEmail;
+import static com.example.healzone.EmailVerificationForRegistration.EmailSender.sendOTPToEmail;
 import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 
 
@@ -273,11 +272,10 @@ public class DoctorSignUpController {
         } else if (!isPasswordMatch()) {
             securityErrorMessage.setText("⚠️ Password and Confirm Password do not match!");
             return;
-        }else if(!userAgreement.isSelected()){
+        } else if (!userAgreement.isSelected()) {
             securityErrorMessage.setText("⚠️ Please accept the user agreement to continue!");
             return;
-        }
-        else {
+        } else {
             try {
                 StackPane root = (StackPane) ((Node) event.getSource()).getScene().getRoot();
                 MainViewController mainController = (MainViewController) root.getProperties().get("controller");
@@ -286,12 +284,12 @@ public class DoctorSignUpController {
                     System.out.println(getEmail());
                     receiverEmail = getEmail();
                     // Load OTP verification view immediately
-                    mainController.loadOTPVerification();
+                    mainController.loadOTPVerificationForRegisterDoctor();
                     // Send OTP in a background thread
                     Task<Void> sendOtpTask = new Task<>() {
                         @Override
                         protected Void call() {
-                            sendOTPToEmail(receiverEmail,getFirstName()+getLastName());
+                            sendOTPToEmail(receiverEmail, getFirstName() + getLastName());
                             return null;
                         }
                     };
@@ -308,13 +306,12 @@ public class DoctorSignUpController {
                     System.err.println("MainViewController not found in root properties.");
                     showAlert(Alert.AlertType.ERROR, "Error", "Internal error: Unable to load OTP verification.");
                 }
-            }catch (Exception e){
+            } catch (Exception e) {
                 e.printStackTrace();
                 System.out.println(e.getMessage());
             }
         }
     }
-    //BACK BUTTONS
     public void onProfessionalDetailsBackButtonClicked(javafx.event.ActionEvent event){
         try {
 

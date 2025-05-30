@@ -29,7 +29,7 @@
       <top>
          <AnchorPane fx:id="welcomeBar" prefHeight="110.0" styleClass="welcomeBar" stylesheets="@../Design/MainView.css">
             <children>
-               <Label layoutX="161.0" layoutY="14.0" text="Welcome to Healzone," textFill="WHITE">
+               <Label layoutX="161.0" layoutY="14.0" text="Welcome to Healzone " textFill="WHITE">
                   <font><Font name="SansSerif Bold" size="25.0" /></font>
                </Label>
                <Label layoutX="161.0" layoutY="49.0" text="Find and book your appointments with top doctors" textFill="WHITE">

@@ -1,6 +1,7 @@
-package com.example.healzone.EmailVerification;
+package com.example.healzone.EmailVerificationForResetPasssword;
 
 import com.example.healzone.Doctor.Doctor;
+import com.example.healzone.EmailVerificationForRegistration.EmailSender;
 import com.example.healzone.Patient.Patient;
 import com.example.healzone.ResetPassword.PatientResetPasswordController;
 import com.example.healzone.StartView.MainViewController;
@@ -12,17 +13,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
-import org.w3c.dom.Text;
 
-
-import javax.print.Doc;
 
 import static com.example.healzone.Checks.ChecksForDoctor.isGovtIDValid;
 import static com.example.healzone.DatabaseConnection.Doctors.checkEmail;
 import static com.example.healzone.DatabaseConnection.Doctors.checkGovtID;
-import static com.example.healzone.EmailVerification.OTPgenerator.generateOTP;
+import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.generateOTP;
 import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
-import static com.example.healzone.EmailVerification.EmailSender.*;
+import static com.example.healzone.EmailVerificationForRegistration.EmailSender.*;
 
 
 public class VerifyDoctorEmailController extends PatientResetPasswordController {

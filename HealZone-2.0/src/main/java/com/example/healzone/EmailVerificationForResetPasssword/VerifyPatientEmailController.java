@@ -1,5 +1,6 @@
-package com.example.healzone.EmailVerification;
+package com.example.healzone.EmailVerificationForResetPasssword;
 
+import com.example.healzone.EmailVerificationForRegistration.EmailSender;
 import com.example.healzone.Patient.Patient;
 import com.example.healzone.ResetPassword.PatientResetPasswordController;
 import com.example.healzone.StartView.MainViewController;
@@ -16,7 +17,7 @@ import javafx.scene.layout.StackPane;
 import static com.example.healzone.Checks.ChecksForPatient.isPhoneNumberValid;
 import static com.example.healzone.DatabaseConnection.Patients.checkEmail;
 import static com.example.healzone.DatabaseConnection.Patients.checkPhoneNumber;
-import static com.example.healzone.EmailVerification.OTPgenerator.generateOTP;
+import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.generateOTP;
 import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 
 
@@ -36,7 +37,7 @@ public class VerifyPatientEmailController extends PatientResetPasswordController
             if (!isEmailValid(VerifyEmailField.getText())) {
                 errorMessage.setText("⚠️ Please enter a valid email address!");
                 return;
-            }else if (checkEmail(VerifyEmailField.getText(),resetPasswordPhone.getText())) {
+            }else if (!checkEmail(VerifyEmailField.getText(),resetPasswordPhone.getText())) {
                 errorMessage.setText("⚠️ This email does not exist!");
                 return;
             }else if(!isPhoneNumberValid()){

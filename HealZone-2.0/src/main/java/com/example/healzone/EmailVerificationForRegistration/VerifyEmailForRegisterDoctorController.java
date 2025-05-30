@@ -1,4 +1,4 @@
-package com.example.healzone.EmailVerification;
+package com.example.healzone.EmailVerificationForRegistration;
 
 import com.example.healzone.DatabaseConnection.Doctors;
 import com.example.healzone.DatabaseConnection.Patients;
@@ -14,15 +14,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 
-import javax.print.Doc;
-
-import static com.example.healzone.DatabaseConnection.Doctors.checkEmail;
-import static com.example.healzone.EmailVerification.EmailSender.receiverEmail;
-import static com.example.healzone.EmailVerification.OTPgenerator.generateOTP;
+import static com.example.healzone.EmailVerificationForRegistration.EmailSender.receiverEmail;
+import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.generateOTP;
 import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 
 
-public class VerifyEmailForRegisterController extends PatientResetPasswordController {
+public class VerifyEmailForRegisterDoctorController extends PatientResetPasswordController {
     @FXML
     private TextField VerifyEmailField;
     @FXML
@@ -43,7 +40,7 @@ public class VerifyEmailForRegisterController extends PatientResetPasswordContro
 
                 if (mainController != null) {
                     receiverEmail = VerifyEmailField.getText();
-                    mainController.loadOTPVerification();
+                    mainController.loadOTPVerificationForRegisterDoctor();
                     Task<Void> sendOtpTask = new Task<>() {
                         @Override
                         protected Void call() {

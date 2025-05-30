@@ -10,7 +10,6 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-
 <Pane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorLoginController">
    <children>
       <FontIcon iconColor="WHITE" iconLiteral="fas-user-md" iconSize="100" layoutX="720.0" layoutY="115.0" selectionEnd="0" selectionStart="0" wrappingWidth="130.6499786376953" />
@@ -36,12 +35,12 @@
             <Font name="System Bold" size="30.0" />
          </font>
       </Button>
-      <Label layoutX="612.0" layoutY="553.0" text="Don't have an account? " textFill="#a9a2a2">
+      <Label layoutX="612.0" layoutY="568.0" text="Don't have an account? " textFill="#a9a2a2">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <Hyperlink fx:id="doctorSignUpLink" layoutX="828.0" layoutY="549.0" onAction="#onSignUpLinkClicked" onMouseClicked="#onSignUpLinkClicked" styleClass="loginLinks" stylesheets="@../Design/Login.css" text="Sign Up" textFill="WHITE">
+      <Hyperlink fx:id="doctorSignUpLink" layoutX="828.0" layoutY="561.0" onAction="#onSignUpLinkClicked" onMouseClicked="#onSignUpLinkClicked" styleClass="loginLinks" stylesheets="@../Design/Login.css" text="Sign Up" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
@@ -58,7 +57,7 @@
       </Label>
       <FontIcon iconColor="#7e7777" iconLiteral="fas-user" iconSize="30" layoutX="599.0" layoutY="280.0" selectionEnd="0" selectionStart="0" text="" />
       <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="599.0" layoutY="386.0" selectionEnd="0" selectionStart="0" text="" />
-      <HBox alignment="CENTER" layoutY="525.0" prefHeight="28.0" prefWidth="1550.0">
+      <HBox alignment="CENTER" layoutY="538.0" prefHeight="18.0" prefWidth="1550.0">
          <children>
             <Label fx:id="doctorLoginErrorMessage" textFill="WHITE" wrapText="true">
                <font>

@@ -47,7 +47,7 @@ public class MainViewController {
         loadView("/com/example/healzone/ResetPassword/VerifyDoctorEmail.fxml");
     }
     public void loadEmailVerificationForRegister() {
-        loadView("/com/example/healzone/ResetPassword/VerifyEmailForRegister.fxml");
+        loadView("/com/example/healzone/EmailVerification/VerifyEmailForRegisterPatient.fxml");
     }
     public void loadDoctorPersonalDetails() {
         loadView("/com/example/healzone/Doctor/Signup/PersonalDetails.fxml");
@@ -64,17 +64,26 @@ public class MainViewController {
     public void loadDoctorTimeTable() {
         loadView("/com/example/healzone/Doctor/Signup/TimeTable.fxml");
     }
-    public void loadOTPVerification(){
-        loadView("/com/example/healzone/EmailVerification/OTPverification.fxml");
+    public void loadOTPVerificationForRegisterPatient(){
+        loadView("/com/example/healzone/EmailVerification/OTPverificationForRegisterPatient.fxml");
+    }
+    public void loadOTPVerificationForRegisterDoctor(){
+        loadView("/com/example/healzone/EmailVerification/OTPverificationForRegisterDoctor.fxml");
     }
     public void loadDoctorOTPVerification(){
-        loadView("/com/example/healzone/EmailVerification/DoctorOTPverification.fxml");
+        loadView("/com/example/healzone/ResetPassword/DoctorOTPverification.fxml");
     }
     public void loadPatientOTPVerification(){
-        loadView("/com/example/healzone/EmailVerification/PatientOTPverification.fxml");
+        loadView("/com/example/healzone/ResetPassword/PatientOTPverification.fxml");
     }
     public void loadHomePage(){
         loadView("/com/example/healzone/StartView/HomePage.fxml");
+    }
+    public void loadPatientResetPassword(){
+        loadView("/com/example/healzone/ResetPassword/PatientResetPassword.fxml");
+    }
+    public void loadDoctorResetPassword(){
+        loadView("/com/example/healzone/ResetPassword/DoctorResetPassword.fxml");
     }
 
     protected void loadView(String fxmlPath) {
@@ -86,11 +95,6 @@ public class MainViewController {
 
             // Load the new view
             Parent newView = FXMLLoader.load(getClass().getResource(fxmlPath));
-//            DoctorSignUpController controller = new DoctorSignUpController();
-//            if((Doctor.getFirstName() != null) && (Doctor.getLastName() != null) && (Doctor.getPhone() != null) && (Doctor.getEmail()!=null) && (Doctor.getGovtID() !=null)){
-//                controller.prefillFieldsFromDoctor();
-//            }
-            // Set initial opacity and scale
             newView.setOpacity(0);
             newView.setScaleX(0.98);
             newView.setScaleY(0.98);

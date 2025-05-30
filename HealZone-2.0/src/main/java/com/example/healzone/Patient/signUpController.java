@@ -9,9 +9,8 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 
 import static com.example.healzone.Checks.ChecksForPatient.*;
-import static com.example.healzone.DatabaseConnection.DatabaseConnection.*;
 import static com.example.healzone.DatabaseConnection.Patients.*;
-import static com.example.healzone.EmailVerification.EmailSender.*;
+import static com.example.healzone.EmailVerificationForRegistration.EmailSender.*;
 import static com.example.healzone.Patient.Patient.getName;
 import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 
@@ -104,7 +103,7 @@ public class signUpController {
                 if (mainController != null) {
                     receiverEmail = patientEmail.getText();
                     // Load OTP verification view immediately
-                    mainController.loadOTPVerification();
+                    mainController.loadOTPVerificationForRegisterPatient();
                     // Send OTP in a background thread
                     Task<Void> sendOtpTask = new Task<>() {
                         @Override

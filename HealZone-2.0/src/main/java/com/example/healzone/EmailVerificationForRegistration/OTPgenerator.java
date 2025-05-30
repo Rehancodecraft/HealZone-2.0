@@ -1,4 +1,4 @@
-package com.example.healzone.EmailVerification;
+package com.example.healzone.EmailVerificationForRegistration;
 
 import java.util.Timer;
 import java.util.TimerTask;
