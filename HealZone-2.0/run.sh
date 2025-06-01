@@ -1,5 +1,3 @@
-
-#!/bin/bash
 #!/bin/bash
 echo "Checking Docker daemon..."
 if ! docker info >/dev/null 2>&1; then
@@ -9,17 +7,33 @@ fi
 
 echo "Checking X11 display..."
 if [ -z "$DISPLAY" ]; then
-    echo "Error: DISPLAY variable is not set. Setting to :0"
+    echo "Warning: DISPLAY variable is not set. Setting to :0"
     export DISPLAY=:0
 fi
 echo "DISPLAY is set to $DISPLAY"
 
+echo "Verifying X11 server..."
+if ! xdpyinfo >/dev/null 2>&1; then
+    echo "Error: X11 server is not running or inaccessible. Install 'x11-utils' and ensure an X server is active."
+    echo "Try: sudo apt install x11-utils"
+    exit 1
+fi
+
+echo "Checking X11 socket..."
+if [ ! -e /tmp/.X11-unix/X0 ]; then
+    echo "Error: X11 socket (/tmp/.X11-unix/X0) not found. Ensure X11 is running."
+    exit 1
+fi
+
 echo "Setting up X11 permissions..."
 xhost +local:docker >/dev/null 2>&1 || {
-    echo "Warning: Failed to set X11 permissions with xhost +local:docker. Trying fallback..."
+    echo "Warning: 'xhost +local:docker' failed. Trying fallback..."
     xhost +si:localuser:root >/dev/null 2>&1 || {
-        echo "Error: Failed to set X11 permissions. Ensure X11 is running and try 'xhost +'. Exiting."
-        exit 1
+        echo "Warning: 'xhost +si:localuser:root' failed. Using 'xhost +' as fallback..."
+        xhost + >/dev/null 2>&1 || {
+            echo "Error: Failed to set X11 permissions. Ensure X11 is configured."
+            exit 1
+        }
     }
 }
 
@@ -42,5 +56,6 @@ docker run --rm -it \
     healzone
 if [ $? -ne 0 ]; then
     echo "Error: Docker run failed. Check logs with 'docker logs healzone' or verify X11 setup."
+    echo "Try running 'xterm' locally to test X11."
     exit 1
 fi
