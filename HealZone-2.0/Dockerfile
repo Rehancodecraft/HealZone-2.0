@@ -9,13 +9,14 @@ RUN mvn clean package shade:shade -DskipTests
 # Stage 2: Run the application
 FROM openjdk:21-jdk-slim
 WORKDIR /app
-# Install GUI dependencies for JavaFX
+# Install GUI dependencies for JavaFX and debugging tools
 RUN apt-get update && apt-get install -y \
     libgl1-mesa-glx \
     libgtk-3-0 \
     libx11-xcb1 \
     libxtst6 \
     libxslt1.1 \
+    x11-utils \
     && rm -rf /var/lib/apt/lists/*
 # Download and install JavaFX SDK
 ENV JAVA_FX_VERSION=21
