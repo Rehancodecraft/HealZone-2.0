@@ -1,40 +1,33 @@
 #!/bin/bash
 echo "Checking Docker daemon..."
 if ! docker info >/dev/null 2>&1; then
-    echo "Error: Docker daemon is not running or you lack permissions. Run 'sudo systemctl start docker' or add your user to the docker group."
+    echo "Error: Docker daemon not running or insufficient permissions. Run 'sudo systemctl start docker' or add user to docker group."
     exit 1
 fi
 
 echo "Checking X11 display..."
 if [ -z "$DISPLAY" ]; then
-    echo "Warning: DISPLAY variable is not set. Setting to :0"
+    echo "Warning: DISPLAY not set. Setting to :0"
     export DISPLAY=:0
 fi
-echo "DISPLAY is set to $DISPLAY"
+echo "DISPLAY is $DISPLAY"
 
 echo "Verifying X11 server..."
 if ! xdpyinfo >/dev/null 2>&1; then
-    echo "Error: X11 server is not running or inaccessible. Install 'x11-utils' and ensure an X server is active."
-    echo "Try: sudo apt install x11-utils"
+    echo "Error: X11 server not running. Install 'x11-utils' with 'sudo apt install x11-utils'."
     exit 1
 fi
 
 echo "Checking X11 socket..."
 if [ ! -e /tmp/.X11-unix/X0 ]; then
-    echo "Error: X11 socket (/tmp/.X11-unix/X0) not found. Ensure X11 is running."
+    echo "Error: X11 socket (/tmp/.X11-unix/X0) not found."
     exit 1
 fi
 
-echo "Setting up X11 permissions..."
-xhost +local:docker >/dev/null 2>&1 || {
-    echo "Warning: 'xhost +local:docker' failed. Trying fallback..."
-    xhost +si:localuser:root >/dev/null 2>&1 || {
-        echo "Warning: 'xhost +si:localuser:root' failed. Using 'xhost +' as fallback..."
-        xhost + >/dev/null 2>&1 || {
-            echo "Error: Failed to set X11 permissions. Ensure X11 is configured."
-            exit 1
-        }
-    }
+echo "Setting X11 permissions..."
+xhost +local:docker >/dev/null 2>&1 || xhost +si:localuser:root >/dev/null 2>&1 || xhost + >/dev/null 2>&1 || {
+    echo "Warning: X11 permissions failed. Falling back to Xvfb."
+    USE_XVFB=1
 }
 
 echo "Building Docker image for HealZone..."
@@ -46,16 +39,27 @@ fi
 
 echo "Running HealZone application..."
 mkdir -p ~/.healzone
-docker run --rm -it \
-    -e DISPLAY=$DISPLAY \
-    -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -v ~/.healzone:/app/db \
-    -e SQLITE_DB_PATH=/app/db/healzone.db \
-    -p 8080:8080 \
-    --name healzone \
-    healzone
+if [ "${USE_XVFB:-0}" -eq 1 ]; then
+    echo "Using Xvfb virtual display..."
+    docker run --rm -it \
+        -v ~/.healzone:/app/db \
+        -e SQLITE_DB_PATH=/app/db/healzone.db \
+        -p 8080:8080 \
+        --name healzone \
+        healzone \
+        /bin/bash -c "Xvfb :99 -screen 0 1280x720x24 & export DISPLAY=:99 && java --module-path /opt/javafx-sdk-21/lib --add-modules javafx.controls,javafx.fxml -jar app.jar"
+else
+    docker run --rm -it \
+        -e DISPLAY=$DISPLAY \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        --network host \
+        -v ~/.healzone:/app/db \
+        -e SQLITE_DB_PATH=/app/db/healzone.db \
+        -p 8080:8080 \
+        --name healzone \
+        healzone
+fi
 if [ $? -ne 0 ]; then
-    echo "Error: Docker run failed. Check logs with 'docker logs healzone' or verify X11 setup."
-    echo "Try running 'xterm' locally to test X11."
+    echo "Error: Docker run failed. Check logs with 'docker logs healzone'."
     exit 1
 fi

@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y \
     libxtst6 \
     libxslt1.1 \
     x11-utils \
+    xvfb \
     && rm -rf /var/lib/apt/lists/*
 # Download and install JavaFX SDK
 ENV JAVA_FX_VERSION=21
@@ -33,7 +34,7 @@ COPY --from=builder /app/target/HealZone-1.0-SNAPSHOT.jar app.jar
 # Create directory for SQLite database
 RUN mkdir -p /app/db
 ENV SQLITE_DB_PATH=/app/db/healzone.db
-# Expose port (adjust if needed)
+# Expose port
 EXPOSE 8080
 # Run the application with JavaFX modules
 ENTRYPOINT ["java", "--module-path", "/opt/javafx-sdk-21/lib", "--add-modules", "javafx.controls,javafx.fxml", "-jar", "app.jar"]
