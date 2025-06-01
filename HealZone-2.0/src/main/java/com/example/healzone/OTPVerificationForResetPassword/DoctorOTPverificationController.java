@@ -1,5 +1,6 @@
 package com.example.healzone.OTPVerificationForResetPassword;
 
+import com.example.healzone.Doctor.DoctorSignUpController;
 import com.example.healzone.Patient.signUpController;
 import com.example.healzone.StartView.MainViewController;
 import javafx.event.ActionEvent;
@@ -18,7 +19,7 @@ import static com.example.healzone.EmailVerificationForRegistration.EmailSender.
 import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.isCooldown;
 import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.validateOTP;
 
-public class DoctorOTPverificationController extends signUpController {
+public class DoctorOTPverificationController extends DoctorSignUpController {
     @FXML
     private Button verifityOTPButton;
     @FXML

@@ -3,7 +3,6 @@ package com.example.healzone.EmailVerificationForRegistration;
 import com.example.healzone.DatabaseConnection.Doctors;
 import com.example.healzone.DatabaseConnection.Patients;
 import com.example.healzone.Patient.Patient;
-import com.example.healzone.ResetPassword.PatientResetPasswordController;
 import com.example.healzone.StartView.MainViewController;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -19,7 +18,7 @@ import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator
 import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 
 
-public class VerifyEmailForRegisterPatientController extends PatientResetPasswordController {
+public class VerifyEmailForRegisterPatientController{
     @FXML
     private TextField VerifyEmailField;
     @FXML
@@ -28,6 +27,7 @@ public class VerifyEmailForRegisterPatientController extends PatientResetPasswor
     @FXML
     protected void onOTPSendButtonClicked(ActionEvent event) {
         try {
+            Patient.setEmail(VerifyEmailField.getText());
             if (!isEmailValid(VerifyEmailField.getText())) {
                 errorMessage.setText("⚠️ Please enter a valid email address!");
                 return;
@@ -39,7 +39,7 @@ public class VerifyEmailForRegisterPatientController extends PatientResetPasswor
                 MainViewController mainController = (MainViewController) root.getProperties().get("controller");
 
                 if (mainController != null) {
-                    receiverEmail = VerifyEmailField.getText();
+                    receiverEmail = Patient.getEmail();
                     mainController.loadOTPVerificationForRegisterPatient();
                     Task<Void> sendOtpTask = new Task<>() {
                         @Override

@@ -1,5 +1,6 @@
 package com.example.healzone.Doctor;
 
+import java.sql.Time;
 import java.time.LocalTime;
 
 public class TimeSlot {
@@ -15,12 +16,15 @@ public class TimeSlot {
         return startTime;
     }
 
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
+    }
+
     public LocalTime getEndTime() {
         return endTime;
     }
 
-    @Override
-    public String toString() {
-        return startTime + " to " + endTime;
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 }

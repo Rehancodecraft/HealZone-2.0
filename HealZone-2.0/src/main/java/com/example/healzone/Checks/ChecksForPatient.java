@@ -13,13 +13,14 @@ public class ChecksForPatient {
         return age > 0 && age < 120;
     }
     public static boolean isNameValid(){
-        return Patient.getName().matches("^[A-Za-z\\s'-]+$");
+        return Patient.getName().trim().matches("^(?=.{1,50}$)[A-Za-z]+(?:[ '-][A-Za-z]+)*$");
     }
     public static boolean isFatherNameValid(){
-        return Patient.getName().matches("^[A-Za-z\\s'-]+$");
+
+        return Patient.getFatherName().trim().matches("^(?=.{1,50}$)[A-Za-z]+(?:[ '-][A-Za-z]+)*$");
     }
-    public static boolean isPhoneNumberValid(){
-        return Patient.getPhone().matches("\\d+") || Patient.getPhone().length() == 11 || Patient.getPhone().startsWith("03");
+    public static boolean isPhoneNumberValid() {
+        return Patient.getPhone().matches("^03\\d{9}$");
     }
     public static boolean isEmailValid(){
         return Patient.getEmail().matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
@@ -30,7 +31,6 @@ public class ChecksForPatient {
     public static boolean isPasswordValid(){
         return Patient.getPassword().length() >= 8;
     }
-
 }
 
 

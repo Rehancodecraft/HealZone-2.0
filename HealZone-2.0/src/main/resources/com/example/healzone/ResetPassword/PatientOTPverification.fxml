@@ -11,9 +11,9 @@
 
 <AnchorPane prefHeight="494.0" prefWidth="1115.0" stylesheets="@../Design/Login.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.OTPVerificationForResetPassword.PatientOTPverificationController">
    <children>
-      <Label layoutX="660.0" layoutY="189.0" text="Email Verification" textFill="WHITE">
+      <Label layoutX="642.0" layoutY="189.0" text="Email Verification" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="29.0" />
+            <Font name="System Bold" size="34.0" />
          </font>
       </Label>
       <TextField fx:id="otpField" layoutX="730.0" layoutY="328.0" prefHeight="31.0" prefWidth="142.0" promptText="Enter OTP" styleClass="OTPfield" stylesheets="@../Design/OTPverification.css" />

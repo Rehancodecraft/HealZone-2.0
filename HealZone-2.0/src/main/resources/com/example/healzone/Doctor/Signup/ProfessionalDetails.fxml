@@ -11,16 +11,11 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorSignUpController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.SignUp.ProfessionalDetailsController">
    <children>
-      <Label layoutX="681.0" layoutY="129.0" text="Professional Details" textFill="WHITE">
+      <Label layoutX="629.0" layoutY="120.0" text="Professional Details" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="24.0" />
-         </font>
-      </Label>
-      <Label layoutX="616.0" layoutY="177.0" text="Specialization" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
+            <Font name="System Bold" size="34.0" />
          </font>
       </Label>
       <ComboBox fx:id="specialization" layoutX="616.0" layoutY="205.0" prefWidth="368.0" promptText="Select Specialization" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css">
@@ -59,18 +54,8 @@
             </FXCollections>
          </items>
       </ComboBox>
-      <Label layoutX="616.0" layoutY="273.0" text="Degrees" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <TextField fx:id="degreesField" layoutX="616.0" layoutY="301.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Degrees (e.g., MBBS, MD)" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
-      <Label layoutX="616.0" layoutY="366.0" text="Medical License Number" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <TextField fx:id="licenseNumberField" layoutX="616.0" layoutY="391.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your License Number" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <TextField fx:id="degreesField" layoutX="616.0" layoutY="301.0" prefHeight="46.0" prefWidth="368.0" promptText="Degrees (e.g., MBBS, MD)" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <TextField fx:id="licenseNumberField" layoutX="616.0" layoutY="391.0" prefHeight="46.0" prefWidth="368.0" promptText="Medical License Number" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
       <Button fx:id="ProfessionalDetailsNextButton" layoutX="844.0" layoutY="565.0" mnemonicParsing="false" onAction="#onProfessionalDetailsNextButtonClicked" prefHeight="44.0" prefWidth="139.0" styleClass="signUpbutton" stylesheets="@../../Design/SignUp.css" text="Next">
          <font>
             <Font name="System Bold" size="18.0" />

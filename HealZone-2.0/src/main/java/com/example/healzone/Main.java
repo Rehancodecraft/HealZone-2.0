@@ -16,14 +16,10 @@ public class Main extends Application {
         public void start(Stage primaryStage) throws Exception {
             connectToDatabase();
 
-            // Load MainView.fxml and let FXMLLoader create the controller
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("StartView/MainView.fxml"));
             StackPane root = loader.load();
 
-            // Get the controller instance created by FXMLLoader
             MainViewController controller = loader.getController();
-
-            // Store controller in root's properties for later use
             root.getProperties().put("controller", controller);
 
             Scene scene = new Scene(root);

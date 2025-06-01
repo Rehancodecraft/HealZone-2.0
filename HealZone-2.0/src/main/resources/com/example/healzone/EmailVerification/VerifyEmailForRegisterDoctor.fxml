@@ -17,7 +17,7 @@
             <Image url="@../Images/login.jpg" />
          </image>
       </ImageView>
-      <TextField fx:id="VerifyEmailField" layoutX="614.0" layoutY="242.0" prefHeight="59.0" prefWidth="368.0" promptText="name@gmail.com" styleClass="logintexfield" stylesheets="@../Design/Login.css">
+      <TextField fx:id="VerifyEmailField" layoutX="614.0" layoutY="242.0" prefHeight="59.0" prefWidth="368.0" promptText="Email" styleClass="logintexfield" stylesheets="@../Design/Login.css">
          <font>
             <Font size="20.0" />
          </font>
@@ -28,15 +28,10 @@
          </font>
       </Button>
       <FontIcon iconColor="WHITE" iconLiteral="fas-envelope-open-text" iconSize="100" layoutX="735.0" layoutY="143.0" />
-      <Label layoutX="617.0" layoutY="208.0" text="Email" textFill="WHITE">
-         <font>
-            <Font name="System Bold" size="19.0" />
-         </font>
-      </Label>
       <FontIcon iconColor="#7e7777" iconLiteral="fas-envelope" iconSize="30" layoutX="628.0" layoutY="282.0" />
-      <Label layoutX="697.0" layoutY="156.0" text=" Verify Email" textFill="WHITE">
+      <Label layoutX="670.0" layoutY="156.0" text=" Verify Email" textFill="WHITE">
          <font>
-            <Font name="SansSerif Bold" size="28.0" />
+            <Font name="SansSerif Bold" size="34.0" />
          </font>
       </Label>
       <HBox alignment="CENTER" layoutX="617.0" layoutY="309.0" prefHeight="22.0" prefWidth="368.0">

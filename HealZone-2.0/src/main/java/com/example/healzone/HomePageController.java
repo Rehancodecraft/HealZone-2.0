@@ -1,5 +1,6 @@
 package com.example.healzone;
 
+import com.example.healzone.StartView.MainViewController;
 import javafx.animation.ParallelTransition;
 import javafx.animation.ScaleTransition;
 import javafx.animation.TranslateTransition;
@@ -59,20 +60,25 @@ public class HomePageController {
     @FXML
     protected void onLogOutButtonClicked(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/MainView.fxml"));
-        Parent homePage = loader.load();
-        homePage.setOpacity(0);
-        homePage.setScaleX(0.98);
-        homePage.setScaleY(0.98);
+        Parent mainView = loader.load();
+
+        // Get the MainViewController and set it in the root's properties
+        MainViewController mainController = loader.getController();
+        mainView.getProperties().put("controller", mainController);
+
+        mainView.setOpacity(0);
+        mainView.setScaleX(0.98);
+        mainView.setScaleY(0.98);
 
         Scene scene = ((Node) event.getSource()).getScene();
-        scene.setRoot(homePage);
+        scene.setRoot(mainView);
 
         // Fade + scale animation
-        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), homePage);
+        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), mainView);
         fadeIn.setFromValue(0);
         fadeIn.setToValue(1);
 
-        ScaleTransition scaleIn = new ScaleTransition(Duration.millis(300), homePage);
+        ScaleTransition scaleIn = new ScaleTransition(Duration.millis(300), mainView);
         scaleIn.setFromX(0.98);
         scaleIn.setToX(1);
         scaleIn.setFromY(0.98);

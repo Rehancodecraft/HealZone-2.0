@@ -2,8 +2,8 @@ package com.example.healzone.EmailVerificationForRegistration;
 
 import com.example.healzone.DatabaseConnection.Doctors;
 import com.example.healzone.DatabaseConnection.Patients;
+import com.example.healzone.Doctor.Doctor;
 import com.example.healzone.Patient.Patient;
-import com.example.healzone.ResetPassword.PatientResetPasswordController;
 import com.example.healzone.StartView.MainViewController;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -19,7 +19,7 @@ import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator
 import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 
 
-public class VerifyEmailForRegisterDoctorController extends PatientResetPasswordController {
+public class VerifyEmailForRegisterDoctorController {
     @FXML
     private TextField VerifyEmailField;
     @FXML
@@ -28,6 +28,8 @@ public class VerifyEmailForRegisterDoctorController extends PatientResetPassword
     @FXML
     protected void onOTPSendButtonClicked(ActionEvent event) {
         try {
+            Doctor.setEmail(VerifyEmailField.getText());
+            System.out.println("otp send button in verifyemailforregisterdoctorcontroller");
             if (!isEmailValid(VerifyEmailField.getText())) {
                 errorMessage.setText("⚠️ Please enter a valid email address!");
                 return;
@@ -35,6 +37,7 @@ public class VerifyEmailForRegisterDoctorController extends PatientResetPassword
                 errorMessage.setText("⚠️ This email is already registered!");
                 return;
             }else{
+
                 StackPane root = (StackPane) ((Node) event.getSource()).getScene().getRoot();
                 MainViewController mainController = (MainViewController) root.getProperties().get("controller");
 

@@ -2,10 +2,12 @@ package com.example.healzone.EmailVerificationForRegistration;
 
 import jakarta.mail.*;
 import jakarta.mail.internet.*;
+import javafx.scene.control.Alert;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Properties;
 
+import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 
 
 public class EmailSender {
@@ -51,7 +53,7 @@ public class EmailSender {
         
         OTP: %s
         
-        This OTP is confidential and will expire in 10 minutes. For your security, please do not share it with anyone.
+        This OTP is confidential and will expire in 1 minute. For your security, please do not share it with anyone.
         
         At HealZone, we’re here to simplify your healthcare by connecting you with trusted doctors for seamless appointment booking. Get started today and take control of your health!
         
@@ -140,13 +142,24 @@ public class EmailSender {
             Transport.send(message);
             System.out.println("OTP email sent to " + toEmail);
             return true;
-        } catch (MessagingException e) {
-            System.err.println("Error sending OTP email: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+        } catch (SendFailedException e) {
+        showAlert(Alert.AlertType.ERROR, "Invalid Email", "The email address is not valid: " + toEmail);
+        return false;
+
+    } catch (MessagingException e) {
+        if (e.getCause() != null && e.getCause().toString().contains("UnknownHostException")) {
+            showAlert(Alert.AlertType.ERROR, "Network Error", "No internet connection. Please check your network.");
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Email Error", "Failed to send OTP. Please try again.");
         }
+        e.printStackTrace();
+        return false;
+
+    } catch (UnsupportedEncodingException e) {
+        showAlert(Alert.AlertType.ERROR, "Encoding Error", "Unsupported encoding while sending email.");
+        e.printStackTrace();
+        return false;
+    }
     }
     public static void sendOTPToEmail(String email, String name) {
         String generatedOTP = OTPgenerator.generateOTP();

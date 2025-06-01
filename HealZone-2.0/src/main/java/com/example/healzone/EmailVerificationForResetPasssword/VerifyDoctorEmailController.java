@@ -3,7 +3,6 @@ package com.example.healzone.EmailVerificationForResetPasssword;
 import com.example.healzone.Doctor.Doctor;
 import com.example.healzone.EmailVerificationForRegistration.EmailSender;
 import com.example.healzone.Patient.Patient;
-import com.example.healzone.ResetPassword.PatientResetPasswordController;
 import com.example.healzone.StartView.MainViewController;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -23,7 +22,7 @@ import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 import static com.example.healzone.EmailVerificationForRegistration.EmailSender.*;
 
 
-public class VerifyDoctorEmailController extends PatientResetPasswordController {
+public class VerifyDoctorEmailController  {
     @FXML
     private TextField VerifyEmailField;
     @FXML
@@ -34,6 +33,7 @@ public class VerifyDoctorEmailController extends PatientResetPasswordController 
     @FXML
     protected void onOTPSendButtonClicked(ActionEvent event) {
         try {
+            System.out.println("on otp send button clicked from verifydoctorEmaillController");
             Doctor.setEmail(VerifyEmailField.getText());
             Doctor.setGovtID(resetPasswordCNIC.getText());
             if (!isEmailValid(VerifyEmailField.getText())) {
@@ -45,7 +45,7 @@ public class VerifyDoctorEmailController extends PatientResetPasswordController 
             } else if (!isGovtIDValid()) {
                 errorMessage.setText("⚠️ Please enter a valid CNIC!");
                 return;
-            } else if(!checkGovtID(resetPasswordCNIC.getText())){
+            } else if(!checkGovtID(resetPasswordCNIC.getText(),VerifyEmailField.getText())){
                 errorMessage.setText("⚠️ CNIC and Email didn't match!");
                 return;
             }
@@ -84,7 +84,7 @@ public class VerifyDoctorEmailController extends PatientResetPasswordController 
     public void sendOTPToEmail() {
         String email = VerifyEmailField.getText();
         EmailSender emailSender = new EmailSender();
-        boolean success = emailSender.sendOtp(email, generateOTP(), Patient.getName());
+        boolean success = emailSender.sendOtp(email, generateOTP(), Doctor.getFirstName()+Doctor.getLastName());
 
         if (success) {
             System.out.println("OTP sent successfully.");

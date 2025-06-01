@@ -30,7 +30,7 @@ public class OTPverificationForRegisterPatientController extends signUpControlle
     private Label errorMessage;
     @FXML
     public void initialize(){
-        receiverEmailDisplay.setText(receiverEmail);
+        receiverEmailDisplay.setText(Patient.getEmail());
     }
 
     public  void verifyOTPAndSignup(ActionEvent event) {
@@ -38,6 +38,7 @@ public class OTPverificationForRegisterPatientController extends signUpControlle
         String enteredOtp = otpField.getText();
         if(validateOTP(enteredOtp)){
             System.out.println("OTP verified. Proceed to create account.");
+            System.out.println("VerifyOtp and signup running from otpverificatoin for register patient controller");
             registerPatient(Patient.getName(), Patient.getFatherName(), Patient.getPhone(), Patient.getEmail(), Patient.getAge(), Patient.getGender(), Patient.getPassword());
             try {
                 StackPane root = (StackPane) ((Node) event.getSource()).getScene().getRoot();
@@ -68,7 +69,7 @@ public class OTPverificationForRegisterPatientController extends signUpControlle
                 MainViewController mainController = (MainViewController) root.getProperties().get("controller");
 
                 if (mainController != null) {
-                    mainController.loadEmailVerificationForRegister();
+                    mainController.loadEmailVerificationForRegisterPatient();
                 } else {
                     System.err.println("MainViewController not found in root properties.");
                 }

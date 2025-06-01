@@ -23,6 +23,7 @@ public class MainViewController {
     private StackPane root;
 
     public void initialize() {
+        root.getProperties().put("controller", this);
         System.out.println("Inside initialize: contentPane = " + contentPane);
         Platform.runLater(() -> loadView("/com/example/healzone/Patient/PatientLogin.fxml"));
     }
@@ -46,8 +47,11 @@ public class MainViewController {
     public void loadDoctorEmailVerification() {
         loadView("/com/example/healzone/ResetPassword/VerifyDoctorEmail.fxml");
     }
-    public void loadEmailVerificationForRegister() {
+    public void loadEmailVerificationForRegisterPatient() {
         loadView("/com/example/healzone/EmailVerification/VerifyEmailForRegisterPatient.fxml");
+    }
+    public void loadEmailVerificationForRegisterDoctor() {
+        loadView("/com/example/healzone/EmailVerification/VerifyEmailForRegisterDoctor.fxml");
     }
     public void loadDoctorPersonalDetails() {
         loadView("/com/example/healzone/Doctor/Signup/PersonalDetails.fxml");

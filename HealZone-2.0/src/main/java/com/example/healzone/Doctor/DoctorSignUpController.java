@@ -22,7 +22,7 @@ import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 
 
 public class DoctorSignUpController {
-
+    protected static String generatedOTP;
     //Personal Details
     @FXML
     private TextField firstNameField;
@@ -78,9 +78,60 @@ public class DoctorSignUpController {
     private CheckBox userAgreement;
     @FXML
     private Label securityErrorMessage;
-
-
-
+    @FXML
+    private TextField visiblePasswordField;
+    @FXML
+    private CheckBox showPasswordBox;
+    @FXML
+    private TextField visibleConfirmPasswordField;
+    @FXML
+    private CheckBox showConfirmPasswordBox;
+//    @FXML
+//    private void initialize() {
+//        // Sync content when typing
+//        passwordField.textProperty().bindBidirectional(visiblePasswordField.textProperty());
+//        confirmPasswordField.textProperty().bindBidirectional(visibleConfirmPasswordField.textProperty());
+//
+//        // Hide visiblePasswordFields initially
+//        visiblePasswordField.setVisible(false);
+//        visiblePasswordField.setManaged(false);
+//        visibleConfirmPasswordField.setVisible(false);
+//        visibleConfirmPasswordField.setManaged(false);
+//
+//        // Toggle for Password field
+//        showPasswordBox.setOnAction(event -> {
+//            if (showPasswordBox.isSelected()) {
+//                visiblePasswordField.setVisible(true);
+//                visiblePasswordField.setManaged(true);
+//
+//                passwordField.setVisible(false);
+//                passwordField.setManaged(false);
+//            } else {
+//                visiblePasswordField.setVisible(false);
+//                visiblePasswordField.setManaged(false);
+//
+//                passwordField.setVisible(true);
+//                passwordField.setManaged(true);
+//            }
+//        });
+//
+//        // Toggle for Confirm Password field
+//        showConfirmPasswordBox.setOnAction(event -> {
+//            if (showConfirmPasswordBox.isSelected()) {
+//                visibleConfirmPasswordField.setVisible(true);
+//                visibleConfirmPasswordField.setManaged(true);
+//
+//                confirmPasswordField.setVisible(false);
+//                confirmPasswordField.setManaged(false);
+//            } else {
+//                visibleConfirmPasswordField.setVisible(false);
+//                visibleConfirmPasswordField.setManaged(false);
+//
+//                confirmPasswordField.setVisible(true);
+//                confirmPasswordField.setManaged(true);
+//            }
+//        });
+//    }
     public void onPersonalDetailsNextButtonClicked(javafx.event.ActionEvent event){
         Doctor.setFirstName(firstNameField.getText());
         Doctor.setLastName(lastNameField.getText());
@@ -125,7 +176,7 @@ public class DoctorSignUpController {
                     System.err.println("MainViewController not found in root properties.");
                 }
             } catch (Exception e) {
-                System.err.println("Error loading PatientLogin: ");
+                System.err.println("Error loading DoctorLogin: ");
                 e.printStackTrace();
             }
         }
@@ -164,7 +215,7 @@ public class DoctorSignUpController {
                         System.err.println("MainViewController not found in root properties.");
                     }
                 } catch (Exception e) {
-                    System.err.println("Error loading PatientLogin: ");
+                    System.err.println("Error loading DoctorLogin: ");
                     e.printStackTrace();
                 }
             }
@@ -237,7 +288,7 @@ public class DoctorSignUpController {
             if (cb.isSelected()) {
                 atLeastOneDaySelected = true;
                 // ✅ Store availability temporarily in memory
-                Doctor.addAvailability(day, new TimeSlot(start, end));
+//                Doctor.setAvailability(day, new TimeSlot(start, end));
             }
         }
         if (!atLeastOneDaySelected) {
@@ -314,7 +365,8 @@ public class DoctorSignUpController {
     }
     public void onProfessionalDetailsBackButtonClicked(javafx.event.ActionEvent event){
         try {
-
+            firstNameField.setText(Doctor.getFirstName());
+            lastNameField.setText(Doctor.getLastName());
             StackPane root = (StackPane) ((Node) event.getSource()).getScene().getRoot();
             MainViewController mainController = (MainViewController) root.getProperties().get("controller");
             if (mainController != null) {

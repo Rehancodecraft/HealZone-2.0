@@ -1,8 +1,8 @@
 package com.example.healzone.OTPVerificationForRegisteration;
 
 import com.example.healzone.Doctor.Doctor;
+import com.example.healzone.Doctor.DoctorSignUpController;
 import com.example.healzone.Doctor.TimeSlot;
-import com.example.healzone.Patient.signUpController;
 import com.example.healzone.StartView.MainViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -24,7 +24,7 @@ import static com.example.healzone.EmailVerificationForRegistration.EmailSender.
 import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.isCooldown;
 import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.validateOTP;
 
-public class OTPverificationForRegisterDoctorController extends signUpController {
+public class OTPverificationForRegisterDoctorController extends DoctorSignUpController {
     @FXML
     private Button verifityOTPButton;
     @FXML
@@ -43,6 +43,7 @@ public class OTPverificationForRegisterDoctorController extends signUpController
         String enteredOtp = otpField.getText();
         if(validateOTP(enteredOtp)){
             System.out.println("OTP verified. Proceed to create account.");
+            System.out.println("VerifyOTPsignup running from otp verifaction for register doctor controller");
             insertDoctorPersonalDetails(Doctor.getGovtID(), Doctor.getFirstName(), Doctor.getLastName(), getEmail(), Doctor.getPhone());
             insertProfessionalDetails(Doctor.getGovtID(), Doctor.getSpecialization(), Doctor.getDegrees(), Doctor.getMedicalLicenseNumber(), Doctor.getBio());
             insertPracticeInfo(Doctor.getGovtID(), Doctor.getHospitalName(), Doctor.getHospitalAddress(), Doctor.getConsultationFee());
@@ -81,7 +82,8 @@ public class OTPverificationForRegisterDoctorController extends signUpController
                 MainViewController mainController = (MainViewController) root.getProperties().get("controller");
 
                 if (mainController != null) {
-                    mainController.loadEmailVerificationForRegister();
+                    mainController.loadEmailVerificationForRegisterDoctor();
+                    System.out.println("Resend otp running from otpforregisterfordoctorcontroller");
                 } else {
                     System.err.println("MainViewController not found in root properties.");
                 }

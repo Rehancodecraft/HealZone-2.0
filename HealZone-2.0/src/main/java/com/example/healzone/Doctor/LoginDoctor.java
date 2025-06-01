@@ -1,5 +1,6 @@
 package com.example.healzone.Doctor;
 
+import com.example.healzone.DatabaseConnection.Doctors;
 import com.example.healzone.Main;
 import com.example.healzone.Patient.Patient;
 import javafx.fxml.FXMLLoader;
@@ -9,7 +10,10 @@ import javafx.stage.Stage;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.time.LocalTime;
+import java.util.List;
+import java.util.Map;
 
 import static com.example.healzone.DatabaseConnection.DatabaseConnection.connection;
 import static com.example.healzone.DatabaseConnection.Doctors.getCurrentDoctorDetails;
@@ -17,35 +21,30 @@ import static com.example.healzone.DatabaseConnection.Patients.getCurrentPatient
 
 public class LoginDoctor {
     public static boolean getCurrentDoctor(String email, String password) {
-        try {
-            ResultSet rs = getCurrentDoctorDetails(email, password);
-            if (rs.next()) {
-                Doctor.setGovtID(rs.getString("govt_id"));
-                Doctor.setFirstName(rs.getString("first_name"));
-                Doctor.setLastName(rs.getString("last_name"));
-                Doctor.setEmail(rs.getString("email"));
-                Doctor.setPhone(rs.getString("phone_number"));
+        Map<String, Object> doctorData = Doctors.getCurrentDoctorDetails(email, password);
+        if (!doctorData.isEmpty()) {
+            Doctor.setGovtID((String) doctorData.get("govt_id"));
+            Doctor.setFirstName((String) doctorData.get("first_name"));
+            Doctor.setLastName((String) doctorData.get("last_name"));
+            Doctor.setEmail((String) doctorData.get("email"));
+            Doctor.setPhone((String) doctorData.get("phone_number"));
+            Doctor.setSpecialization((String) doctorData.get("specialization"));
+            Doctor.setDegrees((String) doctorData.get("degrees"));
+            Doctor.setMedicalLicenseNumber((String) doctorData.get("medical_license_number"));
+            Doctor.setBio((String) doctorData.get("bio"));
+            Doctor.setHospitalName((String) doctorData.get("hospital_name"));
+            Doctor.setHospitalAddress((String) doctorData.get("hospital_address"));
+            Doctor.setConsultationFee((String) doctorData.get("consultation_fee"));
 
-                // From professional_details
-                Doctor.setSpecialization(rs.getString("specialization"));
-                Doctor.setDegrees(rs.getString("degrees"));
-                Doctor.setMedicalLicenseNumber(rs.getString("medical_license_number"));
-                Doctor.setBio(rs.getString("bio"));
+            // Clear existing availability
+            Doctor.getAvailability().clear();
+            // Add new availability
+            Map<String, TimeSlot> availability = (Map<String, TimeSlot>) doctorData.get("availability");
+            availability.forEach((day, slot) -> Doctor.addAvailability(day, slot));
 
-                // From practice_information
-                Doctor.setHospitalName(rs.getString("hospital_name"));
-                Doctor.setHospitalAddress(rs.getString("hospital_address"));
-                Doctor.setConsultationFee(rs.getString("consultation_fee"));
-                getDoctorAvailability();
-                return true;
-            }else{
-                return false;
-            }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+            return true;
         }
+        return false;
     }
     public static void getDoctorAvailability() {
         try {
@@ -56,16 +55,12 @@ public class LoginDoctor {
             ResultSet rs2 = stmt2.executeQuery();
 
 // Optional: clear previous availability before loading new
-            Doctor.getAvailability().clear();
-
-            while (rs2.next()) {
-                String day = rs2.getString("day_of_week");
-                LocalTime start = rs2.getTime("start_time").toLocalTime();
-                LocalTime end = rs2.getTime("end_time").toLocalTime();
-
-                TimeSlot slot = new TimeSlot(start, end);
-                Doctor.addAvailability(day, slot);
-            }
+//            Doctor.getAvailability().clear();
+//
+//            Doctor.getAvailability().clear();
+//            // Add new availability
+//            Map<String, TimeSlot> availability = (Map<String, TimeSlot>) doctors.get("availability");
+//            availability.forEach((day, slot) -> Doctor.addAvailability(day, slot));
 
         } catch (SQLException e) {
             e.printStackTrace();

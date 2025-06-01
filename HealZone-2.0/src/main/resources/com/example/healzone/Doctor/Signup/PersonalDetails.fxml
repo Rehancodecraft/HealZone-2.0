@@ -8,15 +8,15 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorSignUpController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.SignUp.PersonalDetailsController">
    <children>
       <FontIcon iconColor="WHITE" iconLiteral="fas-user-md" iconSize="100" layoutX="737.0" layoutY="106.0" text="" />
-      <Label layoutX="674.0" layoutY="153.0" text="Create Account" textFill="WHITE">
+      <Label layoutX="650.0" layoutY="129.0" text="Create Account" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="28.0" />
+            <Font name="System Bold" size="34.0" />
          </font>
       </Label>
-      <Label layoutX="657.0" layoutY="133.0" text="Join us to manage your appointments" textFill="#ecdcdc">
+      <Label layoutX="656.0" layoutY="169.0" text="Join us to manage your appointments" textFill="#ecdcdc">
          <font>
             <Font size="14.0" />
          </font></Label>
@@ -25,36 +25,11 @@
             <Font name="System Bold" size="24.0" />
          </font>
       </Label>
-      <Label layoutX="379.0" layoutY="286.0" text="First Name" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <TextField fx:id="firstNameField" layoutX="379.0" layoutY="314.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your First Name" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
-      <Label layoutX="825.0" layoutY="286.0" text="Last Name" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <TextField fx:id="lastNameField" layoutX="825.0" layoutY="314.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Last Name" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
-      <Label layoutX="830.0" layoutY="375.0" text="Email" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <TextField fx:id="emailField" layoutX="827.0" layoutY="403.0" prefHeight="46.0" prefWidth="368.0" promptText="name@gmail.com" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
-      <Label layoutX="379.0" layoutY="375.0" text="Phone" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <TextField fx:id="phoneField" layoutX="379.0" layoutY="403.0" prefHeight="46.0" prefWidth="368.0" promptText="Phone (e.g., 03001234567)" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
-      <Label layoutX="378.0" layoutY="467.0" text="Government ID (e.g., CNIC )" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <TextField fx:id="govtIDField" layoutX="379.0" layoutY="495.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your CNIC" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <TextField fx:id="firstNameField" layoutX="379.0" layoutY="314.0" prefHeight="46.0" prefWidth="368.0" promptText="First Name" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <TextField fx:id="lastNameField" layoutX="825.0" layoutY="314.0" prefHeight="46.0" prefWidth="368.0" promptText="Last Name" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <TextField fx:id="emailField" layoutX="827.0" layoutY="403.0" prefHeight="46.0" prefWidth="368.0" promptText="Email" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <TextField fx:id="phoneField" layoutX="379.0" layoutY="403.0" prefHeight="46.0" prefWidth="368.0" promptText="Phone" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <TextField fx:id="govtIDField" layoutX="379.0" layoutY="495.0" prefHeight="46.0" prefWidth="368.0" promptText="CNIC" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
       <Button fx:id="PersonalDetailsNextButton" layoutX="1055.0" layoutY="574.0" mnemonicParsing="false" onAction="#onPersonalDetailsNextButtonClicked" prefHeight="44.0" prefWidth="139.0" styleClass="signUpbutton" stylesheets="@../../Design/SignUp.css" text="Next">
          <font>
             <Font name="System Bold" size="18.0" />

@@ -13,7 +13,7 @@ public class ShowAlert {
         alert.setContentText(message);
 
         Scene scene = alert.getDialogPane().getScene();
-        scene.getStylesheets().add(ShowAlert.class.getResource("Design/Alert.css").toExternalForm());
+        scene.getStylesheets().add(ShowAlert.class.getResource("/com/example/healzone/Design/Alert.css").toExternalForm());
 
         alert.show();
         PauseTransition pause = new PauseTransition(Duration.seconds(5));

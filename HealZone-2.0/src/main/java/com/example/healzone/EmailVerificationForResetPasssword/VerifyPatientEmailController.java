@@ -2,7 +2,7 @@ package com.example.healzone.EmailVerificationForResetPasssword;
 
 import com.example.healzone.EmailVerificationForRegistration.EmailSender;
 import com.example.healzone.Patient.Patient;
-import com.example.healzone.ResetPassword.PatientResetPasswordController;
+
 import com.example.healzone.StartView.MainViewController;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -21,7 +21,7 @@ import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator
 import static com.example.healzone.ShowAlert.ShowAlert.showAlert;
 
 
-public class VerifyPatientEmailController extends PatientResetPasswordController {
+public class VerifyPatientEmailController{
     @FXML
     private TextField VerifyEmailField;
     @FXML
@@ -38,14 +38,14 @@ public class VerifyPatientEmailController extends PatientResetPasswordController
                 errorMessage.setText("⚠️ Please enter a valid email address!");
                 return;
             }else if (!checkEmail(VerifyEmailField.getText(),resetPasswordPhone.getText())) {
-                errorMessage.setText("⚠️ This email does not exist!");
+                errorMessage.setText("⚠️ Email and Phone didn't match!");
                 return;
             }else if(!isPhoneNumberValid()){
                 errorMessage.setText("⚠️ Please enter a valid phone number!");
                 return;
             }
             else if(!checkPhoneNumber(resetPasswordPhone.getText())){
-                errorMessage.setText("⚠️ Phone and Email didn't match!");
+                errorMessage.setText("⚠️ This Phone does not exist!");
                 return;
             }
             else{

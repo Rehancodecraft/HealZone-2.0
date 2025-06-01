@@ -4,31 +4,22 @@
 <?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorSignUpController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.SignUp.SecurityController">
    <children>
-      <Label layoutX="212.0" layoutY="139.0" text="Security" textFill="WHITE">
+      <Label layoutX="190.0" layoutY="131.0" text="Security" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="24.0" />
+            <Font name="System Bold" size="34.0" />
          </font>
       </Label>
-      <Label layoutX="85.0" layoutY="213.0" text="Password" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <PasswordField fx:id="passwordField" layoutX="86.0" layoutY="249.0" prefHeight="46.0" prefWidth="368.0" promptText="Enter Your Password" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
-      <Label layoutX="85.0" layoutY="324.0" text="Confirm Password" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <PasswordField fx:id="confirmPasswordField" layoutX="86.0" layoutY="358.0" prefHeight="46.0" prefWidth="368.0" promptText="Confirm Your Password" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
-      <CheckBox fx:id="userAgreement" layoutX="88.0" layoutY="439.0" text="I agree to the Terms of Service and Privacy Policy" textFill="WHITE">
+      <PasswordField fx:id="passwordField" layoutX="86.0" layoutY="249.0" prefHeight="46.0" prefWidth="368.0" promptText="Password" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <PasswordField fx:id="confirmPasswordField" layoutX="86.0" layoutY="358.0" prefHeight="46.0" prefWidth="368.0" promptText="Confirm Password" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <CheckBox fx:id="userAgreement" layoutX="86.0" layoutY="467.0" text="I agree to the Terms of Service and Privacy Policy" textFill="WHITE">
          <font>
             <Font size="16.0" />
          </font>
@@ -56,5 +47,27 @@
       </HBox>
       <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="95.0" layoutY="283.0" />
       <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="95.0" layoutY="392.0" />
+      <CheckBox fx:id="showPasswordBox" layoutX="95.0" layoutY="299.0" mnemonicParsing="false" text="Show Password" textFill="WHITE">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </CheckBox>
+      <TextField fx:id="visibleConfirmPasswordField" layoutX="86.0" layoutY="358.0" prefHeight="46.0" prefWidth="368.0" styleClass="logintexfield" stylesheets="@../../Design/Login.css" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="95.0" layoutY="392.0" selectionEnd="0" selectionStart="0" text="" />
+      <TextField fx:id="visiblePasswordField" layoutX="86.0" layoutY="249.0" prefHeight="46.0" prefWidth="368.0" styleClass="logintexfield" stylesheets="@../../Design/Login.css" visible="false">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </TextField>
+      <CheckBox fx:id="showConfirmPasswordBox" layoutX="96.0" layoutY="409.0" mnemonicParsing="false" text="Show Password" textFill="WHITE">
+         <font>
+            <Font size="11.0" />
+         </font>
+      </CheckBox>
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="95.0" layoutY="283.0" selectionEnd="0" selectionStart="0" text="" />
    </children>
 </AnchorPane>

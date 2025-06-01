@@ -13,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
@@ -31,6 +32,38 @@ public class DoctorLoginController {
     private TextField password;
     @FXML
     private Label doctorLoginErrorMessage;
+    @FXML
+    private TextField visiblePasswordField;
+    @FXML
+    private CheckBox showPasswordBox;
+    @FXML
+    private void initialize() {
+        // Sync content when typing
+        password.textProperty().bindBidirectional(visiblePasswordField.textProperty());
+
+        // Hide visiblePasswordField initially
+        visiblePasswordField.setVisible(false);
+        visiblePasswordField.setManaged(false);
+
+        showPasswordBox.setOnAction(event -> {
+            if (showPasswordBox.isSelected()) {
+                // Show the plain text field
+                visiblePasswordField.setVisible(true);
+                visiblePasswordField.setManaged(true);
+
+                password.setVisible(false);
+                password.setManaged(false);
+            } else {
+                // Hide the plain text field
+                visiblePasswordField.setVisible(false);
+                visiblePasswordField.setManaged(false);
+
+                password.setVisible(true);
+                password.setManaged(true);
+            }
+        });
+    }
+
     @FXML
     public void onSignUpLinkClicked(ActionEvent event) throws IOException {
 //

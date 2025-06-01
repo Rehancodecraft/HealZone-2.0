@@ -38,6 +38,61 @@ public class signUpController {
     protected TextField patientEmail;
     @FXML
     protected TextField signupConfirmPassword;
+    @FXML
+    private TextField visiblePasswordField;
+    @FXML
+    private CheckBox showPasswordBox;
+    @FXML
+    private TextField visibleConfirmPasswordField;
+    @FXML
+    private CheckBox showConfirmPasswordBox;
+
+    @FXML
+    private void initialize() {
+        // Sync content when typing
+        signupPassword.textProperty().bindBidirectional(visiblePasswordField.textProperty());
+        signupConfirmPassword.textProperty().bindBidirectional(visibleConfirmPasswordField.textProperty());
+
+        // Hide visiblePasswordFields initially
+        visiblePasswordField.setVisible(false);
+        visiblePasswordField.setManaged(false);
+        visibleConfirmPasswordField.setVisible(false);
+        visibleConfirmPasswordField.setManaged(false);
+
+        // Toggle for Password field
+        showPasswordBox.setOnAction(event -> {
+            if (showPasswordBox.isSelected()) {
+                visiblePasswordField.setVisible(true);
+                visiblePasswordField.setManaged(true);
+
+                signupPassword.setVisible(false);
+                signupPassword.setManaged(false);
+            } else {
+                visiblePasswordField.setVisible(false);
+                visiblePasswordField.setManaged(false);
+
+                signupPassword.setVisible(true);
+                signupPassword.setManaged(true);
+            }
+        });
+
+        // Toggle for Confirm Password field
+        showConfirmPasswordBox.setOnAction(event -> {
+            if (showConfirmPasswordBox.isSelected()) {
+                visibleConfirmPasswordField.setVisible(true);
+                visibleConfirmPasswordField.setManaged(true);
+
+                signupConfirmPassword.setVisible(false);
+                signupConfirmPassword.setManaged(false);
+            } else {
+                visibleConfirmPasswordField.setVisible(false);
+                visibleConfirmPasswordField.setManaged(false);
+
+                signupConfirmPassword.setVisible(true);
+                signupConfirmPassword.setManaged(true);
+            }
+        });
+    }
 
     @FXML
     protected void onClickSignInLink(ActionEvent event) {
@@ -70,6 +125,7 @@ public class signUpController {
             return;
         } else if (!isAgeValid()) {
             errorMessage.setText("⚠️ Age must be a positive number and less than 120");
+
         } else if (!isNameValid()) {
             errorMessage.setText("⚠️ Please enter a valid name!");
             return;

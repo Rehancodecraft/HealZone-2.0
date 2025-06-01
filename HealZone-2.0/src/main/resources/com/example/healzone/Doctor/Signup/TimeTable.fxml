@@ -12,16 +12,16 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorSignUpController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.SignUp.TimeTableController">
    <children>
       <Button fx:id="TimeTableNextButton" layoutX="844.0" layoutY="579.0" mnemonicParsing="false" onAction="#onTimeTableNextButtonClicked" prefHeight="44.0" prefWidth="139.0" styleClass="signUpbutton" stylesheets="@../../Design/SignUp.css" text="Next">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <Label layoutX="724.0" layoutY="141.0" text="Availability" textFill="WHITE">
+      <Label layoutX="702.0" layoutY="139.0" text="Availability" textFill="WHITE">
          <font>
-            <Font name="System Bold" size="24.0" />
+            <Font name="System Bold" size="34.0" />
          </font>
       </Label>
       <CheckBox fx:id="fri" layoutX="805.0" layoutY="267.0" mnemonicParsing="false" text="Fri" textFill="WHITE" />
@@ -32,11 +32,6 @@
       <CheckBox fx:id="mon" layoutX="578.0" layoutY="267.0" mnemonicParsing="false" text="Mon" textFill="WHITE" />
       <CheckBox fx:id="thur" layoutX="751.0" layoutY="267.0" mnemonicParsing="false" text="Thu" textFill="WHITE" />
       <Label layoutX="578.0" layoutY="231.0" text="Available Days" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
-      <Label layoutX="578.0" layoutY="334.0" text="Available Slots" textFill="WHITE">
          <font>
             <Font size="19.0" />
          </font>
@@ -106,18 +101,13 @@
             </FXCollections>
          </items>
       </ComboBox>
-      <Label layoutX="578.0" layoutY="420.0" text="Bio" textFill="WHITE">
-         <font>
-            <Font size="19.0" />
-         </font>
-      </Label>
       <FontIcon iconColor="WHITE" iconLiteral="fas-calendar-plus" iconSize="100" layoutX="748.0" layoutY="115.0" />
       <Button fx:id="TimeTableBackButton" layoutX="578.0" layoutY="579.0" mnemonicParsing="false" onAction="#onTimeTableBackButtonClicked" prefHeight="44.0" prefWidth="139.0" styleClass="signUpbutton" stylesheets="@../../Design/SignUp.css" text="Back">
          <font>
             <Font name="System Bold" size="18.0" />
          </font>
       </Button>
-      <TextArea fx:id="bio" layoutX="578.0" layoutY="453.0" prefHeight="90.0" prefWidth="392.0" />
+      <TextArea fx:id="bio" layoutX="578.0" layoutY="453.0" prefHeight="90.0" prefWidth="392.0" promptText="Enter Your Bio" style="-fx-background-color: blue;" />
       <HBox alignment="CENTER" layoutX="580.0" layoutY="552.0" prefHeight="22.0" prefWidth="392.0">
          <children>
             <Label fx:id="timeTableErrorMessage" textFill="WHITE">

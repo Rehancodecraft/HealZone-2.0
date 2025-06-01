@@ -25,13 +25,13 @@ public class ChecksForDoctor {
     }
 
     public static boolean isFirstNameValid(){
-        return Doctor.getFirstName().matches("^[A-Za-z\\s'-]+$");
+        return Doctor.getFirstName().trim().matches("^(?=.{1,50}$)[A-Za-z]+(?:[ '-][A-Za-z]+)*$");
     }
     public static boolean isLastNameValid(){
-        return Doctor.getLastName().matches("^[A-Za-z\\s'-]+$");
+        return Doctor.getLastName().trim().matches("^(?=.{1,50}$)[A-Za-z]+(?:[ '-][A-Za-z]+)*$");
     }
     public static boolean isPhoneNumberValid(){
-        return Doctor.getPhone().matches("\\d+") || Doctor.getPhone().length() == 11 || Doctor.getPhone().startsWith("03");
+        return Doctor.getPhone().matches("^03\\d{9}$");
     }
     public static boolean isEmailValid(String email){
         return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$");
