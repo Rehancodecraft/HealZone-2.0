@@ -41,6 +41,7 @@ public class PatientLoginController  {
         // Sync content when typing
         password.textProperty().bindBidirectional(visiblePasswordField.textProperty());
 
+
         // Hide visiblePasswordField initially
         visiblePasswordField.setVisible(false);
         visiblePasswordField.setManaged(false);

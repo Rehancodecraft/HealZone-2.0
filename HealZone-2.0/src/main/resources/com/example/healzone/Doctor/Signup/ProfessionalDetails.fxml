@@ -70,7 +70,7 @@
          </font>
       </Button>
       <FontIcon iconColor="WHITE" iconLiteral="fas-id-card" iconSize="100" layoutX="743.0" layoutY="116.0" />
-      <HBox alignment="CENTER" layoutX="613.0" layoutY="519.0" prefHeight="22.0" prefWidth="368.0">
+      <HBox alignment="CENTER" layoutX="613.0" layoutY="530.0" prefHeight="22.0" prefWidth="368.0">
          <children>
             <Label fx:id="professionalDetailsErrorMessage" textFill="WHITE">
                <font>
@@ -79,5 +79,6 @@
             </Label>
          </children>
       </HBox>
+      <TextField fx:id="experience" layoutX="615.0" layoutY="472.0" prefHeight="46.0" prefWidth="368.0" promptText="Years of Experience" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
    </children>
 </AnchorPane>

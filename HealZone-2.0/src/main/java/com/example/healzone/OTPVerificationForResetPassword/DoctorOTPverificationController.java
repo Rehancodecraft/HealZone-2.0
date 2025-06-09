@@ -1,6 +1,6 @@
 package com.example.healzone.OTPVerificationForResetPassword;
 
-import com.example.healzone.Doctor.DoctorSignUpController;
+//import com.example.healzone.Doctor.DoctorSignUpController;
 import com.example.healzone.Patient.signUpController;
 import com.example.healzone.StartView.MainViewController;
 import javafx.event.ActionEvent;
@@ -19,7 +19,7 @@ import static com.example.healzone.EmailVerificationForRegistration.EmailSender.
 import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.isCooldown;
 import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.validateOTP;
 
-public class DoctorOTPverificationController extends DoctorSignUpController {
+public class DoctorOTPverificationController  {
     @FXML
     private Button verifityOTPButton;
     @FXML
@@ -34,7 +34,7 @@ public class DoctorOTPverificationController extends DoctorSignUpController {
     }
 
     public  void verifyOTPAndSignup(ActionEvent event) {
-        System.out.println(generatedOTP);
+//        System.out.println(generatedOTP);
         String enteredOtp = otpField.getText();
         if(validateOTP(enteredOtp)){
             System.out.println("OTP verified. Proceed to create account.");

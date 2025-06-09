@@ -52,6 +52,12 @@ public class signUpController {
         // Sync content when typing
         signupPassword.textProperty().bindBidirectional(visiblePasswordField.textProperty());
         signupConfirmPassword.textProperty().bindBidirectional(visibleConfirmPasswordField.textProperty());
+        signupPhoneNumber.textProperty().addListener((observable,oldValue,newValue) ->{
+            if (!newValue.matches("\\d*") || newValue.length() > 11) {
+                signupPhoneNumber.setText(oldValue);
+            }
+        });
+
 
         // Hide visiblePasswordFields initially
         visiblePasswordField.setVisible(false);
@@ -125,7 +131,7 @@ public class signUpController {
             return;
         } else if (!isAgeValid()) {
             errorMessage.setText("⚠️ Age must be a positive number and less than 120");
-
+            return;
         } else if (!isNameValid()) {
             errorMessage.setText("⚠️ Please enter a valid name!");
             return;

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true" prefHeight="700.0" prefWidth="600.0" styleClass="appointment-scroll-pane" stylesheets="@../Design/confirmappointment.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.ConfirmAppointmentController">
+    <content>
+        <VBox fx:id="confirmationContainer" maxWidth="Infinity" spacing="0" styleClass="confirmation-container">
+            <padding>
+                <Insets bottom="30.0" left="30.0" right="30.0" top="30.0" />
+            </padding>
+            <children>
+
+                <!-- Header Section -->
+                <VBox spacing="10" styleClass="header-section">
+                    <HBox alignment="CENTER_LEFT" spacing="15">
+                        <ImageView fitHeight="24.0" fitWidth="24.0" preserveRatio="true" styleClass="back-icon">
+                            <image>
+                                <Image url="@../Images/back-arrow.png" />
+                            </image>
+                        </ImageView>
+                        <Label styleClass="page-title" text="Confirm Appointment" />
+                    </HBox>
+                    <Region prefHeight="10.0" />
+                </VBox>
+
+                <!-- Doctor Summary Card -->
+                <VBox spacing="15" styleClass="doctor-summary-card">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                    <children>
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+                            <!-- Profile Image -->
+                            <VBox alignment="CENTER" styleClass="profile-image-container">
+                                <ImageView fx:id="doctorProfileImage" fitHeight="80.0" fitWidth="80.0" preserveRatio="true" styleClass="profile-image">
+                                    <image>
+                                        <Image url="@../Images/doctor.png" />
+                                    </image>
+                                </ImageView>
+                            </VBox>
+
+                            <!-- Doctor Details -->
+                            <VBox spacing="5" styleClass="doctor-details" HBox.hgrow="ALWAYS">
+                                <Label fx:id="doctorNameLabel" styleClass="doctor-name-summary" />
+                                <Label fx:id="specialtiesLabel" styleClass="specialties-summary" />
+                                <Label fx:id="credentialsLabel" styleClass="credentials-summary" />
+                            </VBox>
+
+                            <!-- Fee Display -->
+                            <VBox alignment="CENTER_RIGHT" spacing="2">
+                                <Label styleClass="fee-label" text="Consultation Fee" />
+                                <Label fx:id="consultationFeeLabel" styleClass="fee-amount" />
+                            </VBox>
+                        </HBox>
+
+                        <!-- Hospital Info -->
+                        <VBox spacing="5" styleClass="hospital-summary">
+                            <Label fx:id="hospitalNameLabel" styleClass="hospital-name-summary" />
+                            <Label fx:id="hospitalAddressLabel" styleClass="hospital-address-summary" wrapText="true" />
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <!-- Appointment Details Section -->
+                <VBox spacing="20" styleClass="appointment-details-section">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                    <children>
+                        <Label styleClass="section-title" text="Appointment Details" />
+
+                        <!-- Available Days -->
+                        <VBox spacing="12">
+                            <Label styleClass="field-label" text="Doctor Available On" />
+                            <FlowPane fx:id="availableDaysContainer" hgap="10.0" prefWrapLength="500.0" styleClass="available-days-container" vgap="10.0">
+                                <!-- Available day buttons will be populated dynamically -->
+                                <Button styleClass="day-btn-selected" text="Monday" />
+                                <Button styleClass="day-btn" text="Tuesday" />
+                                <Button styleClass="day-btn" text="Wednesday" />
+                                <Button styleClass="day-btn" text="Thursday" />
+                                <Button styleClass="day-btn" text="Friday" />
+                                <Button styleClass="day-btn" text="Saturday" />
+                            </FlowPane>
+                        </VBox>
+
+                        <!-- Date Selection -->
+                        <VBox spacing="8">
+                            <Label styleClass="field-label" text="Select Appointment Date" />
+                            <DatePicker fx:id="appointmentDatePicker" prefWidth="Infinity" styleClass="date-picker" />
+                        </VBox>
+
+                        <!-- Patient Information -->
+                        <VBox spacing="15">
+                            <Label styleClass="section-title" text="Patient Information" />
+
+                            <VBox spacing="8">
+                                <Label styleClass="field-label" text="Patient Name" />
+                                <TextField fx:id="patientNameField" promptText="Enter patient full name" styleClass="input-field" />
+                            </VBox>
+
+                            <VBox spacing="8">
+                                <Label styleClass="field-label" text="Phone Number" />
+                                <TextField fx:id="patientPhoneField" promptText="Enter phone number" styleClass="input-field" />
+                            </VBox>
+
+                            <VBox spacing="8">
+                                <Label styleClass="field-label" text="Age" />
+                                <TextField fx:id="patientAgeField" promptText="Enter age" styleClass="input-field" />
+                            </VBox>
+
+                            <VBox spacing="8">
+                                <Label styleClass="field-label" text="Brief Description (Optional)" />
+                                <TextField fx:id="descriptionField" promptText="Brief description of your concern" styleClass="input-field-large" />
+                            </VBox>
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <!-- Appointment Summary -->
+                <VBox spacing="15" styleClass="appointment-summary-section">
+                    <padding>
+                        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                    </padding>
+                    <children>
+                        <Label styleClass="section-title" text="Appointment Summary" />
+
+                        <VBox spacing="10" styleClass="summary-details">
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <Label styleClass="summary-label" text="Date:" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="selectedDateLabel" styleClass="summary-value" />
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <Label styleClass="summary-label" text="Day:" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="selectedDayLabel" styleClass="summary-value" />
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <Label styleClass="summary-label" text="Doctor:" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="summaryDoctorLabel" styleClass="summary-value" />
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <Label styleClass="summary-label" text="Hospital:" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="summaryHospitalLabel" styleClass="summary-value" />
+                            </HBox>
+
+                            <!-- Divider -->
+                            <Region prefHeight="5.0" styleClass="divider" />
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                                <Label styleClass="total-fee-label" text="Total Fee:" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="totalFeeLabel" styleClass="total-fee-value" />
+                            </HBox>
+                        </VBox>
+                    </children>
+                </VBox>
+
+                <!-- Action Buttons -->
+                <VBox spacing="15" styleClass="action-buttons-section">
+                    <padding>
+                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
+                    </padding>
+                    <children>
+                        <Button fx:id="confirmAppointmentBtn" prefHeight="45.0" prefWidth="Infinity" styleClass="confirm-appointment-btn" text="Confirm Appointment" />
+                        <Button fx:id="cancelBtn" prefHeight="40.0" prefWidth="Infinity" styleClass="cancel-btn" text="Cancel" />
+                    </children>
+                </VBox>
+
+                <!-- Bottom Spacing -->
+                <Region prefHeight="20.0" />
+
+            </children>
+        </VBox>
+    </content>
+</ScrollPane>

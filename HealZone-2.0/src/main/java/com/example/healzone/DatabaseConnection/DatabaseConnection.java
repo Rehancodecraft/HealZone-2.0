@@ -18,7 +18,7 @@ public class DatabaseConnection {
         try {
             String pgUrl = "jdbc:postgresql://localhost:5432/HealZone";
             String pgUser = "postgres";
-            String pgPassword = "Rehan*1711200";
+            String pgPassword = "Rehan*17112006";
             connection = DriverManager.getConnection(pgUrl, pgUser, pgPassword);
             connection.setAutoCommit(true);
             isSQLite = false;
@@ -58,6 +58,7 @@ public class DatabaseConnection {
         createTableForAvailabilityOfDoctor();
         createTableForSecurityOfDoctor();
         createTableForAppointments();
+        createTableForDoctorReviews();
     }
 
     public static void createTableForAppointments() {

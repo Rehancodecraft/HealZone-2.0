@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="upcomingAppointmentCard" maxWidth="Infinity" styleClass="upcoming-appointment-card" stylesheets="@../Design/doctor-card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <children>
+        <!-- Main Content Container -->
+        <VBox spacing="15" styleClass="card-content">
+
+            <!-- Appointment Status Header -->
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="status-header">
+                <Label fx:id="appointmentStatus" styleClass="appointment-status" text="CONFIRMED" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="appointmentId" styleClass="appointment-id" text="APT-001234" />
+            </HBox>
+
+            <!-- Doctor and Appointment Info Section -->
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="appointment-info-section">
+                <!-- Profile Image -->
+                <VBox alignment="CENTER" styleClass="profile-image-container">
+                    <ImageView fx:id="doctorProfileImage" fitHeight="80" fitWidth="80" preserveRatio="true" styleClass="profile-image">
+                        <image>
+                            <Image url="@../Images/doctor.png" />
+                        </image>
+                    </ImageView>
+                </VBox>
+
+                <!-- Doctor and Appointment Details -->
+                <VBox spacing="8" styleClass="appointment-details" HBox.hgrow="ALWAYS">
+                    <Label fx:id="doctorName" styleClass="doctor-name" text="Dr. Rehan Shafiq" />
+                    <Label fx:id="specialties" styleClass="specialties" text="Cardiologist" />
+                    <Label fx:id="hospitalName" styleClass="hospital-name" text="City Hospital Sahiwal" />
+
+                    <!-- Date and Time Row -->
+                    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="datetime-row">
+                        <HBox alignment="CENTER_LEFT" spacing="5">
+                            <ImageView fitHeight="16" fitWidth="16" preserveRatio="true" styleClass="icon">
+                                <image>
+                                    <Image url="@../Images/calendar.png" />
+                                </image>
+                            </ImageView>
+                            <Label fx:id="appointmentDate" styleClass="appointment-date" text="Monday, Dec 25, 2024" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="5">
+                            <ImageView fitHeight="16" fitWidth="16" preserveRatio="true" styleClass="icon">
+                                <image>
+                                    <Image url="@../Images/clock.png" />
+                                </image>
+                            </ImageView>
+                            <Label fx:id="appointmentTime" styleClass="appointment-time" text="10:00 AM" />
+                        </HBox>
+                    </HBox>
+                </VBox>
+
+                <!-- Fee Display -->
+                <VBox alignment="CENTER_RIGHT" spacing="2" styleClass="fee-section">
+                    <Label styleClass="fee-label" text="Fee Paid" />
+                    <Label fx:id="consultationFee" styleClass="fee-amount" text="Rs. 1,500" />
+                </VBox>
+            </HBox>
+
+            <!-- Patient Information -->
+            <VBox spacing="8" styleClass="patient-info-section">
+                <Label styleClass="section-label" text="Patient Information" />
+                <HBox alignment="CENTER_LEFT" spacing="20">
+                    <VBox spacing="3">
+                        <Label styleClass="info-label" text="Patient Name" />
+                        <Label fx:id="patientName" styleClass="info-value" text="Ahmed Hassan" />
+                    </VBox>
+                    <VBox spacing="3">
+                        <Label styleClass="info-label" text="Age" />
+                        <Label fx:id="patientAge" styleClass="info-value" text="35 Years" />
+                    </VBox>
+                    <VBox spacing="3">
+                        <Label styleClass="info-label" text="Phone" />
+                        <Label fx:id="patientPhone" styleClass="info-value" text="+92 300 1234567" />
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- Appointment Description (if available) -->
+            <VBox spacing="5" styleClass="description-section">
+                <Label styleClass="section-label" text="Description" />
+                <Label fx:id="appointmentDescription" styleClass="description-text" text="Routine cardiac checkup and consultation" wrapText="true" />
+            </VBox>
+
+            <!-- Time Status -->
+            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="time-status-section">
+                <ImageView fitHeight="20" fitWidth="20" preserveRatio="true" styleClass="status-icon">
+                    <image>
+                        <Image url="@../Images/time-remaining.png" />
+                    </image>
+                </ImageView>
+                <Label fx:id="timeRemaining" styleClass="time-remaining" text="Appointment in 2 days, 5 hours" />
+                <Region HBox.hgrow="ALWAYS" />
+                <Label fx:id="appointmentCountdown" styleClass="countdown" text="48:05:30" />
+            </HBox>
+
+            <!-- Action Buttons -->
+            <HBox alignment="CENTER" spacing="15" styleClass="action-buttons-section">
+                <Button fx:id="rescheduleBtn" prefHeight="35" prefWidth="140.0" styleClass="reschedule-btn" text="Reschedule" />
+                <Button fx:id="cancelAppointmentBtn" prefHeight="35" prefWidth="140.0" styleClass="cancel-appointment-btn" text="Cancel" />
+                <Button fx:id="viewDetailsBtn" prefHeight="35" prefWidth="140.0" styleClass="view-details-btn" text="View Details" />
+            </HBox>
+
+        </VBox>
+    </children>
+</VBox>

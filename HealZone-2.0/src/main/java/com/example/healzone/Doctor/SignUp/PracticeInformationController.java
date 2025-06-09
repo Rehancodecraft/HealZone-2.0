@@ -23,9 +23,9 @@ public class PracticeInformationController {
     private Label practiceInformationErrorMessage;
     @FXML
     private void initialize(){
-        hospitalAddressField.setText(Doctor.getHospitalName());
-        hospitalAddressField.setText(Doctor.getHospitalAddress());
-        consultationFeeField.setText(Doctor.getConsultationFee());
+        hospitalNameField.setText(safeString(Doctor.getHospitalName()));
+        hospitalAddressField.setText(safeString(Doctor.getHospitalAddress()));
+        consultationFeeField.setText(safeString(Doctor.getConsultationFee()));
     }
     @FXML
     public void onPracticeInformationNextButtonClicked(javafx.event.ActionEvent event){
@@ -76,5 +76,8 @@ public class PracticeInformationController {
             System.err.println("Error loading PatientLogin: ");
             e.printStackTrace();
         }
+    }
+    private String safeString(String value) {
+        return value != null ? value : "";
     }
 }

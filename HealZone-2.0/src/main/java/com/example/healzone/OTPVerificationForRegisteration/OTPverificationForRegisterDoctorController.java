@@ -1,7 +1,7 @@
 package com.example.healzone.OTPVerificationForRegisteration;
 
 import com.example.healzone.Doctor.Doctor;
-import com.example.healzone.Doctor.DoctorSignUpController;
+//import com.example.healzone.Doctor.DoctorSignUpController;
 import com.example.healzone.Doctor.TimeSlot;
 import com.example.healzone.StartView.MainViewController;
 import javafx.event.ActionEvent;
@@ -24,7 +24,7 @@ import static com.example.healzone.EmailVerificationForRegistration.EmailSender.
 import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.isCooldown;
 import static com.example.healzone.EmailVerificationForRegistration.OTPgenerator.validateOTP;
 
-public class OTPverificationForRegisterDoctorController extends DoctorSignUpController {
+public class OTPverificationForRegisterDoctorController {
     @FXML
     private Button verifityOTPButton;
     @FXML
@@ -39,13 +39,13 @@ public class OTPverificationForRegisterDoctorController extends DoctorSignUpCont
     }
 
     public  void verifyOTPAndSignup(ActionEvent event) {
-        System.out.println(generatedOTP);
+//        System.out.println(generatedOTP);
         String enteredOtp = otpField.getText();
         if(validateOTP(enteredOtp)){
             System.out.println("OTP verified. Proceed to create account.");
             System.out.println("VerifyOTPsignup running from otp verifaction for register doctor controller");
             insertDoctorPersonalDetails(Doctor.getGovtID(), Doctor.getFirstName(), Doctor.getLastName(), getEmail(), Doctor.getPhone());
-            insertProfessionalDetails(Doctor.getGovtID(), Doctor.getSpecialization(), Doctor.getDegrees(), Doctor.getMedicalLicenseNumber(), Doctor.getBio());
+            insertDoctorProfessionalDetails(Doctor.getGovtID(), Doctor.getSpecialization(), Doctor.getDegrees(), Doctor.getMedicalLicenseNumber(), Doctor.getBio(),Doctor.getExperience());
             insertPracticeInfo(Doctor.getGovtID(), Doctor.getHospitalName(), Doctor.getHospitalAddress(), Doctor.getConsultationFee());
             for (Map.Entry<String, TimeSlot> entry : Doctor.getAvailability().entrySet()) {
                 String day = entry.getKey();

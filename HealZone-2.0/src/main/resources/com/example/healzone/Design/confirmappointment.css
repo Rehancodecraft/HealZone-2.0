@@ -1,0 +1,321 @@
+/* Main Container Styles */
+.appointment-scroll-pane {
+    -fx-background: #f8f9fa;
+    -fx-background-color: #f8f9fa;
+}
+
+.confirmation-container {
+    -fx-background-color: #f8f9fa;
+    -fx-spacing: 20;
+}
+
+/* Header Section */
+.header-section {
+    -fx-background-color: transparent;
+}
+
+.page-title {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.back-icon {
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 2, 0, 0, 1);
+}
+
+.back-icon:hover {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 4, 0, 0, 2);
+}
+
+/* Doctor Summary Card */
+.doctor-summary-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);
+    -fx-border-radius: 15;
+}
+
+.profile-image-container {
+    -fx-background-color: #e8f4fd;
+    -fx-background-radius: 50;
+    -fx-padding: 8;
+}
+
+.profile-image {
+    -fx-background-radius: 40;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+.doctor-name-summary {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+}
+
+.specialties-summary {
+    -fx-font-size: 14px;
+    -fx-text-fill: #3498db;
+    -fx-font-weight: 600;
+}
+
+.credentials-summary {
+    -fx-font-size: 13px;
+    -fx-text-fill: #7f8c8d;
+}
+
+.fee-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-weight: 500;
+}
+
+.fee-amount {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #27ae60;
+}
+
+.hospital-summary {
+    -fx-background-color: #f1f2f6;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+}
+
+.hospital-name-summary {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #2c3e50;
+}
+
+.hospital-address-summary {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7f8c8d;
+    -fx-wrap-text: true;
+}
+
+/* Appointment Details Section */
+.appointment-details-section {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);
+}
+
+.section-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2c3e50;
+    -fx-padding: 0 0 5 0;
+}
+
+.field-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-text-fill: #34495e;
+}
+
+/* Date Picker Styling */
+.date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+    -fx-pref-height: 45;
+}
+
+.date-picker:focused {
+    -fx-border-color: #3498db;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.3), 5, 0, 0, 0);
+}
+
+/* Time Slots Container */
+.time-slots-container {
+    -fx-background-color: transparent;
+    -fx-alignment: center-left;
+}
+
+.time-slot-btn {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-font-size: 13px;
+    -fx-text-fill: #2c3e50;
+    -fx-cursor: hand;
+    -fx-min-width: 80;
+    -fx-pref-height: 35;
+}
+
+.time-slot-btn:hover {
+    -fx-background-color: #e8f4fd;
+    -fx-border-color: #3498db;
+    -fx-text-fill: #3498db;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.2), 3, 0, 0, 1);
+}
+
+.time-slot-btn-selected {
+    -fx-background-color: #3498db;
+    -fx-border-color: #3498db;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 16;
+    -fx-font-size: 13px;
+    -fx-text-fill: #ffffff;
+    -fx-font-weight: 600;
+    -fx-cursor: hand;
+    -fx-min-width: 80;
+    -fx-pref-height: 35;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.4), 5, 0, 0, 2);
+}
+
+/* Input Fields */
+.input-field {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+    -fx-pref-height: 45;
+}
+
+.input-field:focused {
+    -fx-border-color: #3498db;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.3), 5, 0, 0, 0);
+}
+
+.input-field-large {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-font-size: 14px;
+    -fx-pref-height: 65;
+}
+
+.input-field-large:focused {
+    -fx-border-color: #3498db;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.3), 5, 0, 0, 0);
+}
+
+/* Appointment Summary Section */
+.appointment-summary-section {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 3);
+}
+
+.summary-details {
+    -fx-background-color: #f8f9fa;
+    -fx-background-radius: 10;
+    -fx-padding: 15;
+}
+
+.summary-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #7f8c8d;
+    -fx-font-weight: 500;
+}
+
+.summary-value {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: 600;
+}
+
+.divider {
+    -fx-background-color: #e0e0e0;
+    -fx-pref-height: 1;
+}
+
+.total-fee-label {
+    -fx-font-size: 16px;
+    -fx-text-fill: #2c3e50;
+    -fx-font-weight: bold;
+}
+
+.total-fee-value {
+    -fx-font-size: 18px;
+    -fx-text-fill: #27ae60;
+    -fx-font-weight: bold;
+}
+
+/* Action Buttons */
+.action-buttons-section {
+    -fx-background-color: transparent;
+}
+
+.confirm-appointment-btn {
+    -fx-background-color: #27ae60;
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(39, 174, 96, 0.3), 8, 0, 0, 3);
+}
+
+.confirm-appointment-btn:hover {
+    -fx-background-color: #2ecc71;
+    -fx-effect: dropshadow(gaussian, rgba(39, 174, 96, 0.5), 12, 0, 0, 4);
+    -fx-scale-y: 1.02;
+}
+
+.confirm-appointment-btn:pressed {
+    -fx-background-color: #229954;
+    -fx-scale-y: 0.98;
+}
+
+.cancel-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #e74c3c;
+    -fx-font-size: 14px;
+    -fx-font-weight: 600;
+    -fx-border-color: #e74c3c;
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-cursor: hand;
+}
+
+.cancel-btn:hover {
+    -fx-background-color: #e74c3c;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.3), 5, 0, 0, 2);
+}
+
+.cancel-btn:pressed {
+    -fx-background-color: #c0392b;
+    -fx-scale-y: 0.98;
+}
+
+/* Responsive Adjustments */
+@media screen and (max-width: 400px) {
+    .confirmation-container {
+        -fx-padding: 20;
+    }
+
+    .doctor-summary-card,
+    .appointment-details-section,
+    .appointment-summary-section {
+        -fx-padding: 15;
+    }
+
+    .page-title {
+        -fx-font-size: 20px;
+    }
+
+    .time-slot-btn,
+    .time-slot-btn-selected {
+        -fx-min-width: 70;
+        -fx-font-size: 12px;
+    }
+}

@@ -20,6 +20,7 @@ public class Doctor {
     private static String medicalLicenseNumber;
     private static String consultationFee;
     private static String bio;
+    private static String experience;
 
     // ✅ Temporary storage for availability (day -> TimeSlot)
     private static Map<String, TimeSlot> availability = new HashMap<>();
@@ -63,4 +64,11 @@ public class Doctor {
     public static String getBio() { return bio; }
     public static void setBio(String bio) { Doctor.bio = bio; }
 
+    public static String getExperience() {
+        return experience;
+    }
+
+    public static void setExperience(String experience) {
+        Doctor.experience = experience;
+    }
 }

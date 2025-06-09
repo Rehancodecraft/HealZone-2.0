@@ -1,9 +1,6 @@
 package com.example.healzone.Checks;
 
 import com.example.healzone.Doctor.Doctor;
-import com.example.healzone.Patient.Patient;
-
-import javax.print.Doc;
 
 public class ChecksForDoctor {
     public static boolean isPersonalDetailsEmpty(){
@@ -22,6 +19,9 @@ public class ChecksForDoctor {
     }
     public static boolean isSecurityEmpty(){
         return Doctor.getPassword().isEmpty() || Doctor.getConfirmPassword().isEmpty();
+    }
+    public static boolean isExperienceEmpty(){
+        return Doctor.getExperience().isEmpty();
     }
 
     public static boolean isFirstNameValid(){

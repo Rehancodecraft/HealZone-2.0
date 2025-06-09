@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="doctorCard" alignment="CENTER" maxWidth="1.7976931348623157E308" prefWidth="1550.0" stylesheets="@../Design/doctor-card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets bottom="10" left="10" right="10" top="10" />
+    </padding>
+    <children>
+      <AnchorPane prefHeight="203.0" prefWidth="1551.0">
+         <children>
+               <Button layoutX="1298.0" layoutY="75.0" prefHeight="48.0" prefWidth="229.0" styleClass="view-profile-btn" text="View Profile" />
+               <Button layoutX="1298.0" layoutY="13.0" prefHeight="48.0" prefWidth="230.0" styleClass="video-call-btn" text="Book Appointment" />
+               <ImageView fx:id="profileImage" fitHeight="130.0" fitWidth="130.0" layoutX="21.0" layoutY="9.0" preserveRatio="true">
+               <image>
+                  <Image url="@../Images/doctor.png" />
+               </image>
+            </ImageView>
+                <Label fx:id="doctorName" layoutX="164.0" layoutY="14.0" styleClass="doctor-name" text="Rehan Shafiq" />
+                <Label fx:id="specialties" layoutX="164.0" layoutY="63.0" styleClass="specialties" text="Cardiologist" />
+                <Label fx:id="credentials" layoutX="164.0" layoutY="83.0" styleClass="credentials" text="MBBS, FCPS" />
+                <Label fx:id="recoveryRate" layoutX="164.0" layoutY="106.0" styleClass="recovery-rate" text="Experience" />
+                <Label layoutX="631.0" layoutY="128.0" styleClass="stat-label" text="Reviews" />
+                <Label fx:id="reviews" layoutX="635.0" layoutY="146.0" styleClass="stat-value" text="2,295" />
+                <Label layoutX="827.0" layoutY="127.0" styleClass="stat-label" text="Rating" />
+                <Label fx:id="experience" layoutX="831.0" layoutY="145.0" styleClass="stat-value" text="4.99" />
+                <Label layoutX="993.0" layoutY="127.0" styleClass="stat-label" text="Satisfaction" />
+                <Label fx:id="satisfaction" layoutX="1011.0" layoutY="145.0" styleClass="stat-value" text="99%" />
+            <AnchorPane layoutX="517.0" layoutY="13.0" prefHeight="104.0" prefWidth="655.0" style="-fx-background-color: transparent; -fx-background-radius: 10; -fx-border-radius: 10; -fx-border-color: blue;">
+               <children>
+                  <Label layoutX="37.0" layoutY="11.0" text="City Hospital Sahiwal">
+                     <font>
+                        <Font name="System Bold" size="15.0" />
+                     </font>
+                  </Label>
+                  <HBox layoutX="38.0" layoutY="36.0">
+                     <children>
+                        <Label prefWidth="270.0" styleClass="credentials" stylesheets="@../Design/doctor-card.css" text="GT Road Off. near Ac Office Sahiwal, Punjab, Pakistan" wrapText="true" />
+                     </children>
+                  </HBox>
+                  <Label layoutX="458.0" layoutY="11.0" text="Availability">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <HBox alignment="CENTER" layoutX="353.0" layoutY="36.0">
+                     <children>
+                        <Label prefHeight="18.0" prefWidth="40.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="Mon" />
+                        <Label prefHeight="18.0" prefWidth="40.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="Tue" />
+                        <Label prefHeight="18.0" prefWidth="40.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="Wed" />
+                        <Label prefWidth="40.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="Thur" />
+                        <Label prefWidth="40.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="Fri" />
+                        <Label prefWidth="40.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="Sat" />
+                        <Label prefWidth="40.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="Sun" />
+                     </children>
+                  </HBox>
+                  <Label layoutX="519.0" layoutY="69.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="12:00 PM" />
+                  <Label layoutX="406.0" layoutY="69.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="12:00 AM" />
+                  <Label layoutX="488.0" layoutY="65.0" prefHeight="29.0" prefWidth="18.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="--">
+                     <font>
+                        <Font size="56.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="37.0" layoutY="75.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="Consultation Fee:" />
+                  <Label layoutX="173.0" layoutY="76.0" text="Rs.">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+                  <Label layoutX="192.0" layoutY="76.0" text="1500">
+                     <font>
+                        <Font name="System Bold" size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+            <Label fx:id="experience1" layoutX="258.0" layoutY="107.0" styleClass="credentials" stylesheets="@../Design/Alert.css" text="10 Yrs" />
+         </children>
+      </AnchorPane>
+    </children>
+</VBox>

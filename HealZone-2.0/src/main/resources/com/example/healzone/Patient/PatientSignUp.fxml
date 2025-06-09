@@ -21,11 +21,11 @@
          </font>
       </Label>
       <Label layoutX="669.0" layoutY="119.0" text="Join us to book you appointments" textFill="#b7afaf" />
-      <TextField fx:id="signupPhoneNumber" focusTraversable="false" layoutX="322.0" layoutY="268.0" onAction="#phoneFieldCheck" prefHeight="46.0" prefWidth="368.0" promptText="Phone" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+      <TextField fx:id="signupPhoneNumber" focusTraversable="false" layoutX="322.0" layoutY="245.0" onAction="#phoneFieldCheck" prefHeight="46.0" prefWidth="368.0" promptText="Phone" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
       <TextField fx:id="fatherName" focusTraversable="false" layoutX="857.0" layoutY="168.0" prefHeight="46.0" prefWidth="368.0" promptText="Father Name" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
       <TextField fx:id="name" focusTraversable="false" layoutX="322.0" layoutY="168.0" prefHeight="46.0" prefWidth="368.0" promptText="Name" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
-      <TextField fx:id="ageField" focusTraversable="false" layoutX="324.0" layoutY="368.0" onAction="#ageFieldCheck" prefHeight="46.0" prefWidth="150.0" promptText="Age" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
-      <PasswordField fx:id="signupPassword" focusTraversable="false" layoutX="322.0" layoutY="462.0" prefHeight="46.0" prefWidth="368.0" promptText="Password" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+      <TextField fx:id="ageField" focusTraversable="false" layoutX="324.0" layoutY="320.0" onAction="#ageFieldCheck" prefHeight="46.0" prefWidth="150.0" promptText="Age" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+      <PasswordField fx:id="signupPassword" focusTraversable="false" layoutX="324.0" layoutY="389.0" prefHeight="46.0" prefWidth="368.0" promptText="Password" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
       <Label layoutX="324.0" layoutY="137.0" text="Name" textFill="WHITE" visible="false">
          <font>
             <Font size="19.0" />
@@ -58,15 +58,15 @@
       </Label>
       <FontIcon iconColor="#7e7777" iconLiteral="fas-user" iconSize="30" layoutX="337.0" layoutY="202.0" selectionEnd="0" selectionStart="0" />
       <FontIcon iconColor="#7e7777" iconLiteral="fas-user" iconSize="30" layoutX="867.0" layoutY="202.0" selectionEnd="0" selectionStart="0" text="" />
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-phone" iconSize="30" layoutX="334.0" layoutY="302.0" selectionEnd="0" selectionStart="0" />
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="337.0" layoutY="496.0" selectionEnd="0" selectionStart="0" />
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-calendar" iconSize="30" layoutX="336.0" layoutY="402.0" selectionEnd="0" selectionStart="0" text="" />
-      <Button fx:id="signUpButton" layoutX="588.0" layoutY="573.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" prefHeight="60.0" prefWidth="368.0" styleClass="loginbutton" stylesheets="@../Design/Login.css" text="SignUp" textFill="WHITE">
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-phone" iconSize="30" layoutX="334.0" layoutY="279.0" selectionEnd="0" selectionStart="0" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="337.0" layoutY="423.0" selectionEnd="0" selectionStart="0" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-calendar" iconSize="30" layoutX="336.0" layoutY="354.0" selectionEnd="0" selectionStart="0" text="" />
+      <Button fx:id="signUpButton" layoutX="588.0" layoutY="528.0" mnemonicParsing="false" onAction="#onSignUpButtonClick" prefHeight="60.0" prefWidth="368.0" styleClass="loginbutton" stylesheets="@../Design/Login.css" text="SignUp" textFill="WHITE">
          <font>
             <Font name="System Bold" size="30.0" />
          </font>
       </Button>
-      <RadioButton fx:id="genderMale" layoutX="898.0" layoutY="380.0" mnemonicParsing="false" text="Male" textFill="WHITE">
+      <RadioButton fx:id="genderMale" layoutX="903.0" layoutY="332.0" mnemonicParsing="false" text="Male" textFill="WHITE">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
@@ -74,28 +74,28 @@
             <ToggleGroup fx:id="Gender" />
          </toggleGroup>
       </RadioButton>
-      <RadioButton fx:id="genderFemale" layoutX="1081.0" layoutY="380.0" mnemonicParsing="false" text="Female" textFill="WHITE" toggleGroup="$Gender">
+      <RadioButton fx:id="genderFemale" layoutX="1086.0" layoutY="332.0" mnemonicParsing="false" text="Female" textFill="WHITE" toggleGroup="$Gender">
          <font>
             <Font name="System Bold" size="16.0" />
          </font>
       </RadioButton>
-      <PasswordField fx:id="signupConfirmPassword" focusTraversable="false" layoutX="857.0" layoutY="462.0" prefHeight="46.0" prefWidth="368.0" promptText="Confirm Password" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="867.0" layoutY="496.0" selectionEnd="0" selectionStart="0" text="" />
+      <PasswordField fx:id="signupConfirmPassword" focusTraversable="false" layoutX="859.0" layoutY="389.0" prefHeight="46.0" prefWidth="368.0" promptText="Confirm Password" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="867.0" layoutY="423.0" selectionEnd="0" selectionStart="0" text="" />
       <Label layoutX="861.0" layoutY="427.0" text="Confirm Password" textFill="WHITE" visible="false">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <TextField fx:id="patientEmail" focusTraversable="false" layoutX="857.0" layoutY="268.0" onAction="#phoneFieldCheck" prefHeight="46.0" prefWidth="368.0" promptText="Email" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
+      <TextField fx:id="patientEmail" focusTraversable="false" layoutX="857.0" layoutY="245.0" onAction="#phoneFieldCheck" prefHeight="46.0" prefWidth="368.0" promptText="Email" styleClass="signUptexfield" stylesheets="@../Design/SignUp.css" />
       <Label layoutX="856.0" layoutY="237.0" text="Email" textFill="WHITE" visible="false">
          <font>
             <Font size="19.0" />
          </font>
       </Label>
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-envelope" iconSize="30" layoutX="865.0" layoutY="302.0" selectionEnd="0" selectionStart="0" />
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-male" iconSize="40" layoutX="872.0" layoutY="406.0" selectionEnd="0" selectionStart="0" />
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-female" iconSize="40" layoutX="1054.0" layoutY="406.0" selectionEnd="0" selectionStart="0" />
-      <HBox alignment="CENTER" layoutX="446.0" layoutY="544.0" prefHeight="22.0" prefWidth="658.0">
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-envelope" iconSize="30" layoutX="865.0" layoutY="279.0" selectionEnd="0" selectionStart="0" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-male" iconSize="40" layoutX="877.0" layoutY="358.0" selectionEnd="0" selectionStart="0" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-female" iconSize="40" layoutX="1059.0" layoutY="358.0" selectionEnd="0" selectionStart="0" />
+      <HBox alignment="CENTER" layoutX="443.0" layoutY="494.0" prefHeight="22.0" prefWidth="658.0">
          <children>
             <Label fx:id="errorMessage" textFill="WHITE">
                <font>
@@ -104,27 +104,27 @@
             </Label>
          </children>
       </HBox>
-      <CheckBox fx:id="showPasswordBox" layoutX="340.0" layoutY="523.0" mnemonicParsing="false" text="Show Password" textFill="WHITE">
+      <CheckBox fx:id="showPasswordBox" layoutX="342.0" layoutY="450.0" mnemonicParsing="false" text="Show Password" textFill="WHITE">
          <font>
             <Font size="11.0" />
          </font>
       </CheckBox>
-      <CheckBox fx:id="showConfirmPasswordBox" layoutX="871.0" layoutY="523.0" mnemonicParsing="false" text="Show Password" textFill="WHITE">
+      <CheckBox fx:id="showConfirmPasswordBox" layoutX="873.0" layoutY="450.0" mnemonicParsing="false" text="Show Password" textFill="WHITE">
          <font>
             <Font size="11.0" />
          </font>
       </CheckBox>
-      <TextField fx:id="visiblePasswordField" layoutX="322.0" layoutY="462.0" prefHeight="46.0" prefWidth="368.0" styleClass="logintexfield" stylesheets="@../Design/Login.css" visible="false">
+      <TextField fx:id="visiblePasswordField" layoutX="324.0" layoutY="389.0" prefHeight="46.0" prefWidth="368.0" styleClass="logintexfield" stylesheets="@../Design/Login.css" visible="false">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <TextField fx:id="visibleConfirmPasswordField" layoutX="857.0" layoutY="462.0" prefHeight="46.0" prefWidth="368.0" styleClass="logintexfield" stylesheets="@../Design/Login.css" visible="false">
+      <TextField fx:id="visibleConfirmPasswordField" layoutX="859.0" layoutY="389.0" prefHeight="46.0" prefWidth="368.0" styleClass="logintexfield" stylesheets="@../Design/Login.css" visible="false">
          <font>
             <Font size="20.0" />
          </font>
       </TextField>
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="337.0" layoutY="496.0" selectionEnd="0" selectionStart="0" />
-      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="867.0" layoutY="496.0" selectionEnd="0" selectionStart="0" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="339.0" layoutY="423.0" selectionEnd="0" selectionStart="0" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-lock" iconSize="30" layoutX="869.0" layoutY="423.0" selectionEnd="0" selectionStart="0" />
    </children>
 </Pane>

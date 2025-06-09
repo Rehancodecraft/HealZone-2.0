@@ -28,6 +28,14 @@ public class VerifyPatientEmailController{
     private TextField resetPasswordPhone;
     @FXML
     private Label errorMessage;
+    @FXML
+    private void initialize(){
+        resetPasswordPhone.textProperty().addListener((observable,oldValue,newValue) ->{
+            if (!newValue.matches("\\d*") || newValue.length() > 11) {
+                resetPasswordPhone.setText(oldValue);
+            }
+        });
+    }
 
     @FXML
     protected void onOTPSendButtonClicked(ActionEvent event) {

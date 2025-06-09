@@ -1,14 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
@@ -29,6 +33,7 @@
       <top>
          <AnchorPane fx:id="welcomeBar" prefHeight="110.0" styleClass="welcomeBar" stylesheets="@../Design/MainView.css">
             <children>
+               <!-- Logo and Welcome Text -->
                <Label layoutX="161.0" layoutY="14.0" text="Welcome to Healzone " textFill="WHITE">
                   <font><Font name="SansSerif Bold" size="25.0" /></font>
                </Label>
@@ -38,21 +43,25 @@
                <Label fx:id="displayName" layoutX="439.0" layoutY="14.0" prefHeight="36.0" prefWidth="207.0" textFill="WHITE">
                   <font><Font name="SansSerif Bold" size="25.0" /></font>
                </Label>
+
+               <!-- Sidebar Toggle Button -->
                <FontIcon fx:id="sideBarButton" iconColor="WHITE" iconLiteral="fas-bars" iconSize="50" layoutX="44.0" layoutY="67.0" onMouseClicked="#toggleSideBar" styleClass="sideBarButton" />
-               <TextField fx:id="searchBar" layoutX="938.0" layoutY="40.0" prefHeight="38.0" prefWidth="414.0" promptText="Search Your Doctor" styleClass="searchBar" stylesheets="@../Design/HomePage.css">
-                  <font>
-                     <Font name="System Bold Italic" size="14.0" />
-                  </font>
-               </TextField>
-               <TextField fx:id="searchBar1" layoutX="904.0" layoutY="40.0" prefHeight="38.0" prefWidth="45.0" styleClass="searchBarIcon" stylesheets="@../Design/HomePage.css">
-                  <font>
-                     <Font size="14.0" />
-                  </font>
-               </TextField>
-               <FontIcon iconLiteral="fas-search" iconSize="30" layoutX="912.0" layoutY="71.0" selectionEnd="0" selectionStart="0" />
-               <Button fx:id="loginButton" layoutX="1471.0" layoutY="34.0" mnemonicParsing="false" prefHeight="49.0" prefWidth="53.0" styleClass="loginIcon" stylesheets="@../Design/HomePage.css" textFill="WHITE" visible="false">
+
+               <!-- Search Bar Container - Made Responsive -->
+               <HBox layoutX="750.0" layoutY="35.0" prefHeight="40.0" prefWidth="450.0" spacing="0" styleClass="searchContainer">
+                  <children>
+                     <TextField fx:id="searchBar" prefHeight="40.0" prefWidth="400.0" promptText="Search Your Doctor" styleClass="searchBar" stylesheets="@../Design/HomePage.css">
+                        <font>
+                           <Font name="System Bold Italic" size="14.0" />
+                        </font>
+                     </TextField>
+                  </children>
+               </HBox>
+
+               <!-- Login Button -->
+               <Button fx:id="loginButton" layoutX="1220.0" layoutY="34.0" mnemonicParsing="false" prefHeight="42.0" prefWidth="50.0" styleClass="loginIcon" stylesheets="@../Design/HomePage.css" textFill="WHITE" visible="false">
                   <graphic>
-                     <FontIcon iconColor="#1e3a8a" iconLiteral="fas-user" iconSize="40" selectionEnd="0" selectionStart="0" styleClass="loginButtonIcon" />
+                     <FontIcon iconColor="#1e3a8a" iconLiteral="fas-user" iconSize="30" styleClass="loginButtonIcon" />
                   </graphic>
                </Button>
             </children>
@@ -63,55 +72,166 @@
       <left>
          <AnchorPane fx:id="sideBar" opacity="0.89" prefHeight="674.0" prefWidth="228.0" styleClass="side-bar" stylesheets="@../Design/HomePage.css">
             <children>
-               <Label layoutX="53.0" layoutY="14.0" text="HealZone" textFill="WHITE">
-                  <font><Font name="SansSerif Bold" size="26.0" /></font>
-               </Label>
-               <Line endX="100.0" layoutX="115.0" layoutY="59.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0" />
-               <HBox alignment="CENTER" layoutY="88.0" prefHeight="42.0" prefWidth="228.0">
+               <!-- Sidebar Header -->
+               <VBox alignment="TOP_CENTER" prefHeight="674.0" prefWidth="228.0" spacing="10">
                   <children>
-                     <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="197.0" text="Dashboard">
-                        <font>
-                           <Font name="SansSerif Bold" size="20.0" />
-                        </font>
-                     </Button>
+                     <VBox alignment="CENTER" prefHeight="80.0" prefWidth="228.0">
+                        <children>
+                           <Label text="HealZone" textFill="WHITE">
+                              <font><Font name="SansSerif Bold" size="26.0" /></font>
+                           </Label>
+                           <Line endX="100.0" startX="-100.0" stroke="WHITE" strokeWidth="2.0" />
+                        </children>
+                        <VBox.margin>
+                           <Insets top="10.0" />
+                        </VBox.margin>
+                     </VBox>
+
+                     <!-- Navigation Buttons -->
+                     <VBox alignment="CENTER" prefWidth="228.0" spacing="10">
+                        <children>
+                           <Button fx:id="dashboardButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Dashboard">
+                              <font>
+                                 <Font name="SansSerif Bold" size="18.0" />
+                              </font>
+                           </Button>
+
+                           <Button fx:id="upcomingButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Upcoming">
+                              <font>
+                                 <Font name="SansSerif Bold" size="18.0" />
+                              </font>
+                           </Button>
+
+                           <Button fx:id="historyButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="History">
+                              <font>
+                                 <Font name="SansSerif Bold" size="18.0" />
+                              </font>
+                           </Button>
+
+                           <Button fx:id="profileButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Profile">
+                              <font>
+                                 <Font name="SansSerif Bold" size="18.0" />
+                              </font>
+                           </Button>
+                        </children>
+                        <VBox.margin>
+                           <Insets top="20.0" />
+                        </VBox.margin>
+                     </VBox>
+
+                     <!-- Spacer -->
+                     <VBox prefHeight="200.0" VBox.vgrow="ALWAYS" />
+
+                     <!-- Logout Button -->
+                     <VBox alignment="CENTER" prefWidth="228.0">
+                        <children>
+                           <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#onLogOutButtonClicked" prefHeight="42.0" prefWidth="190.0" styleClass="logoutButton" stylesheets="@../Design/HomePage.css" text="Logout">
+                              <font>
+                                 <Font name="System Bold" size="18.0" />
+                              </font>
+                           </Button>
+                        </children>
+                        <VBox.margin>
+                           <Insets bottom="20.0" />
+                        </VBox.margin>
+                     </VBox>
                   </children>
-               </HBox>
-               <HBox alignment="CENTER" layoutY="148.0" prefHeight="42.0" prefWidth="228.0">
-                  <children>
-                     <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="196.0" text="Upcoming">
-                        <font>
-                           <Font name="SansSerif Bold" size="20.0" />
-                        </font>
-                     </Button>
-                  </children>
-               </HBox>
-               <HBox alignment="CENTER" layoutY="208.0" prefHeight="42.0" prefWidth="228.0">
-                  <children>
-                     <Button mnemonicParsing="false" prefHeight="42.0" prefWidth="195.0" text="History">
-                        <font>
-                           <Font name="SansSerif Bold" size="20.0" />
-                        </font>
-                     </Button>
-                  </children>
-               </HBox>
-               <HBox alignment="CENTER" layoutX="1.0" layoutY="303.0" prefHeight="42.0" prefWidth="227.0">
-                  <children>
-                     <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#onLogOutButtonClicked" prefHeight="35.0" stylesheets="@../Design/HomePage.css" text="Logout">
-                        <font>
-                           <Font name="System Bold" size="20.0" />
-                        </font>
-                     </Button>
-                  </children>
-               </HBox>
+               </VBox>
             </children>
          </AnchorPane>
       </left>
 
       <!-- 🔸 Main Content Area -->
       <center>
-         <!-- Add your main content here over background if needed -->
-         <AnchorPane prefHeight="140.0" stylesheets="@../Design/HomePage.css">
-            <!-- Placeholder for now -->
+         <AnchorPane fx:id="mainContentPane" styleClass="mainContent" stylesheets="@../Design/HomePage.css">
+            <children>
+               <!-- Content Header -->
+               <VBox layoutX="20.0" layoutY="20.0" prefHeight="50.0" prefWidth="800.0" spacing="10">
+                  <children>
+                     <HBox alignment="CENTER_LEFT" prefHeight="40.0" spacing="20">
+                        <children>
+                           <Label fx:id="sectionTitle" text="Available Doctors" textFill="WHITE">
+                              <font>
+                                 <Font name="SansSerif Bold" size="24.0" />
+                              </font>
+                           </Label>
+
+                           <!-- Filter/Sort Controls -->
+                           <HBox spacing="10">
+                              <children>
+                                 <Button fx:id="filterButton" mnemonicParsing="false" prefHeight="35.0" styleClass="filterButton" text="Filter">
+                                    <graphic>
+                                       <FontIcon iconLiteral="fas-filter" iconSize="16" />
+                                    </graphic>
+                                 </Button>
+
+                                 <Button fx:id="sortButton" mnemonicParsing="false" prefHeight="35.0" styleClass="sortButton" text="Sort">
+                                    <graphic>
+                                       <FontIcon iconLiteral="fas-sort" iconSize="16" />
+                                    </graphic>
+                                 </Button>
+                              </children>
+                           </HBox>
+                        </children>
+                     </HBox>
+                  </children>
+               </VBox>
+
+               <!-- Scrollable Doctor Cards Container -->
+               <ScrollPane fx:id="doctorScrollPane" fitToWidth="true" hbarPolicy="NEVER" layoutX="20.0" layoutY="80.0" prefHeight="590.0" styleClass="doctorScrollPane" vbarPolicy="AS_NEEDED">
+                  <content>
+                     <VBox spacing="20">
+                        <children>
+                           <!-- Doctor Cards will be loaded here dynamically -->
+                           <FlowPane fx:id="doctorCardsContainer" alignment="TOP_LEFT" columnHalignment="CENTER" hgap="20.0" prefWrapLength="1000.0" vgap="20.0">
+                              <padding>
+                                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                              </padding>
+                           </FlowPane>
+
+                           <!-- Loading Indicator -->
+                           <VBox fx:id="loadingIndicator" alignment="CENTER" visible="false">
+                              <children>
+                                 <FontIcon iconLiteral="fas-spinner" iconSize="40" />
+                                 <Label text="Loading doctors..." textFill="WHITE">
+                                    <font>
+                                       <Font size="16.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </VBox>
+
+                           <!-- No Results Message -->
+                           <VBox fx:id="noResultsMessage" alignment="CENTER" visible="false">
+                              <children>
+                                 <FontIcon iconLiteral="fas-user-md" iconSize="60" />
+                                 <Label text="No doctors found" textFill="WHITE">
+                                    <font>
+                                       <Font name="SansSerif Bold" size="20.0" />
+                                    </font>
+                                 </Label>
+                                 <Label text="Try adjusting your search criteria" textFill="WHITE">
+                                    <font>
+                                       <Font size="14.0" />
+                                    </font>
+                                 </Label>
+                              </children>
+                           </VBox>
+                        </children>
+                        <padding>
+                           <Insets bottom="20.0" />
+                        </padding>
+                     </VBox>
+                  </content>
+               </ScrollPane>
+
+               <!-- Floating Action Button for Add Doctor (if admin) -->
+               <Button fx:id="addDoctorButton" layoutX="980.0" layoutY="580.0" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="fabButton" visible="false">
+                  <graphic>
+                     <FontIcon iconColor="WHITE" iconLiteral="fas-plus" iconSize="24" />
+                  </graphic>
+               </Button>
+            </children>
          </AnchorPane>
       </center>
 

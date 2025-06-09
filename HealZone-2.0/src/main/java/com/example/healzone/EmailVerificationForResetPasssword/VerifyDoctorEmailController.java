@@ -29,11 +29,17 @@ public class VerifyDoctorEmailController  {
     private Label errorMessage;
     @FXML
     private TextField resetPasswordCNIC;
-
+    @FXML
+    private void initialize(){
+        resetPasswordCNIC.textProperty().addListener((observable,oldValue,newValue) ->{
+            if (!newValue.matches("\\d*") || newValue.length() > 13) {
+                resetPasswordCNIC.setText(oldValue);
+            }
+        });
+    }
     @FXML
     protected void onOTPSendButtonClicked(ActionEvent event) {
         try {
-            System.out.println("on otp send button clicked from verifydoctorEmaillController");
             Doctor.setEmail(VerifyEmailField.getText());
             Doctor.setGovtID(resetPasswordCNIC.getText());
             if (!isEmailValid(VerifyEmailField.getText())) {

@@ -1,0 +1,322 @@
+.doctor-card {
+    -fx-background-color: white;
+    -fx-border-color: #e3f2fd;
+    -fx-border-width: 2;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 20, 0.3, 0, 8);
+    -fx-padding: 0;
+    -fx-transition: all 0.3s ease;
+}
+
+.doctor-card:hover {
+    -fx-border-color: #2196f3;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.2), 15, 0.5, 0, 4);
+    -fx-translate-y: -2;
+}
+
+/* Responsive behavior for sidebar visibility */
+.doctor-card.sidebar-visible {
+    -fx-max-width: 350px;
+    -fx-min-width: 280px;
+}
+
+.doctor-card.sidebar-hidden {
+    -fx-max-width: 450px;
+    -fx-min-width: 350px;
+}
+
+/* Card Content */
+.card-content {
+    -fx-padding: 5;
+}
+
+/* Doctor Info Section */
+.doctor-info-section {
+    -fx-padding: 0 0 10 0;
+}
+
+.profile-image-container {
+    -fx-padding: 5;
+}
+
+.profile-image {
+    -fx-border-radius: 50;
+    -fx-background-radius: 50;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0.3, 0, 2);
+}
+
+.profile-image:hover {
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.3), 12, 0.4, 0, 3);
+}
+
+/* Doctor Details */
+.doctor-details {
+    -fx-padding: 5 0;
+}
+
+.doctor-name {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.specialties {
+    -fx-font-size: 14px;
+    -fx-text-fill: #2196f3;
+    -fx-font-weight: bold;
+}
+
+.credentials {
+    -fx-font-size: 13px;
+    -fx-text-fill: #666666;
+}
+
+.experience-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+}
+
+.experience-value {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4caf50;
+}
+
+/* Action Buttons */
+.action-buttons {
+    -fx-padding: 0 5;
+}
+
+.book-appointment-btn {
+    -fx-background-color: linear-gradient(to bottom, #4caf50, #45a049);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.3), 8, 0.3, 0, 2);
+}
+
+.book-appointment-btn:hover {
+    -fx-background-color: linear-gradient(to bottom, #45a049, #3d8b40);
+    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.4), 10, 0.4, 0, 3);
+    -fx-translate-y: -1;
+}
+
+.view-profile-btn {
+    -fx-background-color: linear-gradient(to bottom, #2196f3, #1976d2);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.3), 8, 0.3, 0, 2);
+}
+
+.view-profile-btn:hover {
+    -fx-background-color: linear-gradient(to bottom, #1976d2, #1565c0);
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.4), 10, 0.4, 0, 3);
+    -fx-translate-y: -1;
+}
+
+/* Hospital Information */
+.hospital-info {
+    -fx-background-color: #e5e8ea;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 1;
+}
+
+.hospital-name {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.hospital-address {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+    -fx-wrap-text: true;
+}
+
+.consultation-fee-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #666666;
+}
+
+.consultation-fee {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ff5722;
+}
+
+/* Statistics Section */
+.stats-section {
+    -fx-background-color: #e5e8ea;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+}
+
+.stat-item {
+    -fx-alignment: center;
+}
+
+.stat-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #666666;
+    -fx-font-weight: normal;
+}
+
+.stat-value {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+/* Availability Section */
+.availability-section {
+    -fx-background-color: #e5e8ea;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 12;
+    -fx-border-color: #e9ecef;
+    -fx-border-width: 1;
+}
+
+.availability-title {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.days-row {
+    -fx-alignment: center-left;
+}
+
+.day-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #666666;
+    -fx-background-color: #e9ecef;
+    -fx-padding: 4 8;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-min-width: 30;
+    -fx-alignment: center;
+}
+
+.day-label-active {
+    -fx-font-size: 11px;
+    -fx-text-fill: #ffffff;
+    -fx-background-color: #0069ff;
+    -fx-padding: 4 8;
+    -fx-border-radius: 4;
+    -fx-background-radius: 4;
+    -fx-min-width: 30;
+    -fx-alignment: center;
+    -fx-font-weight: bold;
+}
+
+.time-slot {
+    -fx-alignment: center;
+}
+
+.time-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #666666;
+    -fx-font-weight: bold;
+}
+
+.time-separator {
+    -fx-font-size: 14px;
+    -fx-text-fill: #666666;
+}
+
+/* Responsive Design */
+/* Compact mode when sidebar is visible */
+.doctor-card.sidebar-visible .doctor-name {
+    -fx-font-size: 20px;
+}
+
+.doctor-card.sidebar-visible .action-buttons {
+    -fx-spacing: 8;
+}
+
+.doctor-card.sidebar-visible .book-appointment-btn,
+.doctor-card.sidebar-visible .view-profile-btn {
+    -fx-pref-width: 130;
+    -fx-font-size: 11px;
+}
+
+.doctor-card.sidebar-visible .stats-section {
+    -fx-spacing: 20;
+}
+
+.doctor-card.sidebar-visible .profile-image {
+    -fx-fit-height: 80;
+    -fx-fit-width: 80;
+}
+
+/* Mobile responsive styles */
+.doctor-card.mobile {
+    -fx-max-width: 100%;
+    -fx-min-width: 250px;
+}
+
+.doctor-card.mobile .doctor-info-section {
+    -fx-spacing: 10;
+}
+
+.doctor-card.mobile .doctor-name {
+    -fx-font-size: 18px;
+}
+
+.doctor-card.mobile .action-buttons {
+    -fx-spacing: 6;
+}
+
+.doctor-card.mobile .book-appointment-btn,
+.doctor-card.mobile .view-profile-btn {
+    -fx-pref-width: 120;
+    -fx-pref-height: 30;
+    -fx-font-size: 10px;
+}
+
+.doctor-card.mobile .stats-section {
+    -fx-spacing: 15;
+}
+
+.doctor-card.mobile .stat-value {
+    -fx-font-size: 14px;
+}
+
+.doctor-card.mobile .profile-image {
+    -fx-fit-height: 70;
+    -fx-fit-width: 70;
+}
+
+/* Animation classes for smooth transitions */
+.fade-in {
+    -fx-opacity: 0;
+    -fx-transition: -fx-opacity 0.3s ease;
+}
+
+.fade-in.visible {
+    -fx-opacity: 1;
+}
+
+/* Hover effects for interactive elements */
+.hospital-info:hover,
+.availability-section:hover {
+    -fx-border-color: #2196f3;
+    /*-fx-background-color: #ffffff;*/
+}
+
+.stats-section:hover {
+    /*-fx-background-color: #e3f2fd;*/
+}

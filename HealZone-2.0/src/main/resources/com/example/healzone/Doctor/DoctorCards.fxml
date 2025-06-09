@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox fx:id="doctorCard" maxWidth="Infinity" minWidth="1200.0" styleClass="doctor-card" stylesheets="@../Design/doctor-card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorCardsController">
+
+    <padding>
+        <Insets bottom="20" left="20" right="20" top="20" />
+    </padding>
+
+    <children>
+        <!-- Main Content Container -->
+        <VBox spacing="15" styleClass="card-content">
+
+            <!-- Doctor Info Section -->
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="doctor-info-section">
+                <!-- Profile Image -->
+                <VBox alignment="CENTER" styleClass="profile-image-container">
+                    <ImageView fx:id="profileImage" fitHeight="100" fitWidth="100" preserveRatio="true" styleClass="profile-image">
+                        <image>
+                            <Image url="@../Images/doctor.png" />
+                        </image>
+                    </ImageView>
+                </VBox>
+
+                <!-- Doctor Details -->
+                <VBox spacing="5" styleClass="doctor-details" HBox.hgrow="ALWAYS">
+                    <Label fx:id="doctorName" styleClass="doctor-name" />
+                    <Label fx:id="speciality" styleClass="specialties" />
+                    <Label fx:id="degrees" styleClass="credentials" />
+                    <HBox alignment="CENTER_LEFT" spacing="5">
+                        <Label styleClass="experience-label" text="Experience:" />
+                        <Label fx:id="experience" styleClass="experience-value" />
+                  <Label fx:id="experience1" styleClass="experience-value" text="Years" />
+                    </HBox>
+                </VBox>
+   
+                      <!-- Action Buttons -->
+                <VBox alignment="CENTER" spacing="10" styleClass="action-buttons">
+                    <Button fx:id="bookAppointmentButton" onAction="#onClickBookAppointmentButton" prefHeight="35" prefWidth="150.0" styleClass="book-appointment-btn" text="Book Appointment" />
+                    <Button fx:id="viewProfileButton" prefHeight="35" prefWidth="150.0" styleClass="view-profile-btn" text="View Profile" />
+                </VBox>
+            </HBox>
+
+            <!-- Hospital Information -->
+            <VBox prefHeight="59.0" prefWidth="483.0" spacing="8" styleClass="hospital-info">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label fx:id="hospitalName" styleClass="hospital-name" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Label styleClass="consultation-fee-label" text="Consultation Fee:" />
+                    <Label styleClass="consultation-fee" text="Rs." />
+               <Label fx:id="fee" styleClass="consultation-fee" />
+                </HBox>
+                <Label fx:id="hospitalAddress" styleClass="hospital-address" wrapText="true" />
+            </VBox>
+
+            <!-- Availability Section -->
+            <VBox spacing="8" styleClass="availability-section">
+                <Label styleClass="availability-title" text="Availability" />
+                <HBox alignment="CENTER" spacing="5" styleClass="days-row">
+                    <Label styleClass="day-label" text="Mon" />
+                    <Label styleClass="day-label-active" text="Tue" />
+                    <Label styleClass="day-label" text="Wed" />
+                    <Label styleClass="day-label" stylesheets="@../Design/doctor-card.css" text="Thu" />
+                    <Label styleClass="day-label-active" stylesheets="@../Design/doctor-card.css" text="Fri" />
+                    <Label styleClass="day-label" text="Sat" />
+                    <Label styleClass="day-label" text="Sun" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <HBox fx:id="availbleTime" alignment="CENTER" spacing="5" styleClass="time-slot">
+                        <Label fx:id="startTime" styleClass="time-label" />
+                        <Label styleClass="time-separator" text="—" />
+                        <Label fx:id="endTime" styleClass="time-label" />
+                    </HBox>
+                </HBox>
+            </VBox>
+
+            <!-- Statistics Row -->
+            <HBox alignment="CENTER" spacing="30" styleClass="stats-section">
+                <VBox alignment="CENTER" spacing="2" styleClass="stat-item">
+                    <Label fx:id="reviews" styleClass="stat-value" />
+                    <Label styleClass="stat-label" text="Reviews" />
+                </VBox>
+                <VBox alignment="CENTER" spacing="2" styleClass="stat-item">
+                    <Label fx:id="rating" styleClass="stat-value" />
+                    <Label styleClass="stat-label" text="Rating" />
+                </VBox>
+                <VBox alignment="CENTER" spacing="2" styleClass="stat-item">
+                    <Label fx:id="satisfaction" styleClass="stat-value" />
+                    <Label styleClass="stat-label" text="Satisfaction" />
+                </VBox>
+            </HBox>
+
+        </VBox>
+    </children>
+</VBox>

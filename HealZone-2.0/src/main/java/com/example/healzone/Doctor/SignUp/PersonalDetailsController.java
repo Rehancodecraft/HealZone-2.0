@@ -2,6 +2,7 @@ package com.example.healzone.Doctor.SignUp;
 
 import com.example.healzone.Doctor.Doctor;
 import com.example.healzone.StartView.MainViewController;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -16,33 +17,49 @@ import static com.example.healzone.DatabaseConnection.Doctors.*;
 import static com.example.healzone.Doctor.Doctor.getEmail;
 
 public class PersonalDetailsController {
-    //Personal Details
-    @FXML
-    private TextField firstNameField;
-    @FXML
-    private TextField lastNameField;
-    @FXML
-    private TextField phoneField;
-    @FXML
-    private TextField emailField;
-    @FXML
-    private TextField govtIDField;
-    @FXML
-    private Label errorMessage;
+
+
+        //Personal Details
+        @FXML
+        private TextField firstNameField;
+        @FXML
+        private TextField lastNameField;
+        @FXML
+        private TextField phoneField;
+        @FXML
+        private TextField emailField;
+        @FXML
+        private TextField govtIDField;
+        @FXML
+        private Label errorMessage;
+
+
     @FXML
     private void initialize(){
-        firstNameField.setText(Doctor.getFirstName());
-        lastNameField.setText(Doctor.getLastName());
-        phoneField.setText(Doctor.getPhone());
-        emailField.setText(Doctor.getEmail());
-        govtIDField.setText(Doctor.getGovtID());
+
+        firstNameField.setText(safeString(Doctor.getFirstName()));
+        lastNameField.setText(safeString(Doctor.getLastName()));
+        phoneField.setText(safeString(Doctor.getPhone()));
+        emailField.setText(safeString(Doctor.getEmail()));
+        govtIDField.setText(safeString(Doctor.getGovtID()));
+        phoneField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*") || newValue.length() > 11) {
+                phoneField.setText(oldValue); // Revert to previous value
+            }
+        });
+        govtIDField.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*") || newValue.length() > 13) {
+                govtIDField.setText(oldValue);
+            }
+        });
     }
     public void onPersonalDetailsNextButtonClicked(javafx.event.ActionEvent event){
-        Doctor.setFirstName(firstNameField.getText());
-        Doctor.setLastName(lastNameField.getText());
-        Doctor.setPhone(phoneField.getText());
-        Doctor.setEmail(emailField.getText());
-        Doctor.setGovtID(govtIDField.getText());
+        Doctor.setFirstName(firstNameField.getText().trim());
+        Doctor.setLastName(lastNameField.getText().trim());
+        Doctor.setPhone(phoneField.getText().trim());
+        Doctor.setEmail(emailField.getText().trim());
+        Doctor.setGovtID(govtIDField.getText().trim());
+
         if(isPersonalDetailsEmpty()) {
             errorMessage.setText("⚠️ Please fill in all fields!");
             return;
@@ -85,10 +102,9 @@ public class PersonalDetailsController {
                 e.printStackTrace();
             }
         }
-        System.out.println(Doctor.getFirstName());
-        System.out.println(Doctor.getLastName());
-        System.out.println(getEmail());
-        System.out.println(Doctor.getPhone());
-        System.out.println(Doctor.getGovtID());
+        System.out.println(phoneField.getText());
+    }
+    private String safeString(String value) {
+        return value != null ? value : "";
     }
 }

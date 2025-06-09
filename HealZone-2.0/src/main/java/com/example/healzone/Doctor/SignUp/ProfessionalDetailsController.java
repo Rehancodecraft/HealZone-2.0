@@ -24,10 +24,17 @@ public class ProfessionalDetailsController {
     @FXML
     private Label professionalDetailsErrorMessage;
     @FXML
+    private TextField experience;
+    @FXML
     private void initialize(){
-        specialization.setValue(Doctor.getSpecialization());
-        degreesField.setText(Doctor.getDegrees());
-        licenseNumberField.setText(Doctor.getMedicalLicenseNumber());
+        specialization.setValue(safeString(Doctor.getSpecialization()));
+        degreesField.setText(safeString(Doctor.getDegrees()));
+        licenseNumberField.focusedProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal && (licenseNumberField.getText() == null || licenseNumberField.getText().isEmpty())) {
+                licenseNumberField.setText("PMDC-");
+            }
+        });
+        licenseNumberField.setText(safeString(Doctor.getMedicalLicenseNumber()));
     }
     @FXML
     public void onProfessionalDetailsNextButtonClicked(javafx.event.ActionEvent event){
@@ -37,6 +44,7 @@ public class ProfessionalDetailsController {
             Doctor.setSpecialization((String) specialization.getValue());
             Doctor.setDegrees(degreesField.getText());
             Doctor.setMedicalLicenseNumber(licenseNumberField.getText());
+            Doctor.setExperience(experience.getText().trim());
             if (isProfessionalDetailsEmpty()) {
                 professionalDetailsErrorMessage.setText("⚠️ Please fill in all fields!");
                 return;
@@ -46,6 +54,9 @@ public class ProfessionalDetailsController {
             } else if (!isMedicalLicenseValid()) {
                 professionalDetailsErrorMessage.setText("⚠️ Please enter a valid License Number!");
                 return;
+            } else if (isExperienceEmpty()) {
+                    professionalDetailsErrorMessage.setText("⚠️ Please fill in all fields!");
+                    return;
             } else {
 
                 try {
@@ -79,5 +90,8 @@ public class ProfessionalDetailsController {
             System.err.println("Error loading PatientLogin: ");
             e.printStackTrace();
         }
+    }
+    private String safeString(String value) {
+        return value != null ? value : "";
     }
 }
