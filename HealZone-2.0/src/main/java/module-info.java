@@ -6,6 +6,7 @@ module com.example.healzone {
     requires java.sql;
     requires java.desktop;
     requires jakarta.activation;
+    requires org.kordamp.ikonli.javafx;
 
     opens com.example.healzone to javafx.fxml;
     exports com.example.healzone;

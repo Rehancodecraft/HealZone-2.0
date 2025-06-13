@@ -1,120 +1,124 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<VBox fx:id="upcomingAppointmentCard" maxWidth="Infinity" styleClass="upcoming-appointment-card" stylesheets="@../Design/doctor-card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
-
+<VBox fx:id="doctorCard" maxWidth="Infinity" minWidth="400.0" prefWidth="500.0" styleClass="main-background" stylesheets="@../Design/UpcomingAppointments.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.UpcomingAppointmentController">
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />
     </padding>
 
     <children>
+        <!-- Appointment Number -->
+        <HBox alignment="CENTER">
+            <Label fx:id="appointmentNo" text="Appointment No #015" textFill="WHITE">
+                <font>
+                    <Font name="System Bold" size="24.0" />
+                </font>
+            </Label>
+        </HBox>
+
         <!-- Main Content Container -->
         <VBox spacing="15" styleClass="card-content">
+            <!-- Doctor Info Section -->
+            <VBox spacing="8" styleClass="summary-card">
+                <HBox alignment="CENTER">
+                    <Label text="Doctor Details" textFill="WHITE">
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                    </Label>
+                </HBox>
+                <Label fx:id="doctorName" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+                <Label fx:id="speciality" textFill="#80deea">
+                    <font>
+                        <Font name="System" size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="hospitalName" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="hospitalAddress" textFill="#b0bec5">
+                    <font>
+                        <Font name="System" size="13.0" />
+                    </font>
+                </Label>
+            </VBox>
 
-            <!-- Appointment Status Header -->
-            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="status-header">
-                <Label fx:id="appointmentStatus" styleClass="appointment-status" text="CONFIRMED" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Label fx:id="appointmentId" styleClass="appointment-id" text="APT-001234" />
-            </HBox>
+            <!-- Patient Info Section -->
+            <VBox spacing="8" styleClass="summary-card">
+                <HBox alignment="CENTER">
+                    <Label text="Patient Details" textFill="WHITE">
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                    </Label>
+                </HBox>
+                <Label fx:id="patientName" textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="18.0" />
+                    </font>
+                </Label>
+                <Label fx:id="patientPhone" textFill="#b0bec5">
+                    <font>
+                        <Font name="System" size="14.0" />
+                    </font>
+                </Label>
+                <Label fx:id="patientDescription" textFill="#b0bec5" wrapText="true">
+                    <font>
+                        <Font name="System" size="13.0" />
+                    </font>
+                </Label>
+            </VBox>
 
-            <!-- Doctor and Appointment Info Section -->
-            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="appointment-info-section">
-                <!-- Profile Image -->
-                <VBox alignment="CENTER" styleClass="profile-image-container">
-                    <ImageView fx:id="doctorProfileImage" fitHeight="80" fitWidth="80" preserveRatio="true" styleClass="profile-image">
-                        <image>
-                            <Image url="@../Images/doctor.png" />
-                        </image>
-                    </ImageView>
-                </VBox>
-
-                <!-- Doctor and Appointment Details -->
-                <VBox spacing="8" styleClass="appointment-details" HBox.hgrow="ALWAYS">
-                    <Label fx:id="doctorName" styleClass="doctor-name" text="Dr. Rehan Shafiq" />
-                    <Label fx:id="specialties" styleClass="specialties" text="Cardiologist" />
-                    <Label fx:id="hospitalName" styleClass="hospital-name" text="City Hospital Sahiwal" />
-
-                    <!-- Date and Time Row -->
-                    <HBox alignment="CENTER_LEFT" spacing="15" styleClass="datetime-row">
-                        <HBox alignment="CENTER_LEFT" spacing="5">
-                            <ImageView fitHeight="16" fitWidth="16" preserveRatio="true" styleClass="icon">
-                                <image>
-                                    <Image url="@../Images/calendar.png" />
-                                </image>
-                            </ImageView>
-                            <Label fx:id="appointmentDate" styleClass="appointment-date" text="Monday, Dec 25, 2024" />
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="5">
-                            <ImageView fitHeight="16" fitWidth="16" preserveRatio="true" styleClass="icon">
-                                <image>
-                                    <Image url="@../Images/clock.png" />
-                                </image>
-                            </ImageView>
-                            <Label fx:id="appointmentTime" styleClass="appointment-time" text="10:00 AM" />
-                        </HBox>
-                    </HBox>
-                </VBox>
-
-                <!-- Fee Display -->
-                <VBox alignment="CENTER_RIGHT" spacing="2" styleClass="fee-section">
-                    <Label styleClass="fee-label" text="Fee Paid" />
-                    <Label fx:id="consultationFee" styleClass="fee-amount" text="Rs. 1,500" />
-                </VBox>
-            </HBox>
-
-            <!-- Patient Information -->
-            <VBox spacing="8" styleClass="patient-info-section">
-                <Label styleClass="section-label" text="Patient Information" />
-                <HBox alignment="CENTER_LEFT" spacing="20">
-                    <VBox spacing="3">
-                        <Label styleClass="info-label" text="Patient Name" />
-                        <Label fx:id="patientName" styleClass="info-value" text="Ahmed Hassan" />
-                    </VBox>
-                    <VBox spacing="3">
-                        <Label styleClass="info-label" text="Age" />
-                        <Label fx:id="patientAge" styleClass="info-value" text="35 Years" />
-                    </VBox>
-                    <VBox spacing="3">
-                        <Label styleClass="info-label" text="Phone" />
-                        <Label fx:id="patientPhone" styleClass="info-value" text="+92 300 1234567" />
-                    </VBox>
+            <!-- Appointment Details Section -->
+            <VBox spacing="8" styleClass="summary-card">
+                <HBox alignment="CENTER">
+                    <Label text="Appointment Details" textFill="WHITE">
+                        <font>
+                            <Font name="System Bold" size="16.0" />
+                        </font>
+                    </Label>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="5">
+                    <Label fx:id="startTime" textFill="#b0bec5">
+                        <font>
+                            <Font name="System Bold" size="14.0" />
+                        </font>
+                    </Label>
+                    <Label text="—" textFill="#b0bec5">
+                        <font>
+                            <Font name="System" size="14.0" />
+                        </font>
+                    </Label>
+                    <Label fx:id="endTime" textFill="#b0bec5">
+                        <font>
+                            <Font name="System Bold" size="14.0" />
+                        </font>
+                    </Label>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label fx:id="appointmentDate" textFill="#b0bec5">
+                        <font>
+                            <Font name="System" size="13.0" />
+                        </font>
+                    </Label>
+                    <Label fx:id="fee" textFill="#80deea">
+                        <font>
+                            <Font name="System Bold" size="13.0" />
+                        </font>
+                    </Label>
                 </HBox>
             </VBox>
-
-            <!-- Appointment Description (if available) -->
-            <VBox spacing="5" styleClass="description-section">
-                <Label styleClass="section-label" text="Description" />
-                <Label fx:id="appointmentDescription" styleClass="description-text" text="Routine cardiac checkup and consultation" wrapText="true" />
-            </VBox>
-
-            <!-- Time Status -->
-            <HBox alignment="CENTER_LEFT" spacing="10" styleClass="time-status-section">
-                <ImageView fitHeight="20" fitWidth="20" preserveRatio="true" styleClass="status-icon">
-                    <image>
-                        <Image url="@../Images/time-remaining.png" />
-                    </image>
-                </ImageView>
-                <Label fx:id="timeRemaining" styleClass="time-remaining" text="Appointment in 2 days, 5 hours" />
-                <Region HBox.hgrow="ALWAYS" />
-                <Label fx:id="appointmentCountdown" styleClass="countdown" text="48:05:30" />
-            </HBox>
-
-            <!-- Action Buttons -->
-            <HBox alignment="CENTER" spacing="15" styleClass="action-buttons-section">
-                <Button fx:id="rescheduleBtn" prefHeight="35" prefWidth="140.0" styleClass="reschedule-btn" text="Reschedule" />
-                <Button fx:id="cancelAppointmentBtn" prefHeight="35" prefWidth="140.0" styleClass="cancel-appointment-btn" text="Cancel" />
-                <Button fx:id="viewDetailsBtn" prefHeight="35" prefWidth="140.0" styleClass="view-details-btn" text="View Details" />
-            </HBox>
-
         </VBox>
     </children>
 </VBox>

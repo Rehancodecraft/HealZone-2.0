@@ -80,9 +80,6 @@ public class MainViewController {
     public void loadPatientOTPVerification(){
         loadView("/com/example/healzone/ResetPassword/PatientOTPverification.fxml");
     }
-    public void loadHomePage(){
-        loadView("/com/example/healzone/StartView/HomePage2.fxml");
-    }
     public void loadPatientResetPassword(){
         loadView("/com/example/healzone/ResetPassword/PatientResetPassword.fxml");
     }

@@ -6,6 +6,7 @@ import javafx.animation.FadeTransition;
 import javafx.animation.ParallelTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.ScaleTransition;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -99,43 +100,53 @@ public class PatientLoginController  {
     }
     @FXML
     public void onLoginButtonClicked(ActionEvent event) throws IOException {
-        if(patientEmail.getText().isEmpty()|| password.getText().isEmpty()){
+        if (patientEmail.getText().isEmpty() || password.getText().isEmpty()) {
             patientLoginErrorMessage.setText("⚠️ Please fill in all fields!");
             return;
-        }else {
-            boolean loggedIn = getCurrentPatient(patientEmail.getText(), password.getText());
-            if (loggedIn) {
-                SessionManager.logIn(Patient.getName());
-                System.out.println("Logged IN Successfully");
-                System.out.println(Patient.getName());
-                patientLoginErrorMessage.setText("⚠️ Logged IN As"+Patient.getName());
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/HomePage.fxml"));
-                Parent homePage = loader.load();
-                homePage.setOpacity(0);
-                homePage.setScaleX(0.98);
-                homePage.setScaleY(0.98);
+        }
 
-                Scene scene = ((Node) event.getSource()).getScene();
-                scene.setRoot(homePage);
+        boolean loggedIn = getCurrentPatient(patientEmail.getText(), password.getText());
+        if (loggedIn) {
+            SessionManager.logIn(Patient.getName());
+            patientLoginErrorMessage.setText("⚠️ Logged IN As " + Patient.getName());
 
-                // Fade + scale animation
-                FadeTransition fadeIn = new FadeTransition(Duration.millis(300), homePage);
-                fadeIn.setFromValue(0);
-                fadeIn.setToValue(1);
+            // Load HomePage in a background thread
+            new Thread(() -> {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/HomePage.fxml"));
+                    Parent homePage = loader.load();
 
-                ScaleTransition scaleIn = new ScaleTransition(Duration.millis(300), homePage);
-                scaleIn.setFromX(0.98);
-                scaleIn.setToX(1);
-                scaleIn.setFromY(0.98);
-                scaleIn.setToY(1);
+                    Platform.runLater(() -> {
+                        homePage.setOpacity(0);
+                        homePage.setScaleX(0.98);
+                        homePage.setScaleY(0.98);
 
-                ParallelTransition transition = new ParallelTransition(fadeIn, scaleIn);
-                transition.play();
-            } else {
-                patientLoginErrorMessage.setText("⚠️ Wrong credentials, click forget password or signup");
-            }
+                        Scene scene = ((Node) event.getSource()).getScene();
+                        scene.setRoot(homePage);
+
+                        // Fade + scale animation
+                        FadeTransition fadeIn = new FadeTransition(Duration.millis(300), homePage);
+                        fadeIn.setFromValue(0);
+                        fadeIn.setToValue(1);
+
+                        ScaleTransition scaleIn = new ScaleTransition(Duration.millis(300), homePage);
+                        scaleIn.setFromX(0.98);
+                        scaleIn.setToX(1);
+                        scaleIn.setFromY(0.98);
+                        scaleIn.setToY(1);
+
+                        new ParallelTransition(fadeIn, scaleIn).play();
+                    });
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Platform.runLater(() -> patientLoginErrorMessage.setText("⚠️ Failed to load home page."));
+                }
+            }).start();
+        } else {
+            patientLoginErrorMessage.setText("⚠️ Wrong credentials, click forget password or signup");
         }
     }
+
 
     private void closeLogInUpStage() {
         // Get the current window (Stage) from the sign-up button

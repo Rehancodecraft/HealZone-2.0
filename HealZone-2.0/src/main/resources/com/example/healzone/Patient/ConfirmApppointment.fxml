@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fitToWidth="true" prefHeight="700.0" prefWidth="600.0" styleClass="appointment-scroll-pane" stylesheets="@../Design/confirmappointment.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.ConfirmAppointmentController">
+<ScrollPane fx:id="confirmAppointmentScrollpane" fitToWidth="true" prefHeight="2000.0" prefWidth="600.0" styleClass="ScrollPane" stylesheets="@../Design/confirmappointment.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.ConfirmAppointmentController">
     <content>
         <VBox fx:id="confirmationContainer" maxWidth="Infinity" spacing="0" styleClass="confirmation-container">
             <padding>
@@ -83,21 +83,25 @@
                         <!-- Available Days -->
                         <VBox spacing="12">
                             <Label styleClass="field-label" text="Doctor Available On" />
-                            <FlowPane fx:id="availableDaysContainer" hgap="10.0" prefWrapLength="500.0" styleClass="available-days-container" vgap="10.0">
-                                <!-- Available day buttons will be populated dynamically -->
-                                <Button styleClass="day-btn-selected" text="Monday" />
-                                <Button styleClass="day-btn" text="Tuesday" />
-                                <Button styleClass="day-btn" text="Wednesday" />
-                                <Button styleClass="day-btn" text="Thursday" />
-                                <Button styleClass="day-btn" text="Friday" />
-                                <Button styleClass="day-btn" text="Saturday" />
-                            </FlowPane>
+                            <FlowPane fx:id="availableDaysContainer" hgap="10.0" prefWrapLength="500.0" styleClass="available-days-container" vgap="10.0" />
+                        </VBox>
+
+                        <!-- Available Time -->
+                        <VBox spacing="8">
+                            <Label styleClass="field-label" text="Available Time" />
+                            <HBox alignment="CENTER_LEFT" spacing="10">
+                        <children>
+                           <Label fx:id="startTimeConfirm" styleClass="time-label" />
+                           <Label styleClass="time-separator" text="—" />
+                           <Label fx:id="endTimeConfirm" styleClass="time-label" />
+                        </children>
+                            </HBox>
                         </VBox>
 
                         <!-- Date Selection -->
                         <VBox spacing="8">
                             <Label styleClass="field-label" text="Select Appointment Date" />
-                            <DatePicker fx:id="appointmentDatePicker" prefWidth="Infinity" styleClass="date-picker" />
+                            <DatePicker fx:id="appointmentDatePicker" focusTraversable="false" prefWidth="Infinity" promptText="Enter Date of Appointment" styleClass="date-picker" />
                         </VBox>
 
                         <!-- Patient Information -->
@@ -106,17 +110,17 @@
 
                             <VBox spacing="8">
                                 <Label styleClass="field-label" text="Patient Name" />
-                                <TextField fx:id="patientNameField" promptText="Enter patient full name" styleClass="input-field" />
+                                <TextField fx:id="patientNameField" focusTraversable="false" promptText="Enter patient full name" styleClass="input-field" />
                             </VBox>
 
                             <VBox spacing="8">
                                 <Label styleClass="field-label" text="Phone Number" />
-                                <TextField fx:id="patientPhoneField" promptText="Enter phone number" styleClass="input-field" />
+                                <TextField fx:id="patientPhoneField" focusTraversable="false" promptText="Enter phone number" styleClass="input-field" />
                             </VBox>
 
                             <VBox spacing="8">
                                 <Label styleClass="field-label" text="Age" />
-                                <TextField fx:id="patientAgeField" promptText="Enter age" styleClass="input-field" />
+                                <TextField fx:id="patientAgeField" focusTraversable="false" promptText="Enter age" styleClass="input-field" />
                             </VBox>
 
                             <VBox spacing="8">
@@ -149,6 +153,12 @@
                             </HBox>
 
                             <HBox alignment="CENTER_LEFT" spacing="10">
+                                <Label styleClass="summary-label" text="Time:" />
+                                <Region HBox.hgrow="ALWAYS" />
+                                <Label fx:id="selectedTimeLabel" styleClass="summary-value" />
+                            </HBox>
+
+                            <HBox alignment="CENTER_LEFT" spacing="10">
                                 <Label styleClass="summary-label" text="Doctor:" />
                                 <Region HBox.hgrow="ALWAYS" />
                                 <Label fx:id="summaryDoctorLabel" styleClass="summary-value" />
@@ -160,7 +170,7 @@
                                 <Label fx:id="summaryHospitalLabel" styleClass="summary-value" />
                             </HBox>
 
-                            <!-- Divider -->
+                               <!-- Divider -->
                             <Region prefHeight="5.0" styleClass="divider" />
 
                             <HBox alignment="CENTER_LEFT" spacing="10">

@@ -15,6 +15,17 @@ public class DoctorCardData {
     private List<String> reviews;
     private double averageRating;
     private double satisfactionScore;
+    private String govtId;
+
+    public String[] getAvailableDays() {
+        return availableDays;
+    }
+
+    public void setAvailableDays(String[] availableDays) {
+        this.availableDays = availableDays;
+    }
+
+    private String[] availableDays;
 
     public String getGovtId() {
         return govtId;
@@ -23,9 +34,6 @@ public class DoctorCardData {
     public void setGovtId(String govtId) {
         this.govtId = govtId;
     }
-
-    private String govtId;
-
     public String getFullName() {
         return fullName;
     }

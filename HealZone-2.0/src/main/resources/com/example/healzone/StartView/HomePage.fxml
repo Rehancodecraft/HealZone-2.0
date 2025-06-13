@@ -47,7 +47,7 @@
                <!-- Sidebar Toggle Button -->
                <FontIcon fx:id="sideBarButton" iconColor="WHITE" iconLiteral="fas-bars" iconSize="50" layoutX="44.0" layoutY="67.0" onMouseClicked="#toggleSideBar" styleClass="sideBarButton" />
 
-               <!-- Search Bar Container - Made Responsive -->
+               <!-- Search Bar Container -->
                <HBox layoutX="750.0" layoutY="35.0" prefHeight="40.0" prefWidth="450.0" spacing="0" styleClass="searchContainer">
                   <children>
                      <TextField fx:id="searchBar" prefHeight="40.0" prefWidth="400.0" promptText="Search Your Doctor" styleClass="searchBar" stylesheets="@../Design/HomePage.css">
@@ -90,13 +90,13 @@
                      <!-- Navigation Buttons -->
                      <VBox alignment="CENTER" prefWidth="228.0" spacing="10">
                         <children>
-                           <Button fx:id="dashboardButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Dashboard">
+                           <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#onDashboardButtonClicked" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Dashboard">
                               <font>
                                  <Font name="SansSerif Bold" size="18.0" />
                               </font>
                            </Button>
 
-                           <Button fx:id="upcomingButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Upcoming">
+                           <Button fx:id="upcomingButton" mnemonicParsing="false" onAction="#onUpcomingButtonClicked" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Upcoming">
                               <font>
                                  <Font name="SansSerif Bold" size="18.0" />
                               </font>
@@ -170,6 +170,12 @@
                                        <FontIcon iconLiteral="fas-sort" iconSize="16" />
                                     </graphic>
                                  </Button>
+
+                                 <Button fx:id="backButton" mnemonicParsing="false" onAction="#onBackButtonClicked" prefHeight="35.0" styleClass="filterButton" text="Back" visible="false">
+                                    <graphic>
+                                       <FontIcon iconLiteral="fas-arrow-left" iconSize="16" />
+                                    </graphic>
+                                 </Button>
                               </children>
                            </HBox>
                         </children>
@@ -182,7 +188,6 @@
                   <content>
                      <VBox spacing="20">
                         <children>
-                           <!-- Doctor Cards will be loaded here dynamically -->
                            <FlowPane fx:id="doctorCardsContainer" alignment="TOP_LEFT" columnHalignment="CENTER" hgap="20.0" prefWrapLength="1000.0" vgap="20.0">
                               <padding>
                                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
@@ -193,7 +198,7 @@
                            <VBox fx:id="loadingIndicator" alignment="CENTER" visible="false">
                               <children>
                                  <FontIcon iconLiteral="fas-spinner" iconSize="40" />
-                                 <Label text="Loading doctors..." textFill="WHITE">
+                                 <Label text="Loading..." textFill="WHITE">
                                     <font>
                                        <Font size="16.0" />
                                     </font>

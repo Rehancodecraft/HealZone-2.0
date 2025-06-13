@@ -1,0 +1,95 @@
+/* Main Background */
+.main-background {
+    -fx-background-color: #1b0599;
+    -fx-border-radius: 15;
+    -fx-background-radius: 15;
+    -fx-padding: 20;
+}
+
+/* Summary Card */
+.summary-card {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-padding: 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 8, 0.2, 0, 2);
+}
+
+.summary-card:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-border-color: #80deea;
+}
+
+/* Card Content */
+.card-content {
+    -fx-padding: 10;
+    -fx-spacing: 15;
+}
+
+/* Text Styles */
+.appointment-number {
+    -fx-font-size: 24px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+    -fx-padding: 0 0 15 0;
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.doctor-name, .patient-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.specialty, .consultation-fee {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #80deea;
+}
+
+.credentials, .info {
+    -fx-font-size: 13px;
+    -fx-text-fill: #b0bec5;
+}
+
+.time-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #b0bec5;
+}
+
+.time-separator {
+    -fx-font-size: 14px;
+    -fx-text-fill: #b0bec5;
+}
+
+/* Responsive Design */
+@media screen and (max-width: 600px) {
+    .main-background {
+        -fx-min-width: 300px;
+        -fx-max-width: 100%;
+    }
+
+    .appointment-number {
+        -fx-font-size: 20px;
+    }
+
+    .section-title {
+        -fx-font-size: 14px;
+    }
+
+    .doctor-name, .patient-name {
+        -fx-font-size: 16px;
+    }
+
+    .specialty, .credentials, .info, .time-label, .time-separator, .consultation-fee {
+        -fx-font-size: 12px;
+    }
+}
