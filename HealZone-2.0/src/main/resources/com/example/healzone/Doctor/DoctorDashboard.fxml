@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox fx:id="dashboardPane" alignment="TOP_CENTER" prefHeight="674.0" prefWidth="1322.0" spacing="20" styleClass="dashboard-pane" stylesheets="@../Design/DoctorDashboard.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.DoctorDashboardController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <!-- Appointment Stats -->
+    <HBox alignment="CENTER" spacing="20">
+        <children>
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="300.0" styleClass="stat-card">
+                <children>
+                    <Label fx:id="totalBookedLabel" text="Total Booked: 0" textFill="WHITE">
+                        <font>
+                            <Font name="SansSerif Bold" size="18.0" />
+                        </font>
+                    </Label>
+                </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="300.0" styleClass="stat-card">
+                <children>
+                    <Label fx:id="totalAttendedLabel" text="Total Attended: 0" textFill="WHITE">
+                        <font>
+                            <Font name="SansSerif Bold" size="18.0" />
+                        </font>
+                    </Label>
+                </children>
+            </VBox>
+            <VBox alignment="CENTER" prefHeight="100.0" prefWidth="300.0" styleClass="stat-card">
+                <children>
+                    <Label fx:id="totalRemainingLabel" text="Total Remaining: 0" textFill="WHITE">
+                        <font>
+                            <Font name="SansSerif Bold" size="18.0" />
+                        </font>
+                    </Label>
+                </children>
+            </VBox>
+        </children>
+    </HBox>
+    <!-- Search Patient -->
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <children>
+            <TextField fx:id="patientSearchBar" prefHeight="40.0" prefWidth="300.0" promptText="Search Patient by Name or Phone" styleClass="search-bar">
+                <font>
+                    <Font name="System Bold Italic" size="14.0" />
+                </font>
+            </TextField>
+            <Button fx:id="searchButton" mnemonicParsing="false" prefHeight="40.0" styleClass="action-button" text="Search">
+                <graphic>
+                    <FontIcon iconLiteral="fas-search" iconSize="16" iconColor="WHITE" />
+                </graphic>
+            </Button>
+        </children>
+    </HBox>
+    <!-- Next Appointment -->
+    <VBox fx:id="nextAppointmentPane" alignment="TOP_CENTER" prefHeight="300.0" prefWidth="600.0" spacing="10" styleClass="appointment-card" visible="false">
+        <children>
+            <Label text="Next Appointment" textFill="WHITE">
+                <font>
+                    <Font name="SansSerif Bold" size="20.0" />
+                </font>
+            </Label>
+            <Label fx:id="patientNameLabel" text="Patient: N/A" textFill="WHITE">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
+            <Label fx:id="appointmentNumberLabel" text="Appointment #: N/A" textFill="WHITE">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
+            <Label fx:id="patientPhoneLabel" text="Phone: N/A" textFill="WHITE">
+                <font>
+                    <Font size="16.0" />
+                </font>
+            </Label>
+            <HBox alignment="CENTER" spacing="20">
+                <children>
+                    <Button fx:id="attendButton" mnemonicParsing="false" prefHeight="40.0" styleClass="action-button" text="Mark as Attended">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-check" iconSize="16" iconColor="WHITE" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="viewHistoryButton" mnemonicParsing="false" prefHeight="40.0" styleClass="action-button" text="View Patient History">
+                        <graphic>
+                            <FontIcon iconLiteral="fas-history" iconSize="16" iconColor="WHITE" />
+                        </graphic>
+                    </Button>
+                </children>
+            </HBox>
+        </children>
+        <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+        </padding>
+    </VBox>
+    <!-- No Appointment Message -->
+    <VBox fx:id="noAppointmentPane" alignment="CENTER" prefHeight="300.0" prefWidth="600.0" spacing="10" styleClass="appointment-card" visible="false">
+        <children>
+            <FontIcon iconLiteral="fas-calendar-alt" iconSize="50" iconColor="WHITE" />
+            <Label text="No Appointments Scheduled" textFill="WHITE">
+                <font>
+                    <Font name="SansSerif Bold" size="20.0" />
+                </font>
+            </Label>
+        </children>
+    </VBox>
+</VBox>

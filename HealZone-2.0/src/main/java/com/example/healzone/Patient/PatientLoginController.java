@@ -113,7 +113,7 @@ public class PatientLoginController  {
             // Load HomePage in a background thread
             new Thread(() -> {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/HomePage.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/PatientHomePage.fxml"));
                     Parent homePage = loader.load();
 
                     Platform.runLater(() -> {

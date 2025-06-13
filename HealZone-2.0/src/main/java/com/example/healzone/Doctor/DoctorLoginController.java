@@ -91,7 +91,7 @@ public class DoctorLoginController {
 //                showAlert(Alert.AlertType.INFORMATION, "Success", "Login Successful");
                   doctorLoginErrorMessage.setText("Logged In successfully"+Doctor.getFirstName()+" "+Doctor.getLastName());
                 System.out.println("LoggedIn");
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/HomePage.fxml"));
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/PatientHomePage.fxml"));
                 Parent homePage = loader.load();
                 homePage.setOpacity(0);
                 homePage.setScaleX(0.98);
