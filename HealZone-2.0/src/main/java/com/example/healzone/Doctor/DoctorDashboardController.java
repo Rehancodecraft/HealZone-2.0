@@ -1,7 +1,8 @@
-
 package com.example.healzone.Doctor;
 
-import com.example.healzone.Appointment;
+import com.example.healzone.DatabaseConnection.Appointments;
+import com.example.healzone.Patient.PatientHistoryController;
+import com.example.healzone.SessionManager;
 import javafx.animation.FadeTransition;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
@@ -9,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
@@ -16,10 +18,18 @@ import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.ZoneId;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+
+import static com.example.healzone.DatabaseConnection.DatabaseConnection.connection;
 
 public class DoctorDashboardController {
     @FXML
@@ -49,15 +59,18 @@ public class DoctorDashboardController {
     @FXML
     private VBox noAppointmentPane;
 
-    private Appointment currentAppointment;
+    private Map<String, Object> currentAppointment;
     private String doctorId;
-    private LocalTime availabilityStartTime;
+    private static final ZoneId PAKISTAN_ZONE = ZoneId.of("Asia/Karachi");
 
     @FXML
     protected void initialize() {
-        doctorId = Doctor.getGovtID();
-        availabilityStartTime = Doctor.; // Assumed method
-        loadDashboardData();
+        doctorId = SessionManager.getCurrentDoctorId();
+        if (doctorId == null) {
+            showErrorAlert("Session Error", "No doctor logged in.");
+            return;
+        }
+        loadNextAppointment();
 
         // Setup search functionality
         searchButton.setOnAction(event -> searchPatient());
@@ -68,75 +81,65 @@ public class DoctorDashboardController {
         });
     }
 
-    private void loadDashboardData() {
-        Task<Void> loadTask = new Task<>() {
-            @Override
-            protected Void call() {
-                LocalDate today = LocalDate.now();
-                LocalTime now = LocalTime.now();
-                List<Appointment> appointments = Appointments.getAppointmentsForDoctorToday(doctorId, today);
-
-                int totalBooked = appointments.size();
-                int totalAttended = 0;
-                int totalRemaining = totalBooked;
-
-                boolean isBeforeAvailability = now.isBefore(availabilityStartTime);
-
-                if (!isBeforeAvailability) {
-                    totalAttended = (int) appointments.stream().filter(Appointment::isAttended).count();
-                    totalRemaining = totalBooked - totalAttended;
+    private LocalTime getAvailabilityStartTime() {
+        String dayOfWeek = LocalDate.now(PAKISTAN_ZONE).getDayOfWeek().toString().substring(0, 1).toUpperCase() +
+                LocalDate.now(PAKISTAN_ZONE).getDayOfWeek().toString().substring(1).toLowerCase();
+        String query = "SELECT start_time FROM doctor_availability WHERE govt_id = ? AND day_of_week = ?";
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ps.setString(2, dayOfWeek);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Time sqlStart = rs.getTime("start_time");
+                if (sqlStart != null) {
+                    return sqlStart.toLocalTime();
                 }
-
-                int finalTotalBooked = totalBooked;
-                int finalTotalAttended = totalAttended;
-                int finalTotalRemaining = totalRemaining;
-
-                Platform.runLater(() -> {
-                    totalBookedLabel.setText("Total Booked: " + finalTotalBooked);
-                    totalAttendedLabel.setText("Total Attended: " + finalTotalAttended);
-                    totalRemainingLabel.setText("Total Remaining: " + finalTotalRemaining);
-                    loadNextAppointment();
-                });
-
-                return null;
             }
-        };
+        } catch (Exception e) {
+            System.err.println("Error fetching availability: " + e.getMessage());
+        }
+        // Default to 9:00 AM if no availability
+        return LocalTime.of(9, 0);
+    }
 
-        loadTask.setOnFailed(event -> {
-            Platform.runLater(() -> {
-                System.err.println("Error loading dashboard data: " + loadTask.getException().getMessage());
-            });
-        });
+    // Setters for DoctorHomePageController
+    public void setTotalBooked(String value) {
+        totalBookedLabel.setText("Total Booked: " + value);
+    }
 
-        new Thread(loadTask).start();
+    public void setAttended(String value) {
+        totalAttendedLabel.setText("Total Attended: " + value);
+    }
+
+    public void setRemaining(String value) {
+        totalRemainingLabel.setText("Total Remaining: " + value);
     }
 
     private void loadNextAppointment() {
-        Task<Optional<Appointment>> loadTask = new Task<>() {
+        Task<Optional<Map<String, Object>>> loadTask = new Task<>() {
             @Override
-            protected Optional<Appointment> call() {
-                LocalDate today = LocalDate.now();
-                LocalTime now = LocalTime.now();
+            protected Optional<Map<String, Object>> call() {
+                LocalDate today = LocalDate.now(PAKISTAN_ZONE);
+                LocalTime now = LocalTime.now(PAKISTAN_ZONE);
+                LocalTime availabilityStartTime = getAvailabilityStartTime();
                 if (now.isBefore(availabilityStartTime)) {
                     return Optional.empty();
                 }
-                List<Appointment> appointments = Appointments.getAppointmentsForDoctorToday(doctorId, today);
+                List<Map<String, Object>> appointments = Appointments.getAppointmentsForDoctorToday(doctorId, today);
                 return appointments.stream()
-                        .filter(a -> !a.isAttended())
-                        .sorted((a1, a2) -> Integer.compare(a1.getAppointmentNumber(), a2.getAppointmentNumber()))
-                        .findFirst();
+                        .filter(a -> "Upcoming".equals(a.get("status")))
+                        .min((a1, a2) -> Integer.compare((Integer) a1.get("appointment_number"), (Integer) a2.get("appointment_number")));
             }
         };
 
         loadTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
-                Optional<Appointment> appointmentOpt = loadTask.getValue();
+                Optional<Map<String, Object>> appointmentOpt = loadTask.getValue();
                 if (appointmentOpt.isPresent()) {
-                    Appointment appointment = appointmentOpt.get();
-                    currentAppointment = appointment;
-                    patientNameLabel.setText("Patient: " + Patients.getPatientByPhone(appointment.getPatientPhone()).getName());
-                    appointmentNumberLabel.setText("Appointment #: " + appointment.getAppointmentNumber());
-                    patientPhoneLabel.setText("Phone: " + appointment.getPatientPhone());
+                    currentAppointment = appointmentOpt.get();
+                    patientNameLabel.setText("Patient: " + currentAppointment.get("patient_name"));
+                    appointmentNumberLabel.setText("Appointment #: " + currentAppointment.get("appointment_number"));
+                    patientPhoneLabel.setText("Phone: " + currentAppointment.get("patient_phone"));
                     nextAppointmentPane.setVisible(true);
                     noAppointmentPane.setVisible(false);
                     animateNode(nextAppointmentPane);
@@ -151,7 +154,7 @@ public class DoctorDashboardController {
 
         loadTask.setOnFailed(event -> {
             Platform.runLater(() -> {
-                System.err.println("Error loading next appointment: " + loadTask.getException().getMessage());
+                showErrorAlert("Appointment Error", "Failed to load next appointment: " + loadTask.getException().getMessage());
                 nextAppointmentPane.setVisible(false);
                 noAppointmentPane.setVisible(true);
             });
@@ -167,17 +170,18 @@ public class DoctorDashboardController {
             return;
         }
 
-        Task<Optional<Appointment>> searchTask = new Task<>() {
+        Task<Optional<Map<String, Object>>> searchTask = new Task<>() {
             @Override
-            protected Optional<Appointment> call() {
-                LocalDate today = LocalDate.now();
-                List<Appointment> appointments = Appointments.getAppointmentsForDoctorToday(doctorId, today);
+            protected Optional<Map<String, Object>> call() {
+                LocalDate today = LocalDate.now(PAKISTAN_ZONE);
+                List<Map<String, Object>> appointments = Appointments.getAppointmentsForDoctorToday(doctorId, today);
                 return appointments.stream()
-                        .filter(a -> !a.isAttended())
+                        .filter(a -> "Upcoming".equals(a.get("status")))
                         .filter(a -> {
-                            Patient patient = Patients.getPatientByPhone(a.getPatientPhone());
-                            return patient.getName().toLowerCase().contains(query.toLowerCase()) ||
-                                    a.getPatientPhone().contains(query);
+                            String patientName = (String) a.get("patient_name");
+                            String patientPhone = (String) a.get("patient_phone");
+                            return (patientName != null && patientName.toLowerCase().contains(query.toLowerCase())) ||
+                                    (patientPhone != null && patientPhone.contains(query));
                         })
                         .findFirst();
             }
@@ -185,13 +189,12 @@ public class DoctorDashboardController {
 
         searchTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
-                Optional<Appointment> appointmentOpt = searchTask.getValue();
+                Optional<Map<String, Object>> appointmentOpt = searchTask.getValue();
                 if (appointmentOpt.isPresent()) {
-                    Appointment appointment = appointmentOpt.get();
-                    currentAppointment = appointment;
-                    patientNameLabel.setText("Patient: " + Patients.getPatientByPhone(appointment.getPatientPhone()).getName());
-                    appointmentNumberLabel.setText("Appointment #: " + appointment.getAppointmentNumber());
-                    patientPhoneLabel.setText("Phone: " + appointment.getPatientPhone());
+                    currentAppointment = appointmentOpt.get();
+                    patientNameLabel.setText("Patient: " + currentAppointment.get("patient_name"));
+                    appointmentNumberLabel.setText("Appointment #: " + currentAppointment.get("appointment_number"));
+                    patientPhoneLabel.setText("Phone: " + currentAppointment.get("patient_phone"));
                     nextAppointmentPane.setVisible(true);
                     noAppointmentPane.setVisible(false);
                     animateNode(nextAppointmentPane);
@@ -206,7 +209,7 @@ public class DoctorDashboardController {
 
         searchTask.setOnFailed(event -> {
             Platform.runLater(() -> {
-                System.err.println("Error searching patient: " + searchTask.getException().getMessage());
+                showErrorAlert("Search Error", "Failed to search patient: " + searchTask.getException().getMessage());
                 nextAppointmentPane.setVisible(false);
                 noAppointmentPane.setVisible(true);
             });
@@ -217,27 +220,30 @@ public class DoctorDashboardController {
 
     @FXML
     protected void onAttendButtonClicked() {
-        if (currentAppointment == null) return;
+        if (currentAppointment == null) {
+            showErrorAlert("Action Error", "No appointment selected.");
+            return;
+        }
 
         Task<Void> attendTask = new Task<>() {
             @Override
             protected Void call() {
-                Appointments.markAsAttended(currentAppointment.getId());
+                Appointments.markAsAttended(doctorId, (Integer) currentAppointment.get("appointment_number"));
                 return null;
             }
         };
 
         attendTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
-                loadDashboardData();
                 patientSearchBar.clear();
                 currentAppointment = null;
+                loadNextAppointment();
             });
         });
 
         attendTask.setOnFailed(event -> {
             Platform.runLater(() -> {
-                System.err.println("Error marking appointment as attended: " + attendTask.getException().getMessage());
+                showErrorAlert("Update Error", "Failed to mark appointment as attended: " + attendTask.getException().getMessage());
             });
         });
 
@@ -246,13 +252,16 @@ public class DoctorDashboardController {
 
     @FXML
     protected void onViewHistoryButtonClicked() {
-        if (currentAppointment == null) return;
+        if (currentAppointment == null) {
+            showErrorAlert("Action Error", "No appointment selected.");
+            return;
+        }
 
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/PatientHistory.fxml"));
             Parent historyView = loader.load();
             PatientHistoryController controller = loader.getController();
-            controller.setPatientPhone(currentAppointment.getPatientPhone());
+            controller.setPatientPhone((String) currentAppointment.get("patient_phone"));
 
             Scene scene = dashboardPane.getScene();
             scene.setRoot(historyView);
@@ -262,7 +271,7 @@ public class DoctorDashboardController {
             fade.setToValue(1.0);
             fade.play();
         } catch (IOException e) {
-            System.err.println("Error loading patient history: " + e.getMessage());
+            showErrorAlert("Navigation Error", "Failed to load patient history: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -272,5 +281,13 @@ public class DoctorDashboardController {
         fade.setFromValue(0.0);
         fade.setToValue(1.0);
         fade.play();
+    }
+
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

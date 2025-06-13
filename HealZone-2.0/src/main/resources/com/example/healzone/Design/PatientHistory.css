@@ -1,0 +1,10 @@
+.history-pane {
+    -fx-background-color: transparent;
+}
+
+.list-view {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: white;
+}

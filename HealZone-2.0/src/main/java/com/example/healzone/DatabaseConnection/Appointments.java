@@ -1,4 +1,5 @@
 package com.example.healzone.DatabaseConnection;
+
 import com.example.healzone.Patient.UpcomingAppointmentModel;
 
 import java.sql.*;
@@ -13,28 +14,27 @@ import static com.example.healzone.DatabaseConnection.DatabaseConnection.connect
 public class Appointments {
     public static void createTableForAppointments() {
         String sql = """
-    CREATE TABLE IF NOT EXISTS appointments (
-        doctor_id VARCHAR(50) NOT NULL,
-        appointment_number INTEGER NOT NULL,
-        patient_phone VARCHAR(15) NOT NULL,
-        appointment_date DATE NOT NULL,
-        day_of_week VARCHAR(10) NOT NULL CHECK (day_of_week IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
-        start_time TIME,
-        end_time TIME,
-        consultation_fee VARCHAR(4) NOT NULL,
-        hospital_name VARCHAR(150) NOT NULL,
-        hospital_address TEXT NOT NULL,
-        doctor_name VARCHAR(100) NOT NULL,
-        patient_name VARCHAR(100),
-        speciality VARCHAR(100),  -- newly added column
-        status VARCHAR(20) CHECK (status IN ('Upcoming', 'Completed', 'Cancelled')),
-        created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-        PRIMARY KEY (doctor_id, appointment_number),
-        FOREIGN KEY (doctor_id) REFERENCES doctors(govt_id) ON DELETE CASCADE,
-        FOREIGN KEY (patient_phone) REFERENCES patients(phone_number) ON DELETE CASCADE
-    )
-    """;
-
+            CREATE TABLE IF NOT EXISTS appointments (
+                doctor_id VARCHAR(50) NOT NULL,
+                appointment_number INTEGER NOT NULL,
+                patient_phone VARCHAR(15) NOT NULL,
+                appointment_date DATE NOT NULL,
+                day_of_week VARCHAR(10) NOT NULL CHECK (day_of_week IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
+                start_time TIME,
+                end_time TIME,
+                consultation_fee VARCHAR(4) NOT NULL,
+                hospital_name VARCHAR(150) NOT NULL,
+                hospital_address TEXT NOT NULL,
+                doctor_name VARCHAR(100) NOT NULL,
+                patient_name VARCHAR(100),
+                speciality VARCHAR(100),
+                status VARCHAR(20) CHECK (status IN ('Upcoming', 'Completed', 'Cancelled')),
+                created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+                PRIMARY KEY (doctor_id, appointment_number),
+                FOREIGN KEY (doctor_id) REFERENCES doctors(govt_id) ON DELETE CASCADE,
+                FOREIGN KEY (patient_phone) REFERENCES patients(phone_number) ON DELETE CASCADE
+            )
+            """;
 
         try (Statement stmt = connection.createStatement()) {
             stmt.executeUpdate(sql);
@@ -44,7 +44,6 @@ public class Appointments {
             e.printStackTrace();
         }
     }
-
 
     public static int getAppointmentNo(String doctorGovtId) {
         String countQuery = "SELECT COALESCE(MAX(appointment_number), 0) FROM appointments WHERE doctor_id = ?";
@@ -62,11 +61,9 @@ public class Appointments {
         }
     }
 
-    public static void insertNewAppointment(String doctorGovtId, int appointmentNumber, String patientPhone,String patientName, LocalDate appointmentDate, String status) {
-        // Derive day_of_week from appointment_date
+    public static void insertNewAppointment(String doctorGovtId, int appointmentNumber, String patientPhone, String patientName, LocalDate appointmentDate, String status) {
         String dayOfWeek = appointmentDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
 
-        // Fetch consultation_fee, hospital_name, hospital_address from practice_information
         String practiceQuery = """
             SELECT consultation_fee, hospital_name, hospital_address
             FROM practice_information
@@ -91,7 +88,6 @@ public class Appointments {
             return;
         }
 
-        // Fetch doctor_name from doctors
         String doctorQuery = """
             SELECT first_name, last_name
             FROM doctors
@@ -112,30 +108,12 @@ public class Appointments {
             return;
         }
 
-        // Fetch patient_name from patients
-//        String patientQuery = """
-//            SELECT name
-//            FROM patients
-//            WHERE phone_number = ?
-//            """;
-//        String patientName = null;
-//        try (PreparedStatement patientStmt = connection.prepareStatement(patientQuery)) {
-//            patientStmt.setString(1, patientPhone);
-//            ResultSet rs = patientStmt.executeQuery();
-//            if (rs.next()) {
-//                patientName = rs.getString("name");
-//            }
-//        } catch (SQLException e) {
-//            System.err.println("Error fetching patient name: " + e.getMessage());
-//            e.printStackTrace();
-//            return;
-//        }
         LocalTime startTime = null;
         LocalTime endTime = null;
         try (PreparedStatement timeStmt = connection.prepareStatement("""
-        SELECT start_time, end_time FROM doctor_availability
-        WHERE govt_id = ? AND day_of_week = ?
-        """)) {
+            SELECT start_time, end_time FROM doctor_availability
+            WHERE govt_id = ? AND day_of_week = ?
+            """)) {
             timeStmt.setString(1, doctorGovtId);
             timeStmt.setString(2, dayOfWeek);
             ResultSet rs = timeStmt.executeQuery();
@@ -164,22 +142,19 @@ public class Appointments {
                 speciality = rs.getString("specialization");
             } else {
                 System.err.println("No specialization found for doctorGovtId: " + doctorGovtId);
-                return; // or throw an exception, based on how you want to handle it
+                return;
             }
-        }catch (SQLException e){
+        } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
 
-
         String insertQuery = """
-    INSERT INTO appointments (
-        doctor_id, appointment_number, patient_phone, appointment_date, day_of_week,
-        start_time, end_time,
-        consultation_fee, hospital_name, hospital_address,
-        doctor_name, patient_name, speciality, status
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    """;
-
+            INSERT INTO appointments (
+                doctor_id, appointment_number, patient_phone, appointment_date, day_of_week,
+                start_time, end_time, consultation_fee, hospital_name, hospital_address,
+                doctor_name, patient_name, speciality, status
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            """;
 
         try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
             stmt.setString(1, doctorGovtId);
@@ -194,23 +169,22 @@ public class Appointments {
             stmt.setString(10, hospitalAddress);
             stmt.setString(11, doctorName);
             stmt.setString(12, patientName);
-            stmt.setString(13, speciality); // inserted from professional_details
-            stmt.setString(14, "Upcoming");
+            stmt.setString(13, speciality);
+            stmt.setString(14, status);
             stmt.executeUpdate();
             System.out.println("Appointment inserted successfully");
         } catch (SQLException e) {
             System.err.println("Insert Error: " + e.getMessage());
         }
-
     }
 
     public static List<UpcomingAppointmentModel> getUpcomingAppointmentsForPatient(String phone) {
         String query = """
-        SELECT *
-        FROM appointments
-        WHERE patient_phone = ? AND status = 'Upcoming'
-        ORDER BY appointment_date, start_time
-        """;
+            SELECT *
+            FROM appointments
+            WHERE patient_phone = ? AND status = 'Upcoming'
+            ORDER BY appointment_date, start_time
+            """;
 
         List<UpcomingAppointmentModel> appointments = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
@@ -226,7 +200,6 @@ public class Appointments {
                     appt.setHospitalAddress(rs.getString("hospital_address"));
                     appt.setPatientName(rs.getString("patient_name"));
                     appt.setPatientPhone(rs.getString("patient_phone"));
-//                    appt.setPatientDescription(rs.getString("patient_description"));
                     appt.setAppointmentDate(rs.getDate("appointment_date").toLocalDate());
                     appt.setStartTime(rs.getTime("start_time").toLocalTime());
                     appt.setEndTime(rs.getTime("end_time").toLocalTime());
@@ -239,8 +212,6 @@ public class Appointments {
         }
         return appointments;
     }
-
-
 
     public static ResultSet getCompletedAppointmentsForPatient(String phoneNumber) {
         String query = """
@@ -330,6 +301,200 @@ public class Appointments {
             return appointments;
         } catch (SQLException e) {
             System.err.println("Error getting upcoming appointments for doctor: " + e.getMessage());
+            e.printStackTrace();
+            return appointments;
+        }
+    }
+
+    public static List<Map<String, Object>> getAppointmentsForDoctorToday(String doctorId, LocalDate date) {
+        String query = """
+            SELECT doctor_id, appointment_number, patient_phone, appointment_date, day_of_week,
+                   consultation_fee, hospital_name, hospital_address, doctor_name, patient_name,
+                   status, created_at
+            FROM appointments
+            WHERE doctor_id = ? AND appointment_date = ?
+            """;
+        List<Map<String, Object>> appointments = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ps.setDate(2, Date.valueOf(date));
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> appointment = new HashMap<>();
+                appointment.put("doctor_id", rs.getString("doctor_id"));
+                appointment.put("appointment_number", rs.getInt("appointment_number"));
+                appointment.put("patient_phone", rs.getString("patient_phone"));
+                appointment.put("appointment_date", rs.getDate("appointment_date"));
+                appointment.put("day_of_week", rs.getString("day_of_week"));
+                appointment.put("consultation_fee", rs.getString("consultation_fee"));
+                appointment.put("hospital_name", rs.getString("hospital_name"));
+                appointment.put("hospital_address", rs.getString("hospital_address"));
+                appointment.put("doctor_name", rs.getString("doctor_name"));
+                appointment.put("patient_name", rs.getString("patient_name"));
+                appointment.put("status", rs.getString("status"));
+                appointment.put("created_at", rs.getTimestamp("created_at"));
+                appointments.add(appointment);
+            }
+            return appointments;
+        } catch (SQLException e) {
+            System.err.println("Error getting today's appointments for doctor: " + e.getMessage());
+            e.printStackTrace();
+            return appointments;
+        }
+    }
+
+    public static void markAsAttended(String doctorId, int appointmentNumber) {
+        String query = """
+            UPDATE appointments
+            SET status = 'Completed'
+            WHERE doctor_id = ? AND appointment_number = ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ps.setInt(2, appointmentNumber);
+            int rows = ps.executeUpdate();
+            if (rows > 0) {
+                System.out.println("Appointment marked as attended: " + doctorId + ", " + appointmentNumber);
+            } else {
+                System.err.println("No appointment found to mark as attended: " + doctorId + ", " + appointmentNumber);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error marking appointment as attended: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    public static Map<String, Object> getAppointmentById(String doctorId, int appointmentNumber) {
+        String query = """
+            SELECT doctor_id, appointment_number, patient_phone, appointment_date, day_of_week,
+                   consultation_fee, hospital_name, hospital_address, doctor_name, patient_name,
+                   status, created_at
+            FROM appointments
+            WHERE doctor_id = ? AND appointment_number = ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ps.setInt(2, appointmentNumber);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                Map<String, Object> appointment = new HashMap<>();
+                appointment.put("doctor_id", rs.getString("doctor_id"));
+                appointment.put("appointment_number", rs.getInt("appointment_number"));
+                appointment.put("patient_phone", rs.getString("patient_phone"));
+                appointment.put("appointment_date", rs.getDate("appointment_date"));
+                appointment.put("day_of_week", rs.getString("day_of_week"));
+                appointment.put("consultation_fee", rs.getString("consultation_fee"));
+                appointment.put("hospital_name", rs.getString("hospital_name"));
+                appointment.put("hospital_address", rs.getString("hospital_address"));
+                appointment.put("doctor_name", rs.getString("doctor_name"));
+                appointment.put("patient_name", rs.getString("patient_name"));
+                appointment.put("status", rs.getString("status"));
+                appointment.put("created_at", rs.getTimestamp("created_at"));
+                return appointment;
+            }
+            return null;
+        } catch (SQLException e) {
+            System.err.println("Error getting appointment by ID: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static int getTotalBookedAppointments(String doctorId, LocalDate date) {
+        String query = """
+            SELECT COUNT(*) 
+            FROM appointments 
+            WHERE doctor_id = ? AND appointment_date = ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ps.setDate(2, Date.valueOf(date));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.err.println("Error getting total booked appointments: " + e.getMessage());
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static int getAttendedAppointments(String doctorId, LocalDate date) {
+        String query = """
+            SELECT COUNT(*) 
+            FROM appointments 
+            WHERE doctor_id = ? AND appointment_date = ? AND status = 'Completed'
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ps.setDate(2, Date.valueOf(date));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.err.println("Error getting attended appointments: " + e.getMessage());
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static int getRemainingAppointments(String doctorId, LocalDate date) {
+        String query = """
+            SELECT COUNT(*) 
+            FROM appointments 
+            WHERE doctor_id = ? AND appointment_date = ? AND status = 'Upcoming'
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ps.setDate(2, Date.valueOf(date));
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.err.println("Error getting remaining appointments: " + e.getMessage());
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    public static List<Map<String, Object>> getAppointmentHistoryForDoctor(String doctorId) {
+        String query = """
+            SELECT doctor_id, appointment_number, patient_phone, appointment_date, day_of_week,
+                   consultation_fee, hospital_name, hospital_address, doctor_name, patient_name,
+                   status, created_at
+            FROM appointments
+            WHERE doctor_id = ?
+            ORDER BY appointment_date DESC
+            """;
+        List<Map<String, Object>> appointments = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ResultSet rs = ps.executeQuery();
+            while (rs.next()) {
+                Map<String, Object> appointment = new HashMap<>();
+                appointment.put("doctor_id", rs.getString("doctor_id"));
+                appointment.put("appointment_number", rs.getInt("appointment_number"));
+                appointment.put("patient_phone", rs.getString("patient_phone"));
+                appointment.put("appointment_date", rs.getDate("appointment_date"));
+                appointment.put("day_of_week", rs.getString("day_of_week"));
+                appointment.put("consultation_fee", rs.getString("consultation_fee"));
+                appointment.put("hospital_name", rs.getString("hospital_name"));
+                appointment.put("hospital_address", rs.getString("hospital_address"));
+                appointment.put("doctor_name", rs.getString("doctor_name"));
+                appointment.put("patient_name", rs.getString("patient_name"));
+                appointment.put("status", rs.getString("status"));
+                appointment.put("created_at", rs.getTimestamp("created_at"));
+                appointments.add(appointment);
+            }
+            return appointments;
+        } catch (SQLException e) {
+            System.err.println("Error getting appointment history for doctor: " + e.getMessage());
             e.printStackTrace();
             return appointments;
         }

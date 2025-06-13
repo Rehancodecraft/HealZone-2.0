@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
+        <?import javafx.geometry.Insets?>
+        <?import javafx.scene.control.Button?>
+        <?import javafx.scene.control.Label?>
+        <?import javafx.scene.control.TextField?>
+        <?import javafx.scene.image.Image?>
+        <?import javafx.scene.image.ImageView?>
+        <?import javafx.scene.layout.AnchorPane?>
+        <?import javafx.scene.layout.BorderPane?>
+        <?import javafx.scene.layout.HBox?>
+        <?import javafx.scene.layout.StackPane?>
+        <?import javafx.scene.layout.VBox?>
+        <?import javafx.scene.shape.Line?>
+        <?import javafx.scene.text.Font?>
+        <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.StackPane?>
-<?import javafx.scene.shape.Line?>
-<?import javafx.scene.text.Font?>
-<?import org.kordamp.ikonli.javafx.FontIcon?>
-
-<?import javafx.scene.layout.VBox?>
-<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.HomePageController">
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorHomePageController">
    <!-- Background Image -->
    <ImageView fx:id="backgroundImage" fitHeight="800.0" fitWidth="1598.0" pickOnBounds="true" preserveRatio="false">
       <image>
@@ -100,12 +99,12 @@
                                  <Font name="SansSerif Bold" size="18.0" />
                               </font>
                            </Button>
-                           <Button fx:id="historyButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="History">
+                           <Button fx:id="historyButton" mnemonicParsing="false" onAction="#onHistoryButtonClicked" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="History">
                               <font>
                                  <Font name="SansSerif Bold" size="18.0" />
                               </font>
                            </Button>
-                           <Button fx:id="profileButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Profile">
+                           <Button fx:id="profileButton" mnemonicParsing="false" onAction="#onProfileButtonClicked" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Profile">
                               <font>
                                  <Font name="SansSerif Bold" size="18.0" />
                               </font>
@@ -138,7 +137,31 @@
 
       <!-- Main Content Area -->
       <center>
-         <AnchorPane fx:id="mainContentPane" styleClass="mainContent" stylesheets="@../Design/HomePage.css" />
+         <AnchorPane fx:id="mainContentPane" styleClass="mainContent" stylesheets="@../Design/HomePage.css">
+            <children>
+               <!-- Content Header -->
+               <VBox alignment="TOP_LEFT" layoutY="-14.0" prefHeight="69.0" prefWidth="462.0" spacing="10">
+                  <children>
+                     <HBox alignment="CENTER_LEFT" prefHeight="40.0" prefWidth="477.0" spacing="20">
+                        <children>
+                           <!-- Filter/Sort Controls -->
+                           <HBox spacing="10" />
+                        </children>
+                     </HBox>
+                  </children>
+                  <padding>
+                     <Insets left="20.0" top="20.0" />
+                  </padding>
+               </VBox>
+               <!-- Floating Action Button for Add Doctor (if admin) -->
+               <Button fx:id="addDoctorButton" mnemonicParsing="false" prefHeight="50.0" prefWidth="50.0" styleClass="action-button-round" text="+" visible="false" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="20.0">
+                  <graphic>
+                     <FontIcon iconColor="WHITE" iconLiteral="fas-plus" iconSize="24" />
+                  </graphic>
+               </Button>
+               <AnchorPane fx:id="rootContainer" layoutX="5.0" layoutY="6.0" prefHeight="666.0" prefWidth="1354.0" />
+            </children>
+         </AnchorPane>
       </center>
    </BorderPane>
 </StackPane>

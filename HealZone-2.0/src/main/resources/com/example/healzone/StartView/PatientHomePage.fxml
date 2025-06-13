@@ -17,7 +17,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.HomePageController">
+<StackPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.PatientHomePageController">
    <!-- Background Image -->
    <ImageView fx:id="backgroundImage" fitHeight="800.0" fitWidth="1598.0" pickOnBounds="true" preserveRatio="false">
       <image>

@@ -311,6 +311,7 @@ public class Doctors {
                 hasData = true;
                 // Scalar fields (set once from first row)
                 if (doctorData.isEmpty()) {
+                    System.out.println(rs.getString("govt_id"));
                     doctorData.put("govt_id", rs.getString("govt_id"));
                     doctorData.put("first_name", rs.getString("first_name"));
                     doctorData.put("last_name", rs.getString("last_name"));

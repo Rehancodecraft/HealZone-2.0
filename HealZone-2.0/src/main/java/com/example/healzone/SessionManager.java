@@ -2,13 +2,13 @@ package com.example.healzone;
 
 public class SessionManager {
     private static boolean loggedIn = false;
-    private static String currentUser;
+    private static String currentUser; // Stores doctor govtID or patient phone
+    private static boolean isDoctor = false;
 
     public static String isLoggedIn() {
-
-        if(loggedIn){
+        if (loggedIn) {
             return getCurrentUser();
-        }else{
+        } else {
             return null;
         }
     }
@@ -17,13 +17,26 @@ public class SessionManager {
         return currentUser;
     }
 
-    public static void logIn(String user) {
+    public static String getCurrentDoctorId() {
+        if (loggedIn && isDoctor) {
+            return currentUser; // Assumes currentUser is govtID for doctors
+        }
+        return null;
+    }
+
+    public static boolean isDoctor() {
+        return loggedIn && isDoctor;
+    }
+
+    public static void logIn(String user, boolean doctor) {
         loggedIn = true;
         currentUser = user;
+        isDoctor = doctor;
     }
 
     public static void logOut() {
         loggedIn = false;
         currentUser = null;
+        isDoctor = false;
     }
 }
