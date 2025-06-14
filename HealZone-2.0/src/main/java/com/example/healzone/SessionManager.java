@@ -1,5 +1,9 @@
 package com.example.healzone;
 
+import com.example.healzone.Doctor.Doctor;
+
+import javax.print.Doc;
+
 public class SessionManager {
     private static boolean loggedIn = false;
     private static String currentUser; // Stores doctor govtID or patient phone
@@ -38,5 +42,18 @@ public class SessionManager {
         loggedIn = false;
         currentUser = null;
         isDoctor = false;
+        Doctor.setGovtID(null);
+        Doctor.setFirstName(null);
+        Doctor.setLastName(null);
+        Doctor.setEmail(null);
+        Doctor.setPhone(null);
+        Doctor.setSpecialization(null);
+        Doctor.setDegrees(null);
+        Doctor.setMedicalLicenseNumber(null);
+        Doctor.setBio(null);
+        Doctor.setHospitalName(null);
+        Doctor.setHospitalAddress(null);
+        Doctor.setConsultationFee(null);
+
     }
 }

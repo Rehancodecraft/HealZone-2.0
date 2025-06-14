@@ -88,6 +88,8 @@ public class DoctorAppointmentHistoryController {
         setupFiltersAndSearch();
         loadHistoryStats();
         loadAppointmentHistory();
+        statusFilter.setDisable(true); // Disable status filter
+        statusFilter.setValue("Completed"); // Reflect the applied filter
     }
 
     private void setupFiltersAndSearch() {
@@ -349,14 +351,17 @@ public class DoctorAppointmentHistoryController {
             @Override
             protected List<Map<String, Object>> call() throws Exception {
                 String doctorId = SessionManager.getCurrentDoctorId();
-                return Appointments.getAppointmentHistoryForDoctor(doctorId);
+                return Appointments.getAppointmentHistoryForDoctor(doctorId)
+                        .stream()
+                        .filter(appointment -> "Completed".equalsIgnoreCase(String.valueOf(appointment.get("status"))))
+                        .collect(Collectors.toList());
             }
         };
 
         loadTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
                 originalHistoryData = loadTask.getValue();
-                filteredHistoryData = originalHistoryData;
+                filteredHistoryData = originalHistoryData; // No further status filtering needed
                 setHistoryData(filteredHistoryData);
             });
         });
@@ -397,7 +402,10 @@ public class DoctorAppointmentHistoryController {
             @Override
             protected List<Map<String, Object>> call() throws Exception {
                 String doctorId = SessionManager.getCurrentDoctorId();
-                return Appointments.getAppointmentHistoryForDoctor(doctorId);
+                return Appointments.getAppointmentHistoryForDoctor(doctorId)
+                        .stream()
+                        .filter(appointment -> "Completed".equalsIgnoreCase(String.valueOf(appointment.get("status"))))
+                        .collect(Collectors.toList());
             }
         };
 
