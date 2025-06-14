@@ -26,7 +26,7 @@
    <BorderPane fx:id="rootPane" prefHeight="800.0" prefWidth="1550.0">
       <!-- Top Welcome Bar -->
       <top>
-         <AnchorPane fx:id="welcomeBar" prefHeight="110.0" styleClass="welcomeBar" stylesheets="@../Design/MainView.css">
+         <AnchorPane fx:id="welcomeBar" prefHeight="0.0" prefWidth="1598.0" styleClass="welcomeBar" stylesheets="@../Design/MainView.css">
             <children>
                <!-- Logo and Welcome Text -->
                <Label layoutX="161.0" layoutY="14.0" text="Welcome to Healzone" textFill="WHITE">
@@ -151,7 +151,7 @@
                      <FontIcon iconColor="WHITE" iconLiteral="fas-plus" iconSize="24" />
                   </graphic>
                </Button>
-               <AnchorPane fx:id="rootContainer" layoutX="25.0" layoutY="20.0" prefHeight="652.0" prefWidth="1334.0" />
+               <AnchorPane fx:id="rootContainer" layoutX="25.0" layoutY="20.0" prefHeight="668.0" prefWidth="1334.0" />
             </children>
          </AnchorPane>
       </center>

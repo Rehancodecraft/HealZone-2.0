@@ -78,6 +78,8 @@ public class DoctorHomePageController {
 
         // Load dashboard by default with delay to ensure UI is ready
         Platform.runLater(() -> loadDashboard());
+        Node focustarget = dashboardButton;
+        focustarget.requestFocus();
     }
 
     // Reused from PatientHomePageController
@@ -248,6 +250,8 @@ public class DoctorHomePageController {
     private void onDashboardButtonClicked() {
 
         loadDashboard();
+        Node focustarget = dashboardButton;
+        focustarget.requestFocus();
     }
 
     private void loadDashboard() {
@@ -266,7 +270,6 @@ public class DoctorHomePageController {
 
                     Parent dashboard = loader.load();
                     DoctorDashboardController controller = loader.getController();
-
                     if (controller == null) {
                         throw new IOException("Failed to get DoctorDashboardController from FXML");
                     }
@@ -422,36 +425,54 @@ public class DoctorHomePageController {
 
     @FXML
     private void onHistoryButtonClicked() {
-        Task<List<Map<String, Object>>> loadTask = new Task<>() {
+        Task<Parent> loadTask = new Task<>() {
             @Override
-            protected List<Map<String, Object>> call() throws Exception {
-                return Appointments.getAppointmentHistoryForDoctor(doctorId);
+            protected Parent call() throws Exception {
+                try {
+                    // Load the DoctorAppointmentHistory.fxml
+                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/DoctorAppointmentHistory.fxml");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorAppointmentHistory.fxml"));
+
+                    if (loader.getLocation() == null) {
+                        throw new IOException("FXML file not found: /com/example/healzone/Doctor/DoctorAppointmentHistory.fxml");
+                    }
+
+                    Parent historyPage = loader.load();
+                    DoctorAppointmentHistoryController controller = loader.getController();
+
+                    if (controller == null) {
+                        throw new IOException("Failed to get DoctorAppointmentHistoryController from FXML");
+                    }
+
+                    // Pass the appointment history data to the controller
+                    List<Map<String, Object>> history = Appointments.getAppointmentHistoryForDoctor(doctorId);
+                    controller.setHistoryData(history);
+
+                    // Store controller for potential future access
+                    historyPage.getProperties().put("controller", controller);
+                    System.out.println("History page loaded successfully");
+                    return historyPage;
+                } catch (Exception e) {
+                    System.err.println("Error loading history page: " + e.getMessage());
+                    e.printStackTrace();
+                    throw e;
+                }
             }
         };
 
         loadTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
-                if (rootContainer != null) {
-                    rootContainer.getChildren().clear();
-                    List<Map<String, Object>> history = loadTask.getValue();
-                    VBox contentVBox = new VBox(10);
-                    if (history.isEmpty()) {
-                        contentVBox.getChildren().add(new Label("No appointment history."));
+                try {
+                    Parent historyPage = loadTask.getValue();
+                    if (rootContainer != null && historyPage != null) {
+                        rootContainer.getChildren().setAll(historyPage);
+                        animateContent();
                     } else {
-                        for (Map<String, Object> appt : history) {
-                            VBox apptBox = new VBox(5);
-                            apptBox.getChildren().addAll(
-                                    new Label("Patient: " + appt.get("patient_name")),
-                                    new Label("Phone: " + appt.get("patient_phone")),
-                                    new Label("Date: " + appt.get("appointment_date")),
-                                    new Label("Status: " + appt.get("status"))
-                            );
-                            apptBox.setStyle("-fx-padding: 10; -fx-border-color: gray; -fx-border-width: 1;");
-                            contentVBox.getChildren().add(apptBox);
-                        }
+                        showErrorAlert("Load Error", "History page or container is null");
                     }
-                    rootContainer.getChildren().setAll(contentVBox);
-                    animateContent();
+                } catch (Exception e) {
+                    System.err.println("Error setting history content: " + e.getMessage());
+                    showErrorAlert("Load Error", "Failed to set history content: " + e.getMessage());
                 }
             });
         });
@@ -460,6 +481,7 @@ public class DoctorHomePageController {
             Platform.runLater(() -> {
                 Throwable exception = loadTask.getException();
                 String errorMessage = exception != null ? exception.getMessage() : "Unknown error";
+                System.err.println("History load failed: " + errorMessage);
                 showErrorAlert("Load Error", "Failed to load history: " + errorMessage);
             });
         });

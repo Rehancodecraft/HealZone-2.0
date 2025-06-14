@@ -15,23 +15,22 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox alignment="TOP_CENTER" prefHeight="520.0" prefWidth="1200.0" spacing="12" styleClass="history-container" stylesheets="@../Design/DoctorAppointmentHistory.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorAppointmentHistoryController">
-
+<VBox alignment="TOP_CENTER" prefHeight="520.0" prefWidth="1200.0" spacing="12" styleClass="appointments-container" stylesheets="@../Design/DoctorAppointmentHistory.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorAppointmentHistoryController">
     <!-- Header Section -->
-    <VBox spacing="6" styleClass="history-header">
+    <VBox spacing="6" styleClass="appointments-header">
         <HBox alignment="CENTER_LEFT" spacing="10">
             <FontIcon iconColor="WHITE" iconLiteral="fas-history" iconSize="18" />
-            <Label prefHeight="25.0" prefWidth="280.0" styleClass="history-title" text="Appointment History">
+            <Label prefHeight="25.0" prefWidth="280.0" styleClass="appointments-title" text="Appointment History">
                 <font>
                     <Font name="SansSerif Bold" size="18.0" />
                 </font>
             </Label>
-            <Region prefHeight="30.0" prefWidth="100.0" />
-            <HBox fx:id="historyStats" alignment="CENTER_LEFT" spacing="12" styleClass="history-stats">
+            <Region prefHeight="30.0" prefWidth="122.0" />
+            <HBox fx:id="historyStats" alignment="CENTER_LEFT" spacing="12" styleClass="appointments-stats">
                 <!-- Stats will be populated dynamically -->
             </HBox>
-            <Region prefHeight="30.0" prefWidth="300.0" />
-            <Button fx:id="refreshButton" onAction="#refreshHistory" prefHeight="28.0" prefWidth="100.0" styleClass="refresh-button" text="Refresh">
+            <Region prefHeight="30.0" prefWidth="378.0" />
+            <Button fx:id="refreshButton" onAction="#refreshHistory" prefHeight="28.0" prefWidth="100.0" styleClass="refresh-button" stylesheets="@../Design/DoctorAppointmentHistory.css" text="Refresh">
                 <graphic>
                     <FontIcon iconColor="WHITE" iconLiteral="fas-sync-alt" iconSize="11" />
                 </graphic>
@@ -41,7 +40,7 @@
             </Button>
         </HBox>
         <HBox alignment="CENTER_LEFT" spacing="20">
-            <Label styleClass="history-subtitle" text="View and manage your completed appointments">
+            <Label styleClass="appointments-subtitle" text="View and manage your completed appointments">
                 <font>
                     <Font name="SansSerif" size="12.0" />
                 </font>
@@ -50,10 +49,10 @@
     </VBox>
 
     <!-- Search and Filter Section -->
-    <VBox spacing="8">
+    <VBox spacing="6">
         <!-- Search Bar -->
         <HBox alignment="CENTER" spacing="10">
-            <TextField fx:id="patientSearchBar" prefHeight="40.0" prefWidth="300.0" promptText="Search Patient by Name or Phone" styleClass="search-bar">
+            <TextField fx:id="patientSearchBar" prefHeight="40.0" prefWidth="300.0" promptText="Search Patient by Name or Phone" styleClass="search-bar" stylesheets="@../Design/DoctorAppointmentHistory.css">
                 <font>
                     <Font name="System Bold Italic" size="14.0" />
                 </font>
@@ -71,7 +70,7 @@
         </HBox>
 
         <!-- Filter and Sort Section -->
-        <HBox alignment="CENTER" spacing="15">
+        <HBox alignment="CENTER" spacing="12">
             <Label styleClass="filter-label" text="From:">
                 <font>
                     <Font name="SansSerif Bold" size="12.0" />
@@ -115,15 +114,15 @@
     </VBox>
 
     <!-- Table Container -->
-    <VBox prefHeight="350.0" prefWidth="1150.0" spacing="4" VBox.vgrow="ALWAYS">
+    <VBox prefHeight="380.0" prefWidth="1150.0" spacing="4" VBox.vgrow="ALWAYS">
         <!-- Table ScrollPane -->
-        <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" minHeight="310.0" prefHeight="350.0" prefWidth="1150.0" styleClass="table-scroll-pane" VBox.vgrow="ALWAYS">
-            <TableView fx:id="historyTable" prefHeight="310.0" prefWidth="1146.0" styleClass="history-table">
+        <ScrollPane fx:id="scrollPane" fitToHeight="true" fitToWidth="true" minHeight="340.0" prefHeight="380.0" prefWidth="1150.0" styleClass="table-scroll-pane" VBox.vgrow="ALWAYS">
+            <TableView fx:id="historyTable" prefHeight="340.0" prefWidth="1146.0" styleClass="table-view">
                 <columns>
-                    <TableColumn fx:id="appointmentNumberColumn" prefWidth="100.0" styleClass="appointment-number-column" text="Appointment #" />
-                    <TableColumn fx:id="patientNameColumn" prefWidth="180.0" styleClass="patient-name-column" text="Patient Name" />
-                    <TableColumn fx:id="phoneColumn" prefWidth="130.0" styleClass="phone-column" text="Phone Number" />
-                    <TableColumn fx:id="dateColumn" prefWidth="160.0" styleClass="date-column" text="Date and Time" />
+                    <TableColumn fx:id="appointmentNumberColumn" prefWidth="120.0" styleClass="appointment-number-column" text="Appointment #" />
+                    <TableColumn fx:id="patientNameColumn" prefWidth="200.0" styleClass="patient-name-column" text="Patient Name" />
+                    <TableColumn fx:id="phoneColumn" prefWidth="150.0" styleClass="phone-column" text="Phone Number" />
+                    <TableColumn fx:id="dateColumn" prefWidth="180.0" styleClass="date-column" text="Date and Time" />
                     <TableColumn fx:id="statusColumn" prefWidth="100.0" styleClass="status-column" text="Status" />
                     <TableColumn fx:id="diagnosisColumn" prefWidth="200.0" styleClass="diagnosis-column" text="Diagnosis" />
                     <TableColumn fx:id="actionColumn" prefWidth="146.0" styleClass="action-column" text="Actions" />
@@ -135,7 +134,7 @@
         </ScrollPane>
 
         <!-- No History Label -->
-        <Label fx:id="noHistoryLabel" alignment="CENTER" maxWidth="Infinity" styleClass="no-history-label" text="No appointment history found" visible="false" wrapText="true">
+        <Label fx:id="noHistoryLabel" alignment="CENTER" maxWidth="Infinity" styleClass="no-appointments-label" text="No appointment history found" visible="false" wrapText="true">
             <graphic>
                 <FontIcon iconColor="rgba(255, 255, 255, 0.5)" iconLiteral="fas-calendar-times" iconSize="24" />
             </graphic>

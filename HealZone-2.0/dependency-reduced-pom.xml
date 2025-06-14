@@ -83,6 +83,13 @@
         </exclusion>
       </exclusions>
     </dependency>
+    <dependency>
+      <groupId>org.jfxtras</groupId>
+      <artifactId>jmetro</artifactId>
+      <version>11.6.16</version>
+      <type>pom</type>
+      <scope>compile</scope>
+    </dependency>
   </dependencies>
   <properties>
     <maven.compiler.source>21</maven.compiler.source>

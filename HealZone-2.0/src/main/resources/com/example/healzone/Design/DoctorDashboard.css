@@ -38,10 +38,10 @@
     -fx-cursor: hand;
 }
 
-.action-button:hover {
-    -fx-background-color: #2b4ea0;
-}
+/*.action-button:hover {*/
+/*    -fx-background-color: #2b4ea0;*/
+/*}*/
 
-.action-button:pressed {
-    -fx-background-color: #15306b;
-}
+/*.action-button:pressed {*/
+/*    -fx-background-color: #15306b;*/
+/*}*/

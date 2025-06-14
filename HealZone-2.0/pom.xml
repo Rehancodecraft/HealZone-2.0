@@ -90,6 +90,15 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <!-- JMetro Dependency -->
+        <!-- https://mvnrepository.com/artifact/org.jfxtras/jmetro -->
+        <dependency>
+            <groupId>org.jfxtras</groupId>
+            <artifactId>jmetro</artifactId>
+            <version>11.6.16</version>
+            <type>pom</type>
+        </dependency>
+
     </dependencies>
     <build>
         <plugins>

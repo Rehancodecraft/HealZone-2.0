@@ -1,0 +1,445 @@
+/* Main content area - matches dashboard theme */
+.mainContent {
+    -fx-background-color: transparent;
+    -fx-padding: 15;
+}
+
+/* Container for the entire appointments section */
+.appointments-container {
+    -fx-background-color: transparent;
+    -fx-background-radius: 12px;
+    -fx-border-radius: 12px;
+    -fx-padding: 18px;
+    -fx-spacing: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 0, 2);
+}
+
+/* Header section styling */
+.appointments-header {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-padding: 12px 16px;
+    -fx-alignment: center-left;
+}
+
+.appointments-title {
+    -fx-text-fill: white;
+    -fx-font-family: "SansSerif Bold";
+    -fx-font-size: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 2, 0, 0, 1);
+}
+
+.appointments-subtitle {
+    -fx-text-fill: rgba(255, 255, 255, 0.8);
+    -fx-font-family: "SansSerif";
+    -fx-font-size: 13px;
+}
+
+/* Search bar styling */
+.search-bar {
+    -fx-background-color: rgba(255, 255, 255, 0.2);
+    -fx-background-radius: 20px;
+    -fx-border-radius: 20px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255, 255, 255, 0.5);
+    -fx-padding: 10px;
+}
+
+/* Action buttons styling */
+.action-button {
+    -fx-background-color: #1e3a8a;
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+}
+
+/* Filter controls styling */
+.filter-label {
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
+    -fx-font-family: "SansSerif Bold";
+    -fx-font-size: 12px;
+}
+
+.date-picker {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0, 0, 1);
+}
+
+.date-picker:focused {
+    -fx-border-color: rgba(96, 165, 250, 0.6);
+    -fx-border-width: 2;
+}
+
+.date-picker .text-field {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255, 255, 255, 0.6);
+}
+
+.date-picker .arrow-button {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.date-picker .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+.combo-box {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0, 0, 1);
+}
+
+.combo-box:focused {
+    -fx-border-color: rgba(96, 165, 250, 0.6);
+    -fx-border-width: 2;
+}
+
+.combo-box .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.combo-box .arrow-button {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+}
+
+.combo-box .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+.filter-button {
+    -fx-background-color: linear-gradient(to bottom, #059669, #10b981);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-family: "SansSerif Bold";
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0, 0, 1);
+}
+
+.filter-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #10b981, #34d399);
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.4), 5, 0, 0, 2);
+}
+
+.filter-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #047857, #059669);
+}
+
+.reset-button {
+    -fx-background-color: linear-gradient(to bottom, #7c3aed, #8b5cf6);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-family: "SansSerif Bold";
+    -fx-padding: 8px 16px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0, 0, 1);
+}
+.reset-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #8b5cf6, #a78bfa);
+    -fx-effect: dropshadow(gaussian, rgba(139, 92, 246, 0.4), 5, 0, 0, 2);
+}
+
+.reset-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #6d28d9, #7c3aed);
+}
+
+/* ScrollPane styling - glassmorphism effect */
+.table-scroll-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 6, 0, 0, 2);
+}
+
+/* TableView styling - modern glassmorphism */
+.table-view {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 10;
+    -fx-border-radius: 10;
+}
+
+/* Remove default table background */
+.table-view .filler {
+    -fx-background-color: transparent;
+}
+
+/* Column headers - enhanced styling for better visibility */
+.table-view .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, rgba(8, 47, 73, 0.95), rgba(13, 33, 96, 0.98));
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 0 0 2 0;
+    -fx-background-radius: 10 10 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 4, 0, 0, 2);
+}
+
+.table-view .column-header {
+    -fx-background-color: linear-gradient(to bottom, rgba(8, 47, 73, 0.95), rgba(13, 33, 96, 0.98));
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 0 1 0 0;
+}
+
+.table-view .column-header .label {
+    -fx-font-family: "SansSerif Bold";
+    -fx-font-size: 13;
+    -fx-text-fill: white;
+    -fx-padding: 8 12;
+    -fx-alignment: center-left;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 2, 0, 0, 1);
+    -fx-font-weight: bold;
+}
+
+/* Table rows - glassmorphism effect */
+.table-row-cell {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-border-color: rgba(255, 255, 255, 0.1);
+    -fx-border-width: 0 0 1 0;
+    -fx-font-family: "SansSerif";
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-text-fill: white;
+    -fx-padding: 10 12;
+    -fx-alignment: center-left;
+    -fx-pref-height: 55;
+    -fx-max-height: 55;
+    -fx-min-height: 55;
+}
+
+.table-row-cell:odd {
+    -fx-background-color: rgba(255, 255, 255, 0.02);
+}
+
+.table-row-cell:hover {
+    -fx-background-color: rgba(30, 58, 138, 0.2);
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.3), 5, 0, 0, 0);
+    -fx-cursor: hand;
+}
+
+/* Selected row */
+.table-row-cell:selected {
+    -fx-background-color: rgba(30, 58, 138, 0.4);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.5), 6, 0, 0, 2);
+}
+
+/* Empty table placeholder */
+.table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+/* Table cells - enhanced typography */
+.table-cell {
+    -fx-text-fill: white;
+    -fx-font-family: "SansSerif";
+    -fx-font-size: 12;
+    -fx-padding: 10 12;
+    -fx-alignment: center-left;
+    -fx-pref-height: 45;
+    -fx-max-height: 45;
+    -fx-min-height: 45;
+}
+
+/* Specific column styling */
+.appointment-number-cell {
+    -fx-font-family: "SansSerif Bold";
+    -fx-text-fill: #ffffff;
+    -fx-font-size: 12;
+}
+
+.patient-name-cell {
+    -fx-font-family: "SansSerif Bold";
+    -fx-font-size: 13;
+}
+
+.phone-cell {
+    -fx-font-family: "SansSerif";
+    -fx-text-fill: rgba(255, 255, 255, 0.9);
+    -fx-font-size: 12;
+}
+
+.date-cell {
+    -fx-font-family: "SansSerif";
+    -fx-text-fill: #fbbf24;
+    -fx-font-size: 12;
+}
+
+/* Status column styling */
+.status-confirmed {
+    -fx-text-fill: #10b981;
+    -fx-font-family: "SansSerif Bold";
+    -fx-font-size: 12;
+}
+
+.status-pending {
+    -fx-text-fill: #f59e0b;
+    -fx-font-family: "SansSerif Bold";
+    -fx-font-size: 12;
+}
+
+.status-cancelled {
+    -fx-text-fill: #ef4444;
+    -fx-font-family: "SansSerif Bold";
+    -fx-font-size: 12;
+}
+
+/* No appointments label - enhanced styling */
+.no-appointments-label {
+    -fx-text-fill: rgba(255, 255, 255, 0.7);
+    -fx-font-family: "SansSerif";
+    -fx-font-size: 16;
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-padding: 30 15;
+    -fx-alignment: center;
+    -fx-border-color: rgba(255, 255, 255, 0.1);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 1);
+}
+
+/* Statistics cards at the top */
+.appointments-stats {
+    -fx-spacing: 12;
+    -fx-alignment: center;
+}
+
+.stat-mini-card {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-padding: 8 12;
+    -fx-alignment: center;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 1);
+}
+
+.stat-mini-number {
+    -fx-text-fill: #60a5fa;
+    -fx-font-family: "SansSerif Bold";
+    -fx-font-size: 16;
+}
+
+.stat-mini-label {
+    -fx-text-fill: rgba(255, 255, 255, 0.8);
+    -fx-font-family: "SansSerif";
+    -fx-font-size: 10;
+}
+
+/* Action buttons styling */
+.appointments-actions {
+    -fx-spacing: 8;
+    -fx-alignment: center-right;
+}
+
+.refresh-button {
+    -fx-background-color: rgba(30, 58, 138, 0.8);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px; /* Note: -fx-border-radius often needs -fx-border-color and -fx-border-width to be visible */
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-family: "SansSerif Bold";
+    -fx-padding: 6 12;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0, 0, 1);
+}
+/*.refresh-button:focused{*/
+/*    -fx-background-color: red;*/
+/*}*/
+
+.refresh-button:hover {
+    -fx-background-color: rgba(43, 78, 160, 0.9);
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.4), 6, 0, 0, 2);
+}
+/*.refresh-button:focused:hover {*/
+/*    -fx-background-color: red; !* Maintain red when focused and hovered *!*/
+/*    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.4), 6, 0, 0, 2); !* Optional: Add hover effect *!*/
+/*}*/
+.refresh-button:pressed {
+    -fx-background-color: rgba(21, 48, 107, 0.9); /* Your desired pressed color */
+    -fx-background-insets: 0; /* Crucial: This ensures the background covers the entire button */
+    -fx-background-radius: 6px; /* Ensure radius is maintained */
+    -fx-effect: none; /* Often, the pressed state removes the shadow, or you can define a new one */
+    /* You might also want to adjust padding or text position slightly on pressed for a tactile feel */
+    -fx-padding: 7 11 5 13; /* Example: Shift down and right slightly */
+}
+
+/* Responsive design for smaller screens */
+@media screen and (max-width: 1200px) {
+    .appointments-title {
+        -fx-font-size: 18px;
+    }
+
+    .table-view .column-header .label {
+        -fx-font-size: 12;
+        -fx-padding: 6 10;
+    }
+
+    .table-row-cell {
+        -fx-font-size: 11;
+        -fx-padding: 8 10;
+    }
+}
+
+/* Loading indicator */
+.loading-indicator {
+    -fx-text-fill: rgba(255, 255, 255, 0.8);
+    -fx-font-family: "SansSerif";
+    -fx-font-size: 14;
+    -fx-alignment: center;
+    -fx-padding: 30;
+}
+
+/* Modern scrollbar styling */
+.table-view .scroll-bar:vertical {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+    -fx-pref-width: 6;
+}
+
+.table-view .scroll-bar:vertical .track {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+.table-view .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-background-radius: 4;
+    -fx-border-radius: 4;
+}
+
+.table-view .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Table focus styling */
+.table-view:focused {
+    -fx-border-color: rgba(96, 165, 250, 0.5);
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(96, 165, 250, 0.3), 6, 0, 0, 0);
+}

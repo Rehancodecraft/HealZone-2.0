@@ -499,4 +499,86 @@ public class Appointments {
             return appointments;
         }
     }
+    public static int getTotalCompletedAppointments(String doctorId) {
+        String query = """
+            SELECT COUNT(*) 
+            FROM appointments 
+            WHERE doctor_id = ? AND status = 'Completed'
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.err.println("Error getting total completed appointments: " + e.getMessage());
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    // Get number of completed appointments for a doctor this month
+    public static int getCompletedAppointmentsThisMonth(String doctorId) {
+        String query = """
+            SELECT COUNT(*) 
+            FROM appointments 
+            WHERE doctor_id = ? AND status = 'Completed' 
+            AND DATE_TRUNC('month', appointment_date) = DATE_TRUNC('month', CURRENT_DATE)
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.err.println("Error getting completed appointments this month: " + e.getMessage());
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    // Get number of cancelled appointments for a doctor
+    public static int getCancelledAppointments(String doctorId) {
+        String query = """
+            SELECT COUNT(*) 
+            FROM appointments 
+            WHERE doctor_id = ? AND status = 'Cancelled'
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, doctorId);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.err.println("Error getting cancelled appointments: " + e.getMessage());
+            e.printStackTrace();
+            return 0;
+        }
+    }
+
+    // Update appointment status
+    public static boolean updateAppointmentStatus(String doctorId, int appointmentNumber, String newStatus) {
+        String query = """
+            UPDATE appointments
+            SET status = ?
+            WHERE doctor_id = ? AND appointment_number = ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, newStatus);
+            ps.setString(2, doctorId);
+            ps.setInt(3, appointmentNumber);
+            int rows = ps.executeUpdate();
+            return rows > 0;
+        } catch (SQLException e) {
+            System.err.println("Error updating appointment status: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

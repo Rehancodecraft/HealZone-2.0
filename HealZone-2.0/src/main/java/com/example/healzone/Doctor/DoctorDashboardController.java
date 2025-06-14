@@ -8,6 +8,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -72,6 +73,8 @@ public class DoctorDashboardController {
 
         // Setup search functionality
         searchButton.setOnAction(event -> searchPatient());
+        Node focustarget = patientSearchBar;
+        focustarget.requestFocus();
         patientSearchBar.textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.isEmpty()) {
                 loadNextAppointment();
