@@ -7,7 +7,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -58,8 +60,19 @@ public class DoctorCardsController {
     private Label sat;
     @FXML
     private Label sun;
+    @FXML
+    private ImageView profileImage; // Added for clip application
 
     private DoctorCardData doctorData;
+
+    public void initialize() {
+        // Apply circular clip to profileImage
+        Circle clip = new Circle();
+        clip.setRadius(50); // Half of fitWidth/fitHeight (100/2)
+        clip.centerXProperty().bind(profileImage.fitWidthProperty().divide(2));
+        clip.centerYProperty().bind(profileImage.fitHeightProperty().divide(2));
+        profileImage.setClip(clip);
+    }
 
     public void setDoctorData(DoctorCardData data) {
         this.doctorData = data;

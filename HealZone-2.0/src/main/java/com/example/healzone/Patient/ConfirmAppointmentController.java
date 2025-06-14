@@ -3,11 +3,13 @@ package com.example.healzone.Patient;
 import com.example.healzone.DatabaseConnection.Doctors;
 import com.example.healzone.Doctor.DoctorCardData;
 import com.example.healzone.Doctor.TimeSlot;
+import com.example.healzone.Patient.Patient;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import java.time.LocalDate;
 import java.time.temporal.TemporalAdjusters;
@@ -94,6 +96,13 @@ public class ConfirmAppointmentController {
         patientPhoneField.setText(Patient.getPhone());
         startTimeConfirm.setText(data.getStartTime());
         endTimeConfirm.setText(data.getEndTime());
+
+        // Apply circular clip to doctorProfileImage
+        Circle clip = new Circle();
+        clip.setRadius(40); // Half of fitWidth/fitHeight (80/2)
+        clip.centerXProperty().bind(doctorProfileImage.fitWidthProperty().divide(2));
+        clip.centerYProperty().bind(doctorProfileImage.fitHeightProperty().divide(2));
+        doctorProfileImage.setClip(clip);
 
         // Fetch doctor's availability
         Map<String, TimeSlot> availability = Doctors.getDoctorAvailability(data.getGovtId());

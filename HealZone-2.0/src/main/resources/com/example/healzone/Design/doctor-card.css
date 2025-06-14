@@ -46,20 +46,18 @@
 }
 
 .profile-image-container {
-    -fx-padding: 10;
+    -fx-padding: 5;
 }
 
 .profile-image {
     -fx-border-radius: 50;
     -fx-background-radius: 50;
-    -fx-border-color: #1e3a8a;
-    -fx-border-width: 3;
-    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.3), 8, 0.4, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0.3, 0, 2);
+    -fx-clip-content: true; /* Ensure clip is respected */
 }
 
 .profile-image:hover {
-    -fx-border-color: #2563eb;
-    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.4), 12, 0.5, 0, 3);
+    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.3), 12, 0.4, 0, 3);
 }
 
 /* Doctor Details */

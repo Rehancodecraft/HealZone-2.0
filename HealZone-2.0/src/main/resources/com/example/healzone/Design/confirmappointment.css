@@ -1,4 +1,5 @@
-.ancorPane{
+/* AnchorPane */
+.AnchorPane {
     -fx-background-color: #1b0599;
     -fx-background: #1b0599;
     -fx-border-color: #1b0599;
@@ -9,6 +10,7 @@
     -fx-fit-to-width: true;
 }
 
+/* ScrollPane */
 .ScrollPane {
     -fx-background-color: #1b0599;
     -fx-background: #1b0599;
@@ -150,6 +152,7 @@
 .profile-image {
     -fx-background-radius: 40;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
+    -fx-clip-shape: circle(40px); /* Attempt to use CSS clip, fallback to controller */
 }
 
 .doctor-name-summary {
