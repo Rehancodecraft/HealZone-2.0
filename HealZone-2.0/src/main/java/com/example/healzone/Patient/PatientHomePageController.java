@@ -73,7 +73,7 @@ public class PatientHomePageController {
 
     @FXML
     protected void initialize() {
-        displayName.setText(SessionManager.getCurrentUser());
+        displayName.setText(Patient.getName());
         setupInitialScrollPaneStyle();
         setupResponsiveLayout();
         setupSearchFunctionality();

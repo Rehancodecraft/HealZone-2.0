@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fx:id="confirmAppointmentScrollpane" fitToWidth="true" prefHeight="2000.0" prefWidth="600.0" styleClass="ScrollPane" stylesheets="@../Design/confirmappointment.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.ConfirmAppointmentController">
+<ScrollPane fx:id="confirmAppointmentScrollpane" fitToWidth="true" prefHeight="700.0" prefWidth="600.0" styleClass="ScrollPane" stylesheets="@../Design/confirmappointment.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.ConfirmAppointmentController">
     <content>
         <VBox fx:id="confirmationContainer" maxWidth="Infinity" spacing="0" styleClass="confirmation-container">
             <padding>

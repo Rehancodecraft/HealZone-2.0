@@ -70,6 +70,7 @@
     -fx-text-fill: #b0bec5;
 }
 
+
 /* Responsive Design */
 @media screen and (max-width: 600px) {
     .main-background {

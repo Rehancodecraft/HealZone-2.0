@@ -1,18 +1,21 @@
+/* Professional Medical Doctor Card Styles */
+
 .doctor-card {
-    -fx-background-color: white;
+    -fx-background-color: #ffffff;
     -fx-border-color: #e3f2fd;
     -fx-border-width: 2;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 20, 0.3, 0, 8);
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.15), 12, 0.4, 0, 4);
     -fx-padding: 0;
     -fx-transition: all 0.3s ease;
 }
 
 .doctor-card:hover {
-    -fx-border-color: #2196f3;
-    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.2), 15, 0.5, 0, 4);
-    -fx-translate-y: -2;
+    -fx-background-color: #f8fbff;
+    -fx-border-color: #1e3a8a;
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.25), 16, 0.5, 0, 6);
+    -fx-translate-y: -3;
 }
 
 /* Responsive behavior for sidebar visibility */
@@ -28,217 +31,306 @@
 
 /* Card Content */
 .card-content {
-    -fx-padding: 5;
+    -fx-padding: 15;
 }
 
 /* Doctor Info Section */
 .doctor-info-section {
-    -fx-padding: 0 0 10 0;
+    -fx-padding: 0 0 15 0;
+    -fx-background-color: #f8fbff;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-border-color: #e3f2fd;
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
 }
 
 .profile-image-container {
-    -fx-padding: 5;
+    -fx-padding: 10;
 }
 
 .profile-image {
     -fx-border-radius: 50;
     -fx-background-radius: 50;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0.3, 0, 2);
+    -fx-border-color: #1e3a8a;
+    -fx-border-width: 3;
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.3), 8, 0.4, 0, 2);
 }
 
 .profile-image:hover {
-    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.3), 12, 0.4, 0, 3);
+    -fx-border-color: #2563eb;
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.4), 12, 0.5, 0, 3);
 }
 
 /* Doctor Details */
 .doctor-details {
-    -fx-padding: 5 0;
+    -fx-padding: 10 0;
 }
 
 .doctor-name {
     -fx-font-size: 22px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1a1a1a;
+    -fx-text-fill: #1e3a8a;
 }
 
 .specialties {
     -fx-font-size: 14px;
-    -fx-text-fill: #2196f3;
+    -fx-text-fill: #2563eb;
     -fx-font-weight: bold;
 }
 
 .credentials {
     -fx-font-size: 13px;
-    -fx-text-fill: #666666;
+    -fx-text-fill: #64748b;
+    -fx-font-weight: 500;
 }
 
 .experience-label {
     -fx-font-size: 12px;
-    -fx-text-fill: #666666;
+    -fx-text-fill: #64748b;
 }
 
 .experience-value {
     -fx-font-size: 12px;
     -fx-font-weight: bold;
-    -fx-text-fill: #4caf50;
+    -fx-text-fill: #059669;
 }
 
 /* Action Buttons */
 .action-buttons {
-    -fx-padding: 0 5;
+    -fx-padding: 10 15;
+    -fx-spacing: 10;
 }
 
 .book-appointment-btn {
-    -fx-background-color: linear-gradient(to bottom, #4caf50, #45a049);
+    -fx-background-color: linear-gradient(to bottom, #1e3a8a, #1e40af);
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.3), 8, 0.3, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.3), 8, 0.3, 0, 2);
+    -fx-padding: 8 16;
 }
 
 .book-appointment-btn:hover {
-    -fx-background-color: linear-gradient(to bottom, #45a049, #3d8b40);
-    -fx-effect: dropshadow(gaussian, rgba(76, 175, 80, 0.4), 10, 0.4, 0, 3);
+    -fx-background-color: linear-gradient(to bottom, #2563eb, #3b82f6);
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.4), 10, 0.4, 0, 3);
     -fx-translate-y: -1;
 }
 
+.book-appointment-btn:pressed {
+    -fx-background-color: linear-gradient(to bottom, #1d4ed8, #2563eb);
+}
+
 .view-profile-btn {
-    -fx-background-color: linear-gradient(to bottom, #2196f3, #1976d2);
-    -fx-text-fill: white;
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f1f5f9);
+    -fx-text-fill: #1e3a8a;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
+    -fx-border-color: #1e3a8a;
+    -fx-border-width: 2;
     -fx-cursor: hand;
-    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.3), 8, 0.3, 0, 2);
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.2), 6, 0.3, 0, 1);
+    -fx-padding: 8 16;
 }
 
 .view-profile-btn:hover {
-    -fx-background-color: linear-gradient(to bottom, #1976d2, #1565c0);
-    -fx-effect: dropshadow(gaussian, rgba(33, 150, 243, 0.4), 10, 0.4, 0, 3);
+    -fx-background-color: linear-gradient(to bottom, #f1f5f9, #e2e8f0);
+    -fx-border-color: #2563eb;
+    -fx-text-fill: #2563eb;
+    -fx-effect: dropshadow(gaussian, rgba(37, 99, 235, 0.3), 8, 0.4, 0, 2);
     -fx-translate-y: -1;
 }
 
 /* Hospital Information */
 .hospital-info {
-    -fx-background-color: #e5e8ea;
+    -fx-background-color: #f0f9ff;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
-    -fx-padding: 12;
-    -fx-border-color: #e9ecef;
+    -fx-padding: 15;
+    -fx-border-color: #bae6fd;
     -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(14, 165, 233, 0.1), 4, 0.2, 0, 1);
+}
+
+.hospital-info:hover {
+    -fx-background-color: #e0f2fe;
+    -fx-border-color: #0ea5e9;
 }
 
 .hospital-name {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1a1a1a;
+    -fx-text-fill: #0c4a6e;
 }
 
 .hospital-address {
     -fx-font-size: 12px;
-    -fx-text-fill: #666666;
+    -fx-text-fill: #475569;
     -fx-wrap-text: true;
 }
 
 .consultation-fee-label {
     -fx-font-size: 12px;
-    -fx-text-fill: #666666;
+    -fx-text-fill: #64748b;
 }
 
 .consultation-fee {
     -fx-font-size: 14px;
     -fx-font-weight: bold;
-    -fx-text-fill: #ff5722;
+    -fx-text-fill: #059669;
 }
 
 /* Statistics Section */
 .stats-section {
-    -fx-background-color: #e5e8ea;
+    -fx-background-color: #f0fdf4;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
     -fx-padding: 15;
+    -fx-border-color: #bbf7d0;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(34, 197, 94, 0.1), 4, 0.2, 0, 1);
+}
+
+.stats-section:hover {
+    -fx-background-color: #dcfce7;
+    -fx-border-color: #22c55e;
 }
 
 .stat-item {
     -fx-alignment: center;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 6;
+    -fx-padding: 8;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
 }
 
 .stat-label {
     -fx-font-size: 11px;
-    -fx-text-fill: #666666;
-    -fx-font-weight: normal;
+    -fx-text-fill: #6b7280;
+    -fx-font-weight: 500;
 }
 
 .stat-value {
     -fx-font-size: 16px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1a1a1a;
+    -fx-text-fill: #059669;
 }
 
 /* Availability Section */
 .availability-section {
-    -fx-background-color: #e5e8ea;
+    -fx-background-color: #fefce8;
     -fx-border-radius: 8;
     -fx-background-radius: 8;
-    -fx-padding: 12;
-    -fx-border-color: #e9ecef;
+    -fx-padding: 15;
+    -fx-border-color: #fde047;
     -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(234, 179, 8, 0.1), 4, 0.2, 0, 1);
+}
+
+.availability-section:hover {
+    -fx-background-color: #fefbf3;
+    -fx-border-color: #eab308;
 }
 
 .availability-title {
     -fx-font-size: 13px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1a1a1a;
+    -fx-text-fill: #92400e;
 }
 
 .days-row {
     -fx-alignment: center-left;
+    -fx-spacing: 5;
 }
 
 .day-label {
     -fx-font-size: 11px;
-    -fx-text-fill: #666666;
-    -fx-background-color: #e9ecef;
-    -fx-padding: 4 8;
+    -fx-text-fill: #6b7280;
+    -fx-background-color: #f9fafb;
+    -fx-padding: 6 10;
     -fx-border-radius: 4;
     -fx-background-radius: 4;
-    -fx-min-width: 30;
+    -fx-min-width: 32;
     -fx-alignment: center;
+    -fx-border-color: #d1d5db;
+    -fx-border-width: 1;
 }
 
 .day-label-active {
     -fx-font-size: 11px;
     -fx-text-fill: #ffffff;
-    -fx-background-color: #0069ff;
-    -fx-padding: 4 8;
+    -fx-background-color: linear-gradient(to bottom, #1e3a8a, #1e40af);
+    -fx-padding: 6 10;
     -fx-border-radius: 4;
     -fx-background-radius: 4;
-    -fx-min-width: 30;
+    -fx-min-width: 32;
     -fx-alignment: center;
     -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.3), 4, 0.3, 0, 1);
 }
 
 .time-slot {
     -fx-alignment: center;
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 4;
+    -fx-padding: 6;
+    -fx-border-color: #e5e7eb;
+    -fx-border-width: 1;
+    -fx-border-radius: 4;
 }
 
 .time-label {
     -fx-font-size: 11px;
-    -fx-text-fill: #666666;
+    -fx-text-fill: #374151;
     -fx-font-weight: bold;
 }
 
 .time-separator {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6b7280;
+}
+
+/* Professional Medical Theme Enhancements */
+.medical-badge {
+    -fx-background-color: #ecfccb;
+    -fx-text-fill: #365314;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 3 8;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-border-color: #84cc16;
+    -fx-border-width: 1;
+}
+
+.rating-section {
+    -fx-background-color: #fef3c7;
+    -fx-border-color: #f59e0b;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8;
+}
+
+.rating-stars {
+    -fx-text-fill: #f59e0b;
     -fx-font-size: 14px;
-    -fx-text-fill: #666666;
+}
+
+.rating-text {
+    -fx-text-fill: #92400e;
+    -fx-font-size: 12px;
+    -fx-font-weight: 600;
 }
 
 /* Responsive Design */
-/* Compact mode when sidebar is visible */
 .doctor-card.sidebar-visible .doctor-name {
     -fx-font-size: 20px;
 }
@@ -254,7 +346,7 @@
 }
 
 .doctor-card.sidebar-visible .stats-section {
-    -fx-spacing: 20;
+    -fx-spacing: 12;
 }
 
 .doctor-card.sidebar-visible .profile-image {
@@ -265,7 +357,7 @@
 /* Mobile responsive styles */
 .doctor-card.mobile {
     -fx-max-width: 100%;
-    -fx-min-width: 250px;
+    -fx-min-width: 280px;
 }
 
 .doctor-card.mobile .doctor-info-section {
@@ -277,18 +369,18 @@
 }
 
 .doctor-card.mobile .action-buttons {
-    -fx-spacing: 6;
+    -fx-spacing: 8;
 }
 
 .doctor-card.mobile .book-appointment-btn,
 .doctor-card.mobile .view-profile-btn {
     -fx-pref-width: 120;
-    -fx-pref-height: 30;
+    -fx-pref-height: 32;
     -fx-font-size: 10px;
 }
 
 .doctor-card.mobile .stats-section {
-    -fx-spacing: 15;
+    -fx-spacing: 10;
 }
 
 .doctor-card.mobile .stat-value {
@@ -310,13 +402,61 @@
     -fx-opacity: 1;
 }
 
-/* Hover effects for interactive elements */
-.hospital-info:hover,
-.availability-section:hover {
-    -fx-border-color: #2196f3;
-    /*-fx-background-color: #ffffff;*/
+/* Professional medical color variants */
+.doctor-card.cardiology {
+    -fx-border-color: #ef4444;
 }
 
-.stats-section:hover {
-    /*-fx-background-color: #e3f2fd;*/
+.doctor-card.cardiology:hover {
+    -fx-border-color: #dc2626;
+}
+
+.doctor-card.neurology {
+    -fx-border-color: #8b5cf6;
+}
+
+.doctor-card.neurology:hover {
+    -fx-border-color: #7c3aed;
+}
+
+.doctor-card.pediatrics {
+    -fx-border-color: #06b6d4;
+}
+
+.doctor-card.pediatrics:hover {
+    -fx-border-color: #0891b2;
+}
+
+.doctor-card.orthopedics {
+    -fx-border-color: #059669;
+}
+
+.doctor-card.orthopedics:hover {
+    -fx-border-color: #047857;
+}
+
+/* Emergency/Urgent care styling */
+.urgent-care-badge {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 6;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-color: #fca5a5;
+    -fx-border-width: 1;
+}
+
+/* Online consultation available badge */
+.online-consultation-badge {
+    -fx-background-color: #dbeafe;
+    -fx-text-fill: #1d4ed8;
+    -fx-font-size: 9px;
+    -fx-font-weight: bold;
+    -fx-padding: 2 6;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-color: #93c5fd;
+    -fx-border-width: 1;
 }

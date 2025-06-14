@@ -2,8 +2,8 @@
     -fx-background-color: #1b0599;
     -fx-background: #1b0599;
     -fx-border-color: #1b0599;
-    -fx-border-radius: 0;
-    -fx-background-radius: 0;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
     -fx-border-width: 0;
     -fx-padding: 10;
     -fx-fit-to-width: true;
@@ -13,8 +13,8 @@
     -fx-background-color: #1b0599;
     -fx-background: #1b0599;
     -fx-border-color: #1b0599;
-    -fx-border-radius: 0;
-    -fx-background-radius: 0;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
     -fx-border-width: 0;
     -fx-padding: 10;
     -fx-fit-to-width: true;
@@ -24,14 +24,14 @@
 .ScrollPane .viewport {
     -fx-background-color: #1b0599;
     -fx-background: #1b0599;
-    -fx-background-radius: 0;
+    -fx-background-radius: 20;
 }
 
 /* ScrollPane content styling */
 .ScrollPane .content {
     -fx-background-color: #1b0599;
     -fx-background: #1b0599;
-    -fx-background-radius: 0;
+    -fx-background-radius: 20;
 }
 
 /* Vertical ScrollBar styling */
@@ -107,6 +107,8 @@
 .confirmation-container {
     -fx-background-color: #1b0599;
     -fx-spacing: 20;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
 }
 
 /* Header Section */

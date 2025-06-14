@@ -38,8 +38,6 @@ public class DoctorHomePageController {
     @FXML
     private FontIcon sideBarButton;
     @FXML
-    private TextField searchBar;
-    @FXML
     private Button loginButton, dashboardButton, upcomingButton, historyButton, profileButton, logoutButton, addDoctorButton;
 
     private static final ZoneId PAKISTAN_ZONE = ZoneId.of("Asia/Karachi");
@@ -62,7 +60,7 @@ public class DoctorHomePageController {
             String firstName = Doctor.getFirstName();
             String lastName = Doctor.getLastName();
             if (firstName != null && lastName != null) {
-                displayName.setText(firstName + " " + lastName);
+                displayName.setText("Dr."+firstName + " " + lastName);
             } else {
                 displayName.setText("Doctor");
             }
@@ -76,7 +74,7 @@ public class DoctorHomePageController {
         setupInitialScrollPaneStyle();
         setupResponsiveLayout();
         setupScrollPaneBackground();
-        setupSearchFunctionality();
+//        setupSearchFunctionality();
 
         // Load dashboard by default with delay to ensure UI is ready
         Platform.runLater(() -> loadDashboard());
@@ -205,14 +203,6 @@ public class DoctorHomePageController {
             }
         });
     }
-
-    // Adapted from PatientHomePageController
-    private void setupSearchFunctionality() {
-        if (searchBar != null) {
-            searchBar.setOnAction(event -> searchPatient());
-        }
-    }
-
     // Reused from PatientHomePageController
     @FXML
     protected void toggleSideBar() {
@@ -262,7 +252,6 @@ public class DoctorHomePageController {
 
     private void loadDashboard() {
         System.out.println("Loading dashboard...");
-        searchBar.setVisible(false);
         Task<Parent> loadTask = new Task<>() {
             @Override
             protected Parent call() throws Exception {
@@ -400,27 +389,21 @@ public class DoctorHomePageController {
 
         loadTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
-                if (rootContainer != null) {
-                    rootContainer.getChildren().clear();
-                    List<Map<String, Object>> appointments = loadTask.getValue();
-                    VBox contentVBox = new VBox(10);
-                    if (appointments.isEmpty()) {
-                        contentVBox.getChildren().add(new Label("No upcoming appointments."));
-                    } else {
-                        for (Map<String, Object> appt : appointments) {
-                            VBox apptBox = new VBox(5);
-                            apptBox.getChildren().addAll(
-                                    new Label("Patient: " + appt.get("patient_name")),
-                                    new Label("Phone: " + appt.get("patient_phone")),
-                                    new Label("Appointment #: " + appt.get("appointment_number")),
-                                    new Label("Date: " + appt.get("appointment_date"))
-                            );
-                            apptBox.setStyle("-fx-padding: 10; -fx-border-color: gray; -fx-border-width: 1;");
-                            contentVBox.getChildren().add(apptBox);
-                        }
+                try {
+                    if (rootContainer != null) {
+                        rootContainer.getChildren().clear();
+                        List<Map<String, Object>> appointments = loadTask.getValue();
+                        // Load UpcomingAppointmentsTable.fxml
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorUpcomingAppointments.fxml"));
+                        Parent tableView = loader.load();
+                        DoctorUpcomingAppointmentsController controller = loader.getController();
+                        controller.setAppointments(appointments);
+                        rootContainer.getChildren().setAll(tableView);
+                        animateContent();
                     }
-                    rootContainer.getChildren().setAll(contentVBox);
-                    animateContent();
+                } catch (IOException e) {
+                    System.err.println("Error loading upcoming appointments table: " + e.getMessage());
+                    showErrorAlert("Load Error", "Failed to load upcoming appointments: " + e.getMessage());
                 }
             });
         });
@@ -429,6 +412,7 @@ public class DoctorHomePageController {
             Platform.runLater(() -> {
                 Throwable exception = loadTask.getException();
                 String errorMessage = exception != null ? exception.getMessage() : "Unknown error";
+                System.err.println("Upcoming appointments load failed: " + errorMessage);
                 showErrorAlert("Load Error", "Failed to load upcoming appointments: " + errorMessage);
             });
         });
@@ -538,70 +522,6 @@ public class DoctorHomePageController {
         SessionManager.logOut();
         logout();
     }
-
-    @FXML
-    private void searchPatient() {
-        if (searchBar == null) return;
-
-        String query = searchBar.getText().trim();
-        if (query.isEmpty()) {
-            onUpcomingButtonClicked();
-            return;
-        }
-
-        Task<Optional<Map<String, Object>>> searchTask = new Task<>() {
-            @Override
-            protected Optional<Map<String, Object>> call() throws Exception {
-                LocalDate today = LocalDate.now(PAKISTAN_ZONE);
-                List<Map<String, Object>> appointments = Appointments.getAppointmentsForDoctorToday(doctorId, today);
-                return appointments.stream()
-                        .filter(a -> "Upcoming".equals(a.get("status")))
-                        .filter(a -> {
-                            String patientName = (String) a.get("patient_name");
-                            String patientPhone = (String) a.get("patient_phone");
-                            return (patientName != null && patientName.toLowerCase().contains(query.toLowerCase())) ||
-                                    (patientPhone != null && patientPhone.contains(query));
-                        })
-                        .findFirst();
-            }
-        };
-
-        searchTask.setOnSucceeded(event -> {
-            Platform.runLater(() -> {
-                if (rootContainer != null) {
-                    rootContainer.getChildren().clear();
-                    Optional<Map<String, Object>> appt = searchTask.getValue();
-                    VBox contentVBox = new VBox(10);
-                    if (appt.isPresent()) {
-                        VBox apptBox = new VBox(5);
-                        apptBox.getChildren().addAll(
-                                new Label("Patient: " + appt.get().get("patient_name")),
-                                new Label("Phone: " + appt.get().get("patient_phone")),
-                                new Label("Appointment #: " + appt.get().get("appointment_number")),
-                                new Label("Date: " + appt.get().get("appointment_date"))
-                        );
-                        apptBox.setStyle("-fx-padding: 10; -fx-border-color: gray; -fx-border-width: 1;");
-                        contentVBox.getChildren().add(apptBox);
-                    } else {
-                        contentVBox.getChildren().add(new Label("No matching patients found."));
-                    }
-                    rootContainer.getChildren().setAll(contentVBox);
-                    animateContent();
-                }
-            });
-        });
-
-        searchTask.setOnFailed(event -> {
-            Platform.runLater(() -> {
-                Throwable exception = searchTask.getException();
-                String errorMessage = exception != null ? exception.getMessage() : "Unknown error";
-                showErrorAlert("Search Error", "Failed to search patient: " + errorMessage);
-            });
-        });
-
-        new Thread(searchTask).start();
-    }
-
     private void logout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/MainView.fxml"));

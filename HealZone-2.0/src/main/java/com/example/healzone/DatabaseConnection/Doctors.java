@@ -491,7 +491,7 @@ public class Doctors {
             while (rs.next()) {
                 DoctorCardData details = new DoctorCardData();
                 String govtId = rs.getString("govt_id");
-                details.setFullName(rs.getString("first_name") + " " + rs.getString("last_name"));
+                details.setFullName("Dr."+rs.getString("first_name") + " " + rs.getString("last_name"));
                 details.setSpecialization(rs.getString("specialization"));
                 details.setDegrees(rs.getString("degrees"));
                 details.setExperience(rs.getString("experience"));

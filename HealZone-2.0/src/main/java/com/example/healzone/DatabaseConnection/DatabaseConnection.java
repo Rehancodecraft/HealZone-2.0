@@ -17,7 +17,7 @@ public class DatabaseConnection {
 
     public static void connectToDatabase() {
         try {
-            String pgUrl = "jdbc:postgresql://localhost:5432/HealZone2";
+            String pgUrl = "jdbc:postgresql://localhost:5432/HealZone";
             String pgUser = "postgres";
             String pgPassword = "Rehan*17112006";
             connection = DriverManager.getConnection(pgUrl, pgUser, pgPassword);

@@ -10,10 +10,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
@@ -77,6 +75,12 @@ public class DoctorDashboardController {
         patientSearchBar.textProperty().addListener((obs, oldVal, newVal) -> {
             if (newVal.isEmpty()) {
                 loadNextAppointment();
+            }
+        });
+        // Add Enter key handler for search
+        patientSearchBar.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.ENTER) {
+                searchPatient();
             }
         });
     }
@@ -225,29 +229,54 @@ public class DoctorDashboardController {
             return;
         }
 
-        Task<Void> attendTask = new Task<>() {
-            @Override
-            protected Void call() {
-                Appointments.markAsAttended(doctorId, (Integer) currentAppointment.get("appointment_number"));
-                return null;
+        // Create a confirmation dialog
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Confirm Attendance");
+        dialog.setHeaderText("Mark appointment as attended?");
+        dialog.setContentText("Patient: " + currentAppointment.get("patient_name") + "\nAppointment #: " + currentAppointment.get("appointment_number"));
+
+        // Define buttons
+        ButtonType addPrescriptionButton = new ButtonType("Add Prescription", ButtonBar.ButtonData.LEFT);
+        ButtonType okayButton = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(addPrescriptionButton, okayButton, ButtonType.CANCEL);
+
+        // Show dialog and handle result
+        dialog.showAndWait().ifPresent(response -> {
+            if (response == okayButton) {
+                // Mark appointment as attended
+                Task<Void> attendTask = new Task<>() {
+                    @Override
+                    protected Void call() {
+                        Appointments.markAsAttended(doctorId, (Integer) currentAppointment.get("appointment_number"));
+                        return null;
+                    }
+                };
+
+                attendTask.setOnSucceeded(event -> {
+                    Platform.runLater(() -> {
+                        patientSearchBar.clear();
+                        currentAppointment = null;
+                        loadNextAppointment();
+                    });
+                });
+
+                attendTask.setOnFailed(event -> {
+                    Platform.runLater(() -> {
+                        showErrorAlert("Update Error", "Failed to mark appointment as attended: " + attendTask.getException().getMessage());
+                    });
+                });
+
+                new Thread(attendTask).start();
+            } else if (response == addPrescriptionButton) {
+                // Placeholder for Add Prescription functionality
+                Alert prescriptionAlert = new Alert(Alert.AlertType.INFORMATION);
+                prescriptionAlert.setTitle("Add Prescription");
+                prescriptionAlert.setHeaderText(null);
+                prescriptionAlert.setContentText("Prescription feature is not yet implemented.");
+                prescriptionAlert.showAndWait();
+                // Future: Navigate to prescription FXML or open prescription form
             }
-        };
-
-        attendTask.setOnSucceeded(event -> {
-            Platform.runLater(() -> {
-                patientSearchBar.clear();
-                currentAppointment = null;
-                loadNextAppointment();
-            });
         });
-
-        attendTask.setOnFailed(event -> {
-            Platform.runLater(() -> {
-                showErrorAlert("Update Error", "Failed to mark appointment as attended: " + attendTask.getException().getMessage());
-            });
-        });
-
-        new Thread(attendTask).start();
     }
 
     @FXML
