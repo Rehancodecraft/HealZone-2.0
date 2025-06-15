@@ -10,6 +10,7 @@ import java.util.List;
 import static com.example.healzone.DatabaseConnection.Appointments.createTableForAppointments;
 import static com.example.healzone.DatabaseConnection.Doctors.*;
 import static com.example.healzone.DatabaseConnection.Patients.*;
+import static com.example.healzone.DatabaseConnection.Prescription.createPrescriptionTable;
 
 public class DatabaseConnection {
     public static Connection connection;
@@ -40,6 +41,7 @@ public class DatabaseConnection {
         createTableForSecurityOfDoctor();
         createTableForAppointments();
         createTableForDoctorReviews();
+        createPrescriptionTable();
     }
     public static boolean isSQLite() {
         return isSQLite;

@@ -1,6 +1,7 @@
 package com.example.healzone.Doctor;
 
 import com.example.healzone.DatabaseConnection.Appointments;
+import com.example.healzone.DatabaseConnection.Prescription;
 import com.example.healzone.Patient.PatientHistoryController;
 import com.example.healzone.SessionManager;
 import javafx.animation.FadeTransition;
@@ -14,6 +15,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -271,15 +275,37 @@ public class DoctorDashboardController {
 
                 new Thread(attendTask).start();
             } else if (response == addPrescriptionButton) {
-                // Placeholder for Add Prescription functionality
-                Alert prescriptionAlert = new Alert(Alert.AlertType.INFORMATION);
-                prescriptionAlert.setTitle("Add Prescription");
-                prescriptionAlert.setHeaderText(null);
-                prescriptionAlert.setContentText("Prescription feature is not yet implemented.");
-                prescriptionAlert.showAndWait();
-                // Future: Navigate to prescription FXML or open prescription form
+                openPrescriptionPopup(currentAppointment);
             }
         });
+    }
+
+    private void openPrescriptionPopup(Map<String, Object> appointmentData) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorPrescription.fxml"));
+            Parent root = loader.load();
+
+            DoctorPrescriptionController controller = loader.getController();
+            controller.setPatientInfo(
+                    String.valueOf(appointmentData.get("patient_name")),
+                    String.valueOf(appointmentData.get("patient_age")), // Assuming age is available
+                    String.valueOf(appointmentData.get("patient_gender")) // Assuming gender is available
+            );
+            controller.setPatientId(String.valueOf(appointmentData.get("patient_id"))); // Assuming patient_id exists
+            controller.setDoctorId(doctorId);
+
+            Stage prescriptionStage = new Stage();
+            prescriptionStage.setTitle("Add Prescription - " + appointmentData.get("patient_name"));
+            prescriptionStage.initModality(Modality.APPLICATION_MODAL);
+            prescriptionStage.setScene(new Scene(root));
+            prescriptionStage.setResizable(false);
+            // Remove window decorations (no maximize/minimize/close buttons)
+            prescriptionStage.initStyle(StageStyle.UNDECORATED);
+            prescriptionStage.showAndWait();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showErrorAlert("Prescription Error", "Failed to open prescription view: " + e.getMessage());
+        }
     }
 
     @FXML

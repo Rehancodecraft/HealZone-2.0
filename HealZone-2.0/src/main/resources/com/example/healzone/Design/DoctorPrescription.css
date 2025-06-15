@@ -1,0 +1,698 @@
+/* Main prescription container - matches dashboard theme */
+.root {
+    -fx-font-family: "System", "Arial", sans-serif;
+}
+
+.prescription-container {
+    -fx-background-color: linear-gradient(to bottom, #0f172a, #1e293b);
+    -fx-padding: 15;
+}
+
+/* Header section styling */
+.prescription-header {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 12px;
+    -fx-padding: 20px;
+    -fx-spacing: 15px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 0, 2);
+}
+
+.prescription-title {
+    -fx-text-fill: white;
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 2, 0, 0, 1);
+}
+
+.patient-info-section {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-radius: 8px;
+    -fx-padding: 15px;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 8px;
+}
+
+.section-title {
+    -fx-text-fill: rgba(255, 255, 255, 0.95);
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.field-label {
+    -fx-text-fill: rgba(255, 255, 255, 0.8);
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.patient-info-value {
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+/* Add Medicine Section */
+.add-medicine-section {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 10px;
+    -fx-padding: 18px;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0, 0, 2);
+    -fx-pref-width: 280px;
+    -fx-max-width: 280px;
+    -fx-min-width: 280px;
+}
+
+.medicine-form {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-background-radius: 8px;
+    -fx-padding: 15px;
+}
+
+/* Input fields styling */
+.medicine-input {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 6px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255, 255, 255, 0.6);
+    -fx-padding: 8px;
+    -fx-font-size: 12px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0, 0, 1);
+}
+
+.medicine-input:focused {
+    -fx-border-color: #60a5fa;
+    -fx-border-width: 2;
+    -fx-effect: dropshadow(gaussian, rgba(96, 165, 250, 0.3), 5, 0, 0, 0);
+}
+
+.medicine-input-small {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 6px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255, 255, 255, 0.6);
+    -fx-padding: 8px;
+    -fx-font-size: 12px;
+}
+
+.medicine-input-small:focused {
+    -fx-border-color: #60a5fa;
+    -fx-border-width: 2;
+}
+
+/* Enhanced ComboBox styling - Fixed background issues */
+.medicine-combo {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 6px;
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 3, 0, 0, 1);
+}
+
+.medicine-combo:focused {
+    -fx-border-color: #60a5fa;
+    -fx-border-width: 2;
+}
+
+.medicine-combo .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.medicine-combo .arrow-button {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 0 6px 6px 0;
+}
+
+.medicine-combo .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+/* ComboBox Popup Styling - Enhanced for better visibility */
+.medicine-combo .combo-box-popup .list-view {
+    -fx-background-color: rgba(30, 41, 59, 0.95);
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 5);
+}
+
+.medicine-combo .combo-box-popup .list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-padding: 8 12;
+    -fx-font-size: 12px;
+}
+
+.medicine-combo .combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: rgba(59, 130, 246, 0.3);
+    -fx-text-fill: white;
+}
+
+.medicine-combo .combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: rgba(59, 130, 246, 0.5);
+    -fx-text-fill: white;
+}
+
+.medicine-combo-small {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 6px;
+    -fx-text-fill: white;
+}
+
+.medicine-combo-small:focused {
+    -fx-border-color: #60a5fa;
+    -fx-border-width: 2;
+}
+
+.medicine-combo-small .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.medicine-combo-small .arrow-button {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 0 6px 6px 0;
+}
+
+.medicine-combo-small .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+/* Small ComboBox Popup Styling */
+.medicine-combo-small .combo-box-popup .list-view {
+    -fx-background-color: rgba(30, 41, 59, 0.95);
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 5);
+}
+
+.medicine-combo-small .combo-box-popup .list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-padding: 6 10;
+    -fx-font-size: 11px;
+}
+
+.medicine-combo-small .combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: rgba(59, 130, 246, 0.3);
+    -fx-text-fill: white;
+}
+
+.medicine-combo-small .combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: rgba(59, 130, 246, 0.5);
+    -fx-text-fill: white;
+}
+
+/* TextArea styling */
+.instructions-area {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 6px;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255, 255, 255, 0.6);
+    -fx-padding: 8px;
+    -fx-font-size: 12px;
+    -fx-control-inner-background: transparent;
+}
+
+.instructions-area:focused {
+    -fx-border-color: #60a5fa;
+    -fx-border-width: 2;
+}
+
+.instructions-area .content {
+    -fx-background-color: transparent;
+}
+
+.instructions-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.instructions-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.instructions-area .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+/* Button styling */
+.add-medicine-button {
+    -fx-background-color: linear-gradient(to bottom, #059669, #10b981);
+    -fx-background-radius: 8px;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.add-medicine-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #10b981, #34d399);
+    -fx-effect: dropshadow(gaussian, rgba(16, 185, 129, 0.4), 6, 0, 0, 3);
+}
+
+.add-medicine-button:pressed {
+    -fx-background-color: linear-gradient(to bottom, #047857, #059669);
+}
+
+.save-button {
+    -fx-background-color: linear-gradient(to bottom, #1e3a8a, #1e40af);
+    -fx-background-radius: 8px;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.save-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #2563eb, #3b82f6);
+    -fx-effect: dropshadow(gaussian, rgba(30, 58, 138, 0.4), 6, 0, 0, 3);
+}
+
+.print-button {
+    -fx-background-color: linear-gradient(to bottom, #7c3aed, #8b5cf6);
+    -fx-background-radius: 8px;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.print-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #8b5cf6, #a78bfa);
+    -fx-effect: dropshadow(gaussian, rgba(124, 58, 237, 0.4), 6, 0, 0, 3);
+}
+
+.clear-all-button {
+    -fx-background-color: linear-gradient(to bottom, #dc2626, #ef4444);
+    -fx-background-radius: 6px;
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-padding: 6px 12px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 3, 0, 0, 1);
+}
+
+.clear-all-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #ef4444, #f87171);
+    -fx-effect: dropshadow(gaussian, rgba(220, 38, 38, 0.4), 5, 0, 0, 2);
+}
+
+/* Prescription Details Section */
+.prescription-details-section {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 10px;
+    -fx-padding: 18px;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 6, 0, 0, 2);
+}
+
+.medicines-table-section {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-background-radius: 8px;
+    -fx-padding: 15px;
+}
+
+/* Enhanced Medicines Table Styling - Fixed background issues */
+.medicines-scroll-pane {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 8px;
+    -fx-background-radius: 8px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 6, 0, 0, 2);
+}
+
+.medicines-table {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-border-color: transparent;
+    -fx-table-cell-border-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 8px;
+}
+
+.medicines-table .filler {
+    -fx-background-color: rgba(8, 47, 73, 0.95);
+}
+
+.medicines-table .column-header-background {
+    -fx-background-color: linear-gradient(to bottom, rgba(8, 47, 73, 0.95), rgba(13, 33, 96, 0.98));
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 0 0 2 0;
+    -fx-background-radius: 8px 8px 0 0;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 4, 0, 0, 2);
+}
+
+.medicines-table .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-alignment: center-left;
+    -fx-padding: 10 15;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.5), 2, 0, 0, 1);
+}
+
+.medicines-table .column-header {
+    -fx-background-color: linear-gradient(to bottom, rgba(8, 47, 73, 0.95), rgba(13, 33, 96, 0.98));
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 0 1 0 0;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-alignment: center-left;
+    -fx-padding: 10 15;
+}
+
+/* Enhanced Table Rows - Fixed white background issue */
+.medicines-table .table-row-cell {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-border-color: rgba(255, 255, 255, 0.1);
+    -fx-border-width: 0 0 1 0;
+    -fx-font-family: "SansSerif";
+    -fx-font-size: 12;
+    -fx-font-weight: normal;
+    -fx-text-fill: white;
+    -fx-padding: 8 12;
+    -fx-alignment: center-left;
+    -fx-pref-height: 45;
+    -fx-max-height: 45;
+    -fx-min-height: 45;
+}
+
+.medicines-table .table-row-cell:odd {
+    -fx-background-color: rgba(255, 255, 255, 0.02);
+}
+
+.medicines-table .table-row-cell:hover {
+    -fx-background-color: rgba(59, 130, 246, 0.15);
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.2), 4, 0, 0, 0);
+    -fx-cursor: hand;
+}
+
+.medicines-table .table-row-cell:selected {
+    -fx-background-color: rgba(59, 130, 246, 0.25);
+    -fx-text-fill: white;
+    -fx-effect: dropshadow(gaussian, rgba(59, 130, 246, 0.3), 5, 0, 0, 1);
+}
+
+/* Empty table rows */
+.medicines-table .table-row-cell:empty {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+}
+
+.medicines-table .table-cell {
+    -fx-text-fill: white;
+    -fx-font-size: 11px;
+    -fx-padding: 8 12;
+    -fx-alignment: center-left;
+    -fx-border-color: transparent;
+    -fx-background-color: transparent;
+}
+
+.medicines-table .table-cell:selected {
+    -fx-background-color: rgba(59, 130, 246, 0.2);
+    -fx-text-fill: white;
+}
+
+/* Action button in table */
+.remove-medicine-button {
+    -fx-background-color: linear-gradient(to bottom, #dc2626, #ef4444);
+    -fx-background-radius: 4px;
+    -fx-border-radius: 4px;
+    -fx-text-fill: white;
+    -fx-font-size: 10px;
+    -fx-font-family: "SansSerif Bold";
+    -fx-padding: 4px 8px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 2, 0, 0, 1);
+}
+
+.remove-medicine-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #ef4444, #f87171);
+    -fx-effect: dropshadow(gaussian, rgba(220, 38, 38, 0.4), 3, 0, 0, 1);
+}
+
+/* Additional Sections Styling */
+.diagnosis-section, .precautions-section, .followup-section, .notes-section {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-padding: 15px;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+}
+
+.diagnosis-area, .precautions-area, .notes-area {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255, 255, 255, 0.6);
+    -fx-padding: 10px;
+    -fx-font-size: 12px;
+    -fx-control-inner-background: transparent;
+}
+
+.diagnosis-area:focused, .precautions-area:focused, .notes-area:focused {
+    -fx-border-color: rgba(96, 165, 250, 0.6);
+    -fx-border-width: 2;
+}
+
+.diagnosis-area .content, .precautions-area .content, .notes-area .content {
+    -fx-background-color: transparent;
+}
+
+.diagnosis-area .scroll-pane, .precautions-area .scroll-pane, .notes-area .scroll-pane {
+    -fx-background-color: transparent;
+}
+
+.diagnosis-area .scroll-pane .viewport, .precautions-area .scroll-pane .viewport, .notes-area .scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.diagnosis-area .scroll-pane .content, .precautions-area .scroll-pane .content, .notes-area .scroll-pane .content {
+    -fx-background-color: transparent;
+}
+
+/* Enhanced Follow-up input styling */
+.followup-input {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+    -fx-prompt-text-fill: rgba(255, 255, 255, 0.6);
+    -fx-padding: 8px;
+    -fx-font-size: 12px;
+}
+
+.followup-input:focused {
+    -fx-border-color: rgba(96, 165, 250, 0.6);
+    -fx-border-width: 2;
+}
+
+.followup-combo {
+    -fx-background-color: rgba(255, 255, 255, 0.15);
+    -fx-background-radius: 6px;
+    -fx-border-radius: 6px;
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-text-fill: white;
+}
+
+.followup-combo:focused {
+    -fx-border-color: rgba(96, 165, 250, 0.6);
+    -fx-border-width: 2;
+}
+
+.followup-combo .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+}
+
+.followup-combo .arrow-button {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-background-radius: 0 6px 6px 0;
+}
+
+.followup-combo .arrow-button .arrow {
+    -fx-background-color: white;
+}
+
+/* Follow-up ComboBox Popup Styling */
+.followup-combo .combo-box-popup .list-view {
+    -fx-background-color: rgba(30, 41, 59, 0.95);
+    -fx-border-color: rgba(255, 255, 255, 0.3);
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.4), 10, 0, 0, 5);
+}
+
+.followup-combo .combo-box-popup .list-view .list-cell {
+    -fx-background-color: transparent;
+    -fx-text-fill: white;
+    -fx-padding: 8 12;
+    -fx-font-size: 12px;
+}
+
+.followup-combo .combo-box-popup .list-view .list-cell:hover {
+    -fx-background-color: rgba(59, 130, 246, 0.3);
+    -fx-text-fill: white;
+}
+
+.followup-combo .combo-box-popup .list-view .list-cell:selected {
+    -fx-background-color: rgba(59, 130, 246, 0.5);
+    -fx-text-fill: white;
+}
+
+/* Footer Actions */
+.footer-actions {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-background-radius: 10px;
+    -fx-border-radius: 10px;
+    -fx-padding: 15px;
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 4, 0, 0, 1);
+}
+
+.cancel-button {
+    -fx-background-color: linear-gradient(to bottom, #6b7280, #9ca3af);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-family: "SansSerif Bold";
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.cancel-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #9ca3af, #d1d5db);
+    -fx-effect: dropshadow(gaussian, rgba(107, 114, 128, 0.4), 6, 0, 0, 3);
+}
+
+.preview-button {
+    -fx-background-color: linear-gradient(to bottom, #f59e0b, #fbbf24);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-family: "SansSerif Bold";
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.preview-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #fbbf24, #fcd34d);
+    -fx-effect: dropshadow(gaussian, rgba(245, 158, 11, 0.4), 6, 0, 0, 3);
+}
+
+.draft-button {
+    -fx-background-color: linear-gradient(to bottom, #059669, #10b981);
+    -fx-background-radius: 8px;
+    -fx-border-radius: 8px;
+    -fx-text-fill: white;
+    -fx-font-size: 12px;
+    -fx-font-family: "SansSerif Bold";
+    -fx-padding: 10px 20px;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.2), 4, 0, 0, 2);
+}
+
+.draft-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #10b981, #34d399);
+    -fx-effect: dropshadow(gaussian, rgba(5, 150, 105, 0.4), 6, 0, 0, 3);
+}
+
+/* Enhanced ScrollBar styling for the table */
+.medicines-scroll-pane .scroll-bar:vertical {
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-pref-width: 8;
+}
+.medicines-scroll-pane .scroll-bar:vertical .track {
+    -fx-background-color: rgba(255, 255, 255, 0.05);
+    -fx-border-color: transparent;
+    -fx-background-radius: 8;
+}
+
+.medicines-scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: rgba(255, 255, 255, 0.3);
+    -fx-background-radius: 6;
+    -fx-border-radius: 6;
+}
+
+.medicines-scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.5);
+}
+
+.medicines-scroll-pane .scroll-bar:vertical .thumb:pressed {
+    -fx-background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* Responsive design adjustments */
+@media (max-width: 1024px) {
+    .add-medicine-section {
+        -fx-pref-width: 260px;
+        -fx-max-width: 260px;
+        -fx-min-width: 260px;
+    }
+
+    .medicine-input, .medicine-combo {
+        -fx-font-size: 11px;
+    }
+}
+
+@media (max-width: 768px) {
+    .prescription-container {
+        -fx-padding: 10;
+    }
+
+    .prescription-header {
+        -fx-padding: 15px;
+    }
+
+    .add-medicine-section {
+        -fx-pref-width: 240px;
+        -fx-max-width: 240px;
+        -fx-min-width: 240px;
+    }
+}
