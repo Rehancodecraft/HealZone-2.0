@@ -15,6 +15,7 @@
         <junit.version>5.10.2</junit.version>
         <sqlite.version>3.46.0</sqlite.version>
     </properties>
+
     <dependencies>
         <!-- JavaFX Dependencies -->
         <dependency>
@@ -38,6 +39,13 @@
         <dependency>
             <groupId>org.openjfx</groupId>
             <artifactId>javafx-base</artifactId>
+            <version>${javafx.version}</version>
+            <classifier>linux</classifier>
+        </dependency>
+        <!-- Update javafx-swing to match javafx.version and add classifier -->
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
             <version>${javafx.version}</version>
             <classifier>linux</classifier>
         </dependency>
@@ -90,18 +98,34 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- JMetro Dependency -->
-        <!-- https://mvnrepository.com/artifact/org.jfxtras/jmetro -->
+        <!-- JMetro Dependency (Note: This is a POM, ensure proper JAR usage) -->
         <dependency>
             <groupId>org.jfxtras</groupId>
             <artifactId>jmetro</artifactId>
             <version>11.6.16</version>
-            <type>pom</type>
+            <type>jar</type> <!-- Changed from pom to jar -->
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.pdfbox</groupId>
+            <artifactId>pdfbox</artifactId>
+            <version>2.0.27</version>
+        </dependency>
     </dependencies>
+
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <version>0.0.8</version>
+                <configuration>
+                    <mainClass>com.example.healzone.Main</mainClass>
+                    <options>
+                        <option>--add-modules</option>
+                        <option>javafx.swing</option>
+                    </options>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -109,6 +133,10 @@
                 <configuration>
                     <source>${maven.compiler.source}</source>
                     <target>${maven.compiler.target}</target>
+                    <compilerArgs>
+                        <arg>--add-modules</arg>
+                        <arg>javafx.swing</arg>
+                    </compilerArgs>
                 </configuration>
             </plugin>
             <plugin>
@@ -138,6 +166,13 @@
                                     </excludes>
                                 </filter>
                             </filters>
+                            <!-- Exclude conflicting JMetro POM to avoid issues -->
+                            <relocations>
+                                <relocation>
+                                    <pattern>org.jfxtras</pattern>
+                                    <shadedPattern>shaded.org.jfxtras</shadedPattern>
+                                </relocation>
+                            </relocations>
                         </configuration>
                     </execution>
                 </executions>

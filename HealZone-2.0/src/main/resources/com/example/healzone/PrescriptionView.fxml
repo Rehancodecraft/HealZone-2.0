@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane maxWidth="793.0" minWidth="793.0" stylesheets="@Design/prescription-view.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.PrescriptionViewController">
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="2000.0" styleClass="content-scroll" vbarPolicy="AS_NEEDED">
+            <VBox prefHeight="800.0" prefWidth="784.0" spacing="0" styleClass="a4-page-container">
+
+                <!-- Header Section -->
+                <VBox prefWidth="793.0" styleClass="header-section">
+                    <HBox alignment="CENTER" styleClass="hospital-header">
+                        <VBox alignment="CENTER">
+                            <Label fx:id="hospitalName" styleClass="hospital-name" text="MEDICARE HOSPITAL" />
+                            <Label fx:id="hospitalAddress" styleClass="hospital-address" text="123 Medical Street, City" />
+                            <Label fx:id="doctorPhoneEmail" styleClass="hospital-contact" text="Phone: (555) 123-4567 | Email: info@medicarehospital.com" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Doctor Information -->
+                    <HBox spacing="20" styleClass="doctor-section">
+                        <VBox>
+                            <Label fx:id="doctorNameLabel" styleClass="doctor-name" text="Dr. [DOCTOR NAME]" />
+                            <Label fx:id="doctorSpecializationLabel" styleClass="doctor-info" text="[SPECIALIZATION]" />
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <VBox alignment="CENTER_RIGHT">
+                            <Label fx:id="licenseLabel" styleClass="doctor-info" text="License No: [LICENSE]" />
+                            <Label fx:id="registrationLabel" styleClass="doctor-info" text="Registration: [REG NO]" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Prescription Title -->
+                    <HBox alignment="CENTER" styleClass="prescription-title-section">
+                        <Label styleClass="prescription-title" text="℞ PRESCRIPTION" />
+                    </HBox>
+                </VBox>
+
+                <!-- Main Content -->
+                <VBox spacing="10" styleClass="main-content">
+
+                    <!-- Patient Information Section -->
+                    <VBox styleClass="section-container">
+                        <Label styleClass="section-title" text="PATIENT INFORMATION" />
+                        <Separator styleClass="section-separator" />
+                        <GridPane hgap="30" styleClass="patient-info" vgap="8">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="80" prefWidth="80" />
+                                <ColumnConstraints minWidth="200" prefWidth="200" />
+                                <ColumnConstraints minWidth="80" prefWidth="80" />
+                                <ColumnConstraints minWidth="200" prefWidth="200" />
+                            </columnConstraints>
+
+                            <Label styleClass="info-label" text="Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <Label fx:id="patientNameLabel" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                            <Label styleClass="info-label" text="Age:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <Label fx:id="patientAgeLabel" styleClass="info-value" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                            <Label styleClass="info-label" text="Gender:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <Label fx:id="patientGenderLabel" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                            <Label styleClass="info-label" text="Date:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                            <Label fx:id="prescriptionDateLabel" styleClass="info-value" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                            <Label styleClass="info-label" text="Patient ID:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <Label fx:id="patientIdLabel" styleClass="info-value" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                            <rowConstraints>
+                                <RowConstraints />
+                                <RowConstraints />
+                                <RowConstraints />
+                            </rowConstraints>
+                        </GridPane>
+                    </VBox>
+
+                    <!-- Diagnosis Section -->
+                    <VBox fx:id="diagnosisSection" styleClass="section-container">
+                        <Label styleClass="section-title" text="DIAGNOSIS" />
+                        <TextArea fx:id="diagnosisText" editable="false" prefHeight="50.0" style="-fx-border-color: white;" styleClass="diagnosis-text" wrapText="true" />
+                    </VBox>
+
+                    <!-- Prescribed Medications Section -->
+                    <VBox styleClass="section-container">
+                        <Label styleClass="section-title" text="PRESCRIBED MEDICATIONS" />
+                        <VBox fx:id="medicationsContainer" spacing="10" style="-fx-border-color: white;" styleClass="medications-container" />
+                    </VBox>
+
+                    <!-- Precautions Section -->
+                    <VBox fx:id="precautionsSection" styleClass="section-container">
+                        <Label styleClass="section-title" text="PRECAUTIONS and WARNINGS" />
+                        <TextArea fx:id="precautionsText" editable="false" prefHeight="50.0" style="-fx-border-color: white;" styleClass="precautions-text" wrapText="true" />
+                    </VBox>
+
+                    <!-- Follow-up Section -->
+                    <VBox fx:id="followupSection" styleClass="section-container">
+                        <Label styleClass="section-title" text=" FOLLOW-UP APPOINTMENT" />
+                        <Label fx:id="followupText" prefHeight="30.0" styleClass="followup-text" />
+                    </VBox>
+
+                    <!-- Additional Notes Section -->
+                    <VBox fx:id="notesSection" styleClass="section-container">
+                        <Label styleClass="section-title" text="📝 ADDITIONAL NOTES" />
+                        <TextArea fx:id="notesText" editable="false" prefHeight="50.0" styleClass="notes-text" wrapText="true" />
+                    </VBox>
+
+                    <!-- Footer Section -->
+                    <VBox alignment="CENTER" spacing="10" styleClass="footer-section">
+                         <Label prefHeight="18.0" prefWidth="294.0" styleClass="footer-text" text="⚕️ This prescription is computer generated and valid" />
+                         <Label styleClass="footer-text" text="Please take medications as prescribed only" />
+                        <Label fx:id="prescriptionIdLabel" styleClass="prescription-id" />
+                    </VBox>
+
+                    <!-- Action Buttons - Now inside scroll pane -->
+                    <VBox spacing="10" styleClass="button-section">
+                        <HBox alignment="CENTER" prefHeight="94.0" prefWidth="723.0" spacing="15" styleClass="button-container">
+                            <Button fx:id="saveButton" onAction="#savePrescription" styleClass="save-button" text="Print">
+                        <graphic>
+                           <FontIcon iconColor="WHITE" iconLiteral="fas-print" iconSize="20" />
+                        </graphic></Button>
+                            <Button fx:id="closeButton" onAction="#closePrescription" styleClass="close-button" text="✕ Close" />
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

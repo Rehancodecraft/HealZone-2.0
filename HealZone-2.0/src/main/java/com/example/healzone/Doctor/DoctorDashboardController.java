@@ -280,27 +280,29 @@ public class DoctorDashboardController {
         });
     }
 
+    // Updated openPrescriptionPopup method
     private void openPrescriptionPopup(Map<String, Object> appointmentData) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorPrescription.fxml"));
             Parent root = loader.load();
 
             DoctorPrescriptionController controller = loader.getController();
-            controller.setPatientInfo(
-                    String.valueOf(appointmentData.get("patient_name")),
-                    String.valueOf(appointmentData.get("patient_age")), // Assuming age is available
-                    String.valueOf(appointmentData.get("patient_gender")) // Assuming gender is available
-            );
-            controller.setPatientId(String.valueOf(appointmentData.get("patient_id"))); // Assuming patient_id exists
+            // Use patient_phone instead of patient_id
+            String patientPhone = String.valueOf(appointmentData.getOrDefault("patient_phone", ""));
+            String patientName = String.valueOf(appointmentData.getOrDefault("patient_name", "Unknown"));
+            String patientAge = String.valueOf(appointmentData.getOrDefault("patient_age", ""));
+            String patientGender = String.valueOf(appointmentData.getOrDefault("patient_gender", ""));
+            System.out.println("Opening prescription for patient_phone: " + patientPhone); // Debug log
+            controller.setPatientInfo(patientName, patientAge, patientGender);
+            controller.setPatientId(patientPhone); // Set the correct patient_phone
             controller.setDoctorId(doctorId);
 
             Stage prescriptionStage = new Stage();
-            prescriptionStage.setTitle("Add Prescription - " + appointmentData.get("patient_name"));
+            prescriptionStage.setTitle("Add Prescription - " + patientName);
             prescriptionStage.initModality(Modality.APPLICATION_MODAL);
             prescriptionStage.setScene(new Scene(root));
             prescriptionStage.setResizable(false);
-            // Remove window decorations (no maximize/minimize/close buttons)
-            prescriptionStage.initStyle(StageStyle.UNDECORATED);
+            prescriptionStage.initStyle(StageStyle.DECORATED); // Changed from UNDECORATED
             prescriptionStage.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();

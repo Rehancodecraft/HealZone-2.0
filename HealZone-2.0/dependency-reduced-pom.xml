@@ -7,11 +7,27 @@
   <build>
     <plugins>
       <plugin>
+        <groupId>org.openjfx</groupId>
+        <artifactId>javafx-maven-plugin</artifactId>
+        <version>0.0.8</version>
+        <configuration>
+          <mainClass>com.example.healzone.Main</mainClass>
+          <options>
+            <option>--add-modules</option>
+            <option>javafx.swing</option>
+          </options>
+        </configuration>
+      </plugin>
+      <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.11.0</version>
         <configuration>
           <source>${maven.compiler.source}</source>
           <target>${maven.compiler.target}</target>
+          <compilerArgs>
+            <arg>--add-modules</arg>
+            <arg>javafx.swing</arg>
+          </compilerArgs>
         </configuration>
       </plugin>
       <plugin>
@@ -40,6 +56,12 @@
                   </excludes>
                 </filter>
               </filters>
+              <relocations>
+                <relocation>
+                  <pattern>org.jfxtras</pattern>
+                  <shadedPattern>shaded.org.jfxtras</shadedPattern>
+                </relocation>
+              </relocations>
             </configuration>
           </execution>
         </executions>
@@ -82,13 +104,6 @@
           <groupId>org.apiguardian</groupId>
         </exclusion>
       </exclusions>
-    </dependency>
-    <dependency>
-      <groupId>org.jfxtras</groupId>
-      <artifactId>jmetro</artifactId>
-      <version>11.6.16</version>
-      <type>pom</type>
-      <scope>compile</scope>
     </dependency>
   </dependencies>
   <properties>

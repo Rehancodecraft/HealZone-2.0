@@ -4,10 +4,11 @@ module com.example.healzone {
     requires jakarta.mail;
     requires org.controlsfx.controls;
     requires java.sql;
-    requires java.desktop;
+    requires java.desktop; // Required for java.awt.image.BufferedImage
     requires jakarta.activation;
     requires org.kordamp.ikonli.javafx;
-
+    requires javafx.swing;
+    requires org.apache.pdfbox; // Ensures javafx.embed.swing is available
     opens com.example.healzone to javafx.fxml;
     exports com.example.healzone;
     exports com.example.healzone.Patient;

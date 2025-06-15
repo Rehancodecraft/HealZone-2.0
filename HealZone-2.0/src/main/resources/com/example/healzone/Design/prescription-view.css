@@ -1,0 +1,485 @@
+/* Enhanced Professional Prescription CSS - FIXED VERSION */
+
+/* Root Styles - Flexible A4 Page Setup */
+.root {
+    -fx-font-family: "Segoe UI", "Calibri", "Arial", sans-serif;
+    -fx-background-color: #ffffff;
+    -fx-pref-width: 794px;  /* A4 width in pixels at 96 DPI */
+    /* REMOVED fixed height constraints */
+    -fx-min-width: 794px;
+    -fx-max-width: 794px;
+}
+
+/* Main BorderPane for A4 layout - FLEXIBLE HEIGHT */
+.prescription-page {
+    -fx-pref-width: 794px;
+    /* REMOVED all height constraints to allow content expansion */
+    -fx-min-width: 794px;
+    -fx-max-width: 794px;
+    -fx-background-color: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.15), 10, 0, 0, 3);
+}
+
+/* FIXED: Main scroll pane - Allow unlimited scrolling */
+.content-scroll {
+    -fx-background-color: transparent;
+    -fx-background: #ffffff;
+    -fx-border-color: transparent;
+    -fx-fit-to-width: true;
+    /* REMOVED any height constraints */
+}
+
+/* FIXED: A4 page container - Allow content to expand */
+.a4-page-container {
+    -fx-pref-width: 784px;
+    /* REMOVED fixed height - let content determine height */
+    -fx-spacing: 0;
+}
+
+.main-scroll-pane {
+    -fx-background-color: #f0f0f0;
+}
+
+/* Header Section Styles */
+.header-section {
+    -fx-background-color: linear-gradient(to bottom, #f8fdff, #e8f4f8);
+    -fx-border-color: #000000;
+    -fx-border-width: 0 0 3 0;
+    -fx-padding: 25 30 20 30;
+}
+
+.hospital-header {
+    -fx-padding: 20;
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-width: 2;
+    -fx-border-radius: 12;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(21, 101, 192, 0.2), 8, 0, 0, 3);
+}
+
+.hospital-name {
+    -fx-font-size: 28px;
+    -fx-font-weight: bold;
+    -fx-text-fill: linear-gradient(to right, #000000, #000000);
+    -fx-padding: 0 0 8 0;
+    -fx-letter-spacing: 1px;
+}
+
+.hospital-address {
+    -fx-font-size: 15px;
+    -fx-text-fill: #37474f;
+    -fx-padding: 0 0 5 0;
+    -fx-font-weight: 500;
+}
+
+.hospital-contact {
+    -fx-font-size: 13px;
+    -fx-text-fill: #546e7a;
+    -fx-font-weight: 400;
+}
+
+.doctor-section {
+    -fx-padding: 20 0 15 0;
+    -fx-border-color: #b0bec5;
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: rgba(255, 255, 255, 0.7);
+    -fx-border-radius: 0 0 8 8;
+    -fx-background-radius: 0 0 8 8;
+}
+
+.doctor-name {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+    -fx-padding: 0 0 3 0;
+}
+
+.doctor-info {
+    -fx-font-size: 13px;
+    -fx-text-fill: #455a64;
+    -fx-padding: 2 0 0 0;
+    -fx-font-weight: 500;
+}
+
+.prescription-title-section {
+    -fx-padding: 20 0 5 0;
+}
+
+.prescription-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+    -fx-underline: true;
+    -fx-letter-spacing: 2px;
+    -fx-effect: dropshadow(three-pass-box, rgba(21, 101, 192, 0.3), 2, 0, 0, 1);
+}
+
+/* Content Area Styles - FIXED */
+.main-content {
+    -fx-padding: 25 30 20 30;
+    -fx-background-color: #ffffff;
+    -fx-spacing: 18;
+    /* REMOVED any height constraints */
+}
+
+/* Section Container Styles */
+.section-container {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e1f5fe;
+    -fx-border-width: 2;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 18;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.08), 5, 0, 0, 2);
+}
+
+.section-title {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+    -fx-padding: 0 0 12 0;
+    -fx-letter-spacing: 0.5px;
+}
+
+.section-separator {
+    -fx-background-color: linear-gradient(to right, #000000, #000000, #000000);
+    -fx-pref-height: 2;
+    -fx-padding: 0 0 15 0;
+    -fx-background-radius: 1;
+}
+
+/* Patient Information Styles */
+.patient-info {
+    -fx-padding: 15;
+    -fx-background-color: linear-gradient(to bottom, #f1f8e9, #e8f5e8);
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-border-color: #c8e6c9;
+    -fx-border-width: 1;
+}
+
+.info-label {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+}
+
+.info-value {
+    -fx-font-size: 13px;
+    -fx-text-fill: #1b5e20;
+    -fx-font-weight: 600;
+}
+
+/* FIXED: Diagnosis Styles - Flexible height */
+.diagnosis-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #263238;
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #ffffff);
+    -fx-border-color: #c1c0c0;
+    -fx-border-width: 2;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 15;
+    /* REMOVED fixed height constraints */
+    -fx-pref-row-count: 3;
+    -fx-font-weight: 500;
+    -fx-line-spacing: 2;
+}
+
+/* Medications Container Styles */
+.medications-container {
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #ffffff);
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-border-color: #ffffff;
+    -fx-border-width: 1;
+    -fx-spacing: 12;
+}
+
+.medication-item {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #000000;
+    -fx-border-width: 2;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 15;
+    -fx-spacing: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(33, 150, 243, 0.2), 4, 0, 0, 2);
+}
+
+.medication-number {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+    -fx-background-color: #e3f2fd;
+    -fx-padding: 5 10;
+    -fx-background-radius: 15;
+}
+
+.medication-name {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #000000;
+    -fx-padding: 3 0 0 0;
+    -fx-letter-spacing: 0.3px;
+}
+
+.medication-type {
+    -fx-font-size: 12px;
+    -fx-text-fill: #424242;
+    -fx-font-style: italic;
+    -fx-background-color: #f5f5f5;
+    -fx-padding: 3 8;
+    -fx-background-radius: 10;
+}
+
+.medication-detail {
+    -fx-font-size: 12px;
+    -fx-text-fill: #37474f;
+    -fx-padding: 2 0 0 20;
+    -fx-font-weight: 500;
+}
+
+.medication-detail-label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #1565c0;
+}
+
+.medication-instructions {
+    -fx-font-size: 12px;
+    -fx-text-fill: #000000;
+    -fx-padding: 5 0 0 20;
+    -fx-font-style: italic;
+    -fx-font-weight: 600;
+}
+
+/* FIXED: Precautions Styles - Flexible height */
+.precautions-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #000000;
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #ffffff);
+    -fx-border-color: #000000;
+    -fx-border-width: 2;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 15;
+    /* REMOVED fixed height constraints */
+    -fx-pref-row-count: 3;
+    -fx-font-weight: 600;
+    -fx-line-spacing: 2;
+}
+
+/* Follow-up Styles */
+.followup-text {
+    -fx-font-size: 14px;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-padding: 15;
+    -fx-background-color: linear-gradient(to bottom, #e8f5e8, #ffffff);
+    -fx-border-color: #000000;
+    -fx-border-width: 2;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-letter-spacing: 0.3px;
+}
+
+/* FIXED: Notes Styles - Flexible height */
+.notes-text {
+    -fx-font-size: 13px;
+    -fx-text-fill: #37474f;
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #ffffff);
+    -fx-border-color: #ffffff;
+    -fx-border-width: 2;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 15;
+    /* REMOVED fixed height constraints */
+    -fx-pref-row-count: 3;
+    -fx-font-weight: 500;
+    -fx-line-spacing: 2;
+}
+
+/* Footer Styles */
+.footer-section {
+    -fx-padding: 25 30 20 30;
+    -fx-background-color: linear-gradient(to bottom, #f8f9fa, #ffffff);
+    -fx-border-color: #000000;
+    -fx-border-width: 2 0 0 0;
+    -fx-spacing: 15;
+}
+
+.footer-separator {
+    -fx-background-color: linear-gradient(to right, #000000, #030303, #000000);
+    -fx-pref-height: 2;
+    -fx-background-radius: 1;
+}
+
+.signature-label {
+    -fx-font-size: 13px;
+    -fx-text-fill: #000000;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 12 0;
+}
+
+.signature-line {
+    -fx-stroke: #000000;
+    -fx-stroke-width: 2;
+}
+
+.footer-info {
+    -fx-padding: 20 0 0 0;
+}
+
+.footer-text {
+    -fx-font-size: 12px;
+    -fx-text-fill: #37474f;
+    -fx-text-alignment: center;
+    -fx-font-weight: 500;
+}
+
+.prescription-id {
+    -fx-font-size: 11px;
+    -fx-text-fill: #78909c;
+    -fx-font-weight: bold;
+    -fx-padding: 15 0 0 0;
+    -fx-background-color: #eceff1;
+    -fx-background-radius: 5;
+    -fx-padding: 8;
+}
+
+/* FIXED: Enhanced Button Styles - Separate section */
+.button-section {
+    -fx-spacing: 10;
+    -fx-padding: 0; /* Remove extra padding */
+}
+
+.button-separator {
+    -fx-background-color: linear-gradient(to right, #000000, #030303, #000000);
+    -fx-pref-height: 2;
+    -fx-background-radius: 1;
+}
+
+.button-container {
+    -fx-padding: 20 30 25 30;
+    -fx-background-color: linear-gradient(to bottom, #ffffff, #f8f9fa);
+    -fx-border-color: #000000;
+    -fx-border-width: 2 0 0 0;
+    -fx-spacing: 20;
+}
+
+.print-button {
+    -fx-background-color: linear-gradient(to bottom, #4caf50, #388e3c);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 25;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(76, 175, 80, 0.4), 6, 0, 0, 3);
+}
+
+.print-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #388e3c, #2e7d32);
+    -fx-effect: dropshadow(three-pass-box, rgba(76, 175, 80, 0.6), 8, 0, 0, 4);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.save-button {
+    -fx-background-color: linear-gradient(to bottom, #2196f3, #1976d2);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 25;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(33, 150, 243, 0.4), 6, 0, 0, 3);
+}
+
+.save-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #1976d2, #1565c0);
+    -fx-effect: dropshadow(three-pass-box, rgba(33, 150, 243, 0.6), 8, 0, 0, 4);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+.close-button {
+    -fx-background-color: linear-gradient(to bottom, #757575, #616161);
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 12 25;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-cursor: hand;
+    -fx-effect: dropshadow(three-pass-box, rgba(117, 117, 117, 0.4), 6, 0, 0, 3);
+}
+
+.close-button:hover {
+    -fx-background-color: linear-gradient(to bottom, #616161, #424242);
+    -fx-effect: dropshadow(three-pass-box, rgba(117, 117, 117, 0.6), 8, 0, 0, 4);
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+}
+
+/* Print Media Styles for A4 */
+@media print {
+    .button-container {
+        -fx-opacity: 0;
+        -fx-max-height: 0;
+        -fx-min-height: 0;
+        -fx-pref-height: 0;
+    }
+
+    .root {
+        -fx-background-color: white;
+        -fx-effect: null;
+    }
+
+    .prescription-page {
+        -fx-effect: null;
+        -fx-background-color: white;
+    }
+
+    .section-container {
+        -fx-border-color: #c1c0c0;
+        -fx-background-color: white;
+        -fx-effect: null;
+    }
+
+    .header-section {
+        -fx-background-color: white;
+    }
+
+    .footer-section {
+        -fx-background-color: white;
+    }
+}
+
+/* Responsive adjustments for smaller screens while maintaining A4 ratio */
+@media screen and (max-width: 800px) {
+    .root {
+        -fx-scale-x: 0.9;
+        -fx-scale-y: 0.9;
+    }
+}
+
+/* Animation classes for smooth transitions */
+.fade-in {
+    -fx-opacity: 0;
+}
+
+.fade-in:hover {
+    -fx-opacity: 1;
+}
+
+/* Medical symbols and icons styling */
+.medical-symbol {
+    -fx-text-fill: #1565c0;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+}

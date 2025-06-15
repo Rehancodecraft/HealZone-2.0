@@ -15,264 +15,262 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox alignment="TOP_CENTER" prefHeight="700.0" prefWidth="1200.0" spacing="15" styleClass="prescription-container" stylesheets="@../Design/DoctorPrescription.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorPrescriptionController">
+<ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="800.0" style="-fx-background-color: #1b0599;" styleClass="prescription-scroll-pane" stylesheets="@../Design/DoctorPrescription.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorPrescriptionController">
+    <content>
+        <VBox alignment="TOP_CENTER" prefWidth="1200.0" spacing="15" styleClass="prescription-main-container" stylesheets="@../Design/DoctorPrescription.css">
+            <!-- Header Section -->
+            <VBox spacing="8" styleClass="prescription-header">
+                <HBox alignment="CENTER_LEFT" spacing="12">
+                    <FontIcon iconColor="WHITE" iconLiteral="fas-prescription-bottle-alt" iconSize="20" />
+                    <Label styleClass="prescription-title" text="Write Prescription">
+                        <font>
+                            <Font name="SansSerif Bold" size="20.0" />
+                        </font>
+                    </Label>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="printButton" onAction="#printPrescription" styleClass="action-button" text="Print">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-print" iconSize="14" />
+                        </graphic>
+                        <font>
+                            <Font name="SansSerif Bold" size="12.0" />
+                        </font>
+                    </Button>
+                    <Button fx:id="exitButton" onAction="#exitPrescription" prefHeight="30" prefWidth="30" styleClass="exit-button">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-times" iconSize="14" />
+                        </graphic>
+                    </Button>
+                </HBox>
 
-    <!-- Header Section -->
-    <VBox spacing="8" styleClass="prescription-header">
-        <HBox alignment="CENTER_LEFT" spacing="12">
-            <FontIcon iconColor="WHITE" iconLiteral="fas-prescription-bottle-alt" iconSize="20" />
-            <Label styleClass="prescription-title" text="Write Prescription">
-                <font>
-                    <Font name="SansSerif Bold" size="22.0" />
-                </font>
-            </Label>
-            <Region HBox.hgrow="ALWAYS" />
-            <Button fx:id="saveButton" onAction="#savePrescription" styleClass="save-button" text="Save Prescription">
-                <graphic>
-                    <FontIcon iconColor="WHITE" iconLiteral="fas-save" iconSize="14" />
-                </graphic>
-                <font>
-                    <Font name="SansSerif Bold" size="12.0" />
-                </font>
-            </Button>
-            <Button fx:id="printButton" onAction="#printPrescription" styleClass="print-button" text="Print">
-                <graphic>
-                    <FontIcon iconColor="WHITE" iconLiteral="fas-print" iconSize="14" />
-                </graphic>
-                <font>
-                    <Font name="SansSerif Bold" size="12.0" />
-                </font>
-            </Button>
-        </HBox>
-
-        <!-- Patient Information -->
-        <VBox spacing="10" styleClass="patient-info-section">
-            <Label styleClass="section-title" text="Patient Information">
-                <font>
-                    <Font name="SansSerif Bold" size="14.0" />
-                </font>
-            </Label>
-            <HBox spacing="20">
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Patient Name:" />
-                    <Label fx:id="patientNameLabel" styleClass="patient-info-value" text="John Doe" />
-                </VBox>
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Age:" />
-                    <Label fx:id="patientAgeLabel" styleClass="patient-info-value" text="35" />
-                </VBox>
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Gender:" />
-                    <Label fx:id="patientGenderLabel" styleClass="patient-info-value" text="Male" />
-                </VBox>
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Date:" />
-                    <Label fx:id="prescriptionDateLabel" styleClass="patient-info-value" />
-                </VBox>
-            </HBox>
-        </VBox>
-    </VBox>
-
-    <!-- Main Content Area -->
-    <HBox spacing="15" VBox.vgrow="ALWAYS">
-
-        <!-- Left Side - Add Medicine Section -->
-        <VBox spacing="12" styleClass="add-medicine-section" HBox.hgrow="NEVER">
-            <Label styleClass="section-title" text="Add Medicine">
-                <graphic>
-                    <FontIcon iconColor="#1e3a8a" iconLiteral="fas-pills" iconSize="16" />
-                </graphic>
-                <font>
-                    <Font name="SansSerif Bold" size="14.0" />
-                </font>
-            </Label>
-
-            <!-- Medicine Form -->
-            <VBox spacing="10" styleClass="medicine-form">
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Medicine Name *" />
-                    <TextField fx:id="medicineNameField" promptText="Enter medicine name" styleClass="medicine-input" />
-                </VBox>
-
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Type" />
-                    <ComboBox fx:id="medicineTypeCombo" prefWidth="200.0" promptText="Select type" styleClass="medicine-combo" />
-                </VBox>
-
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Dosage *" />
-                    <TextField fx:id="dosageField" promptText="e.g., 500mg" styleClass="medicine-input" />
-                </VBox>
-
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Frequency *" />
-                    <ComboBox fx:id="frequencyCombo" prefWidth="200.0" promptText="Select frequency" styleClass="medicine-combo" />
-                </VBox>
-
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Timing" />
-                    <ComboBox fx:id="timingCombo" prefWidth="200.0" promptText="Select timing" styleClass="medicine-combo" />
-                </VBox>
-
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Duration *" />
-                    <HBox spacing="8">
-                        <TextField fx:id="durationField" prefWidth="80.0" promptText="7" styleClass="medicine-input-small" />
-                        <ComboBox fx:id="durationUnitCombo" prefWidth="80.0" styleClass="medicine-combo-small" />
+                <!-- Patient Information -->
+                <VBox spacing="10" styleClass="patient-info-section">
+                    <Label styleClass="section-title" text="Patient Information">
+                        <font>
+                            <Font name="SansSerif Bold" size="14.0" />
+                        </font>
+                    </Label>
+                    <HBox spacing="20">
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Patient Name:" />
+                            <Label fx:id="patientNameLabel" styleClass="patient-info-value" text="John Doe" />
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Age:" />
+                            <Label fx:id="patientAgeLabel" styleClass="patient-info-value" text="35" />
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Gender:" />
+                            <Label fx:id="patientGenderLabel" styleClass="patient-info-value" text="Male" />
+                        </VBox>
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Date:" />
+                            <Label fx:id="prescriptionDateLabel" styleClass="patient-info-value" />
+                        </VBox>
                     </HBox>
                 </VBox>
+            </VBox>
 
-                <VBox spacing="5">
-                    <Label styleClass="field-label" text="Instructions" />
-                    <TextArea fx:id="instructionsArea" prefRowCount="2" promptText="Special instructions..." styleClass="instructions-area" wrapText="true" />
+            <!-- Main Content Area -->
+            <HBox spacing="15" VBox.vgrow="ALWAYS">
+                <!-- Left Side - Add Medicine Section -->
+                <VBox spacing="12" styleClass="add-medicine-section" HBox.hgrow="NEVER">
+                    <Label styleClass="section-title" text="Add Medicine">
+                        <graphic>
+                            <FontIcon iconColor="#1e3a8a" iconLiteral="fas-pills" iconSize="16" />
+                        </graphic>
+                        <font>
+                            <Font name="SansSerif Bold" size="14.0" />
+                        </font>
+                    </Label>
+
+                    <!-- Medicine Form -->
+                    <VBox spacing="10" styleClass="medicine-form">
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Medicine Name *" />
+                            <TextField fx:id="medicineNameField" promptText="Enter medicine name" styleClass="dosagefeild" />
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Type" />
+                            <ComboBox fx:id="medicineTypeCombo" prefWidth="200.0" promptText="Select type" styleClass="combo-box" />
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Dosage *" />
+                            <TextField fx:id="dosageField" promptText="e.g., 500mg" styleClass="dosagefeild" />
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Frequency *" />
+                            <ComboBox fx:id="frequencyCombo" prefWidth="200.0" promptText="Select frequency" styleClass="combo-box" />
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Timing" />
+                            <ComboBox fx:id="timingCombo" prefWidth="200.0" promptText="Select timing" styleClass="combo-box" />
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Duration *" />
+                            <HBox spacing="8">
+                                <TextField fx:id="durationField" prefHeight="39.0" prefWidth="70.0" promptText="7" styleClass="dosagefeild" stylesheets="@../Design/DoctorPrescription.css" />
+                                <ComboBox fx:id="durationUnitCombo" prefHeight="40.0" prefWidth="114.0" styleClass="combo-box" />
+                            </HBox>
+                        </VBox>
+
+                        <VBox spacing="5">
+                            <Label styleClass="filter-label" text="Instructions" />
+                            <TextArea fx:id="instructionsArea" prefRowCount="2" promptText="Special instructions..." styleClass="diagnosis-area" wrapText="true" />
+                        </VBox>
+
+                        <Button fx:id="addMedicineButton" onAction="#addMedicine" prefWidth="200.0" styleClass="filter-button" text="Add Medicine">
+                            <graphic>
+                                <FontIcon iconColor="WHITE" iconLiteral="fas-plus" iconSize="12" />
+                            </graphic>
+                            <font>
+                                <Font name="SansSerif Bold" size="12.0" />
+                            </font>
+                        </Button>
+                    </VBox>
                 </VBox>
 
-                <Button fx:id="addMedicineButton" onAction="#addMedicine" prefWidth="200.0" styleClass="add-medicine-button" text="Add Medicine">
+                <!-- Right Side - Prescription Details -->
+                <VBox spacing="12" styleClass="prescription-details-section" HBox.hgrow="ALWAYS">
+                    <!-- Medicines Table -->
+                    <VBox spacing="8" styleClass="medicines-table-section">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label styleClass="section-title" text="Prescribed Medicines">
+                                <graphic>
+                                    <FontIcon iconColor="#1e3a8a" iconLiteral="fas-list-ul" iconSize="16" />
+                                </graphic>
+                                <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                </font>
+                            </Label>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button fx:id="clearAllButton" onAction="#clearAllMedicines" styleClass="reset-button" text="Clear All">
+                                <graphic>
+                                    <FontIcon iconColor="WHITE" iconLiteral="fas-trash" iconSize="12" />
+                                </graphic>
+                            </Button>
+                        </HBox>
+
+                        <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="table-scroll-pane">
+                            <TableView fx:id="medicinesTable" prefHeight="280.0" styleClass="table-view">
+                                <columns>
+                                    <TableColumn fx:id="medicineNameColumn" prefWidth="140.0" text="Medicine Name" />
+                                    <TableColumn fx:id="typeColumn" prefWidth="80.0" text="Type" />
+                                    <TableColumn fx:id="dosageColumn" prefWidth="80.0" text="Dosage" />
+                                    <TableColumn fx:id="frequencyColumn" prefWidth="100.0" text="Frequency" />
+                                    <TableColumn fx:id="timingColumn" prefWidth="90.0" text="Timing" />
+                                    <TableColumn fx:id="durationColumn" prefWidth="80.0" text="Duration" />
+                                    <TableColumn fx:id="instructionsColumn" prefWidth="120.0" text="Instructions" />
+                                    <TableColumn fx:id="actionColumn" prefWidth="80.0" text="Action" />
+                                </columns>
+                                <columnResizePolicy>
+                                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                                </columnResizePolicy>
+                            </TableView>
+                        </ScrollPane>
+                    </VBox>
+
+                    <!-- Additional Sections -->
+                    <HBox spacing="15">
+                        <!-- Diagnosis Section -->
+                        <VBox spacing="8" styleClass="diagnosis-section" HBox.hgrow="ALWAYS">
+                            <Label styleClass="section-title" text="Diagnosis">
+                                <graphic>
+                                    <FontIcon iconColor="#059669" iconLiteral="fas-stethoscope" iconSize="16" />
+                                </graphic>
+                                <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                </font>
+                            </Label>
+                            <TextArea fx:id="diagnosisArea" prefRowCount="4" promptText="Enter diagnosis..." styleClass="diagnosis-area" wrapText="true" />
+                        </VBox>
+
+                        <!-- Precautions Section -->
+                        <VBox spacing="8" styleClass="precautions-section" HBox.hgrow="ALWAYS">
+                            <Label styleClass="section-title" text="Precautions and Advice">
+                                <graphic>
+                                    <FontIcon iconColor="#f59e0b" iconLiteral="fas-exclamation-triangle" iconSize="16" />
+                                </graphic>
+                                <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                </font>
+                            </Label>
+                            <TextArea fx:id="precautionsArea" prefRowCount="4" promptText="Enter precautions and advice..." styleClass="precautions-area" wrapText="true" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Follow-up and Additional Notes -->
+                    <HBox spacing="15">
+                        <!-- Follow-up Section -->
+                        <VBox spacing="8" styleClass="followup-section" HBox.hgrow="ALWAYS">
+                            <Label styleClass="section-title" text="Follow-up">
+                                <graphic>
+                                    <FontIcon iconColor="#8b5cf6" iconLiteral="fas-calendar-check" iconSize="16" />
+                                </graphic>
+                                <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                </font>
+                            </Label>
+                            <HBox spacing="10">
+                                <TextField fx:id="followupField" prefWidth="100.0" promptText="7" styleClass="search-bar" />
+                                <ComboBox fx:id="followupUnitCombo" prefWidth="80.0" styleClass="combo-box" />
+                                <Label styleClass="filter-label" text="after" />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Additional Notes -->
+                        <VBox spacing="8" styleClass="notes-section" HBox.hgrow="ALWAYS">
+                            <Label styleClass="section-title" text="Additional Notes">
+                                <graphic>
+                                    <FontIcon iconColor="#6b7280" iconLiteral="fas-sticky-note" iconSize="16" />
+                                </graphic>
+                                <font>
+                                    <Font name="SansSerif Bold" size="14.0" />
+                                </font>
+                            </Label>
+                            <TextArea fx:id="notesArea" prefRowCount="2" promptText="Any additional notes..." styleClass="notes-area" wrapText="true" />
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </HBox>
+
+            <!-- Footer Actions -->
+            <HBox alignment="CENTER" spacing="15" styleClass="footer-actions">
+                <Button fx:id="cancelButton" onAction="#cancelPrescription" styleClass="reset-button" text="Cancel">
                     <graphic>
-                        <FontIcon iconColor="WHITE" iconLiteral="fas-plus" iconSize="12" />
+                        <FontIcon iconColor="WHITE" iconLiteral="fas-times" iconSize="14" />
                     </graphic>
                     <font>
                         <Font name="SansSerif Bold" size="12.0" />
                     </font>
                 </Button>
-            </VBox>
-        </VBox>
-
-        <!-- Right Side - Prescription Details -->
-        <VBox spacing="12" styleClass="prescription-details-section" HBox.hgrow="ALWAYS">
-
-            <!-- Medicines Table -->
-            <VBox spacing="8" styleClass="medicines-table-section">
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <Label styleClass="section-title" text="Prescribed Medicines">
-                        <graphic>
-                            <FontIcon iconColor="#1e3a8a" iconLiteral="fas-list-ul" iconSize="16" />
-                        </graphic>
-                        <font>
-                            <Font name="SansSerif Bold" size="14.0" />
-                        </font>
-                    </Label>
-                    <Region HBox.hgrow="ALWAYS" />
-                    <Button fx:id="clearAllButton" onAction="#clearAllMedicines" styleClass="clear-all-button" text="Clear All">
-                        <graphic>
-                            <FontIcon iconColor="WHITE" iconLiteral="fas-trash" iconSize="12" />
-                        </graphic>
-                    </Button>
-                </HBox>
-
-                <ScrollPane fitToHeight="true" fitToWidth="true" styleClass="medicines-scroll-pane">
-                    <TableView fx:id="medicinesTable" prefHeight="280.0" styleClass="medicines-table">
-                        <columns>
-                            <TableColumn fx:id="medicineNameColumn" prefWidth="140.0" text="Medicine Name" />
-                            <TableColumn fx:id="typeColumn" prefWidth="80.0" text="Type" />
-                            <TableColumn fx:id="dosageColumn" prefWidth="80.0" text="Dosage" />
-                            <TableColumn fx:id="frequencyColumn" prefWidth="100.0" text="Frequency" />
-                            <TableColumn fx:id="timingColumn" prefWidth="90.0" text="Timing" />
-                            <TableColumn fx:id="durationColumn" prefWidth="80.0" text="Duration" />
-                            <TableColumn fx:id="instructionsColumn" prefWidth="120.0" text="Instructions" />
-                            <TableColumn fx:id="actionColumn" prefWidth="80.0" text="Action" />
-                        </columns>
-                        <columnResizePolicy>
-                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-                        </columnResizePolicy>
-                    </TableView>
-                </ScrollPane>
-            </VBox>
-
-            <!-- Additional Sections -->
-            <HBox spacing="15">
-                <!-- Diagnosis Section -->
-                <VBox spacing="8" styleClass="diagnosis-section" HBox.hgrow="ALWAYS">
-                    <Label styleClass="section-title" text="Diagnosis">
-                        <graphic>
-                            <FontIcon iconColor="#059669" iconLiteral="fas-stethoscope" iconSize="16" />
-                        </graphic>
-                        <font>
-                            <Font name="SansSerif Bold" size="14.0" />
-                        </font>
-                    </Label>
-                    <TextArea fx:id="diagnosisArea" prefRowCount="4" promptText="Enter diagnosis..." styleClass="diagnosis-area" wrapText="true" />
-                </VBox>
-
-                <!-- Precautions Section -->
-                <VBox spacing="8" styleClass="precautions-section" HBox.hgrow="ALWAYS">
-                    <Label styleClass="section-title" text="Precautions and Advice">
-                        <graphic>
-                            <FontIcon iconColor="#f59e0b" iconLiteral="fas-exclamation-triangle" iconSize="16" />
-                        </graphic>
-                        <font>
-                            <Font name="SansSerif Bold" size="14.0" />
-                        </font>
-                    </Label>
-                    <TextArea fx:id="precautionsArea" prefRowCount="4" promptText="Enter precautions and advice..." styleClass="precautions-area" wrapText="true" />
-                </VBox>
+                <Button fx:id="previewButton" onAction="#previewPrescription" styleClass="action-button" text="Preview">
+                    <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fas-eye" iconSize="14" />
+                    </graphic>
+                    <font>
+                        <Font name="SansSerif Bold" size="12.0" />
+                    </font>
+                </Button>
+                 <Button fx:id="saveButton" onAction="#savePrescription" styleClass="action-button" text="Save Prescription">
+                     <graphic>
+                         <FontIcon iconColor="WHITE" iconLiteral="fas-save" iconSize="14" />
+                     </graphic>
+                     <font>
+                         <Font name="SansSerif Bold" size="12.0" />
+                     </font>
+                 </Button>
             </HBox>
 
-            <!-- Follow-up and Additional Notes -->
-            <HBox spacing="15">
-                <!-- Follow-up Section -->
-                <VBox spacing="8" styleClass="followup-section" HBox.hgrow="ALWAYS">
-                    <Label styleClass="section-title" text="Follow-up">
-                        <graphic>
-                            <FontIcon iconColor="#8b5cf6" iconLiteral="fas-calendar-check" iconSize="16" />
-                        </graphic>
-                        <font>
-                            <Font name="SansSerif Bold" size="14.0" />
-                        </font>
-                    </Label>
-                    <HBox spacing="10">
-                        <TextField fx:id="followupField" prefWidth="100.0" promptText="7" styleClass="followup-input" />
-                        <ComboBox fx:id="followupUnitCombo" prefWidth="80.0" styleClass="followup-combo" />
-                        <Label styleClass="field-label" text="after" />
-                    </HBox>
-                </VBox>
-
-                <!-- Additional Notes -->
-                <VBox spacing="8" styleClass="notes-section" HBox.hgrow="ALWAYS">
-                    <Label styleClass="section-title" text="Additional Notes">
-                        <graphic>
-                            <FontIcon iconColor="#6b7280" iconLiteral="fas-sticky-note" iconSize="16" />
-                        </graphic>
-                        <font>
-                            <Font name="SansSerif Bold" size="14.0" />
-                        </font>
-                    </Label>
-                    <TextArea fx:id="notesArea" prefRowCount="2" promptText="Any additional notes..." styleClass="notes-area" wrapText="true" />
-                </VBox>
-            </HBox>
+            <!-- Padding for the entire container -->
+            <padding>
+                <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
+            </padding>
         </VBox>
-    </HBox>
-
-    <!-- Footer Actions -->
-    <HBox alignment="CENTER" spacing="15" styleClass="footer-actions">
-        <Button fx:id="cancelButton" onAction="#cancelPrescription" styleClass="cancel-button" text="Cancel">
-            <graphic>
-                <FontIcon iconColor="WHITE" iconLiteral="fas-times" iconSize="14" />
-            </graphic>
-            <font>
-                <Font name="SansSerif Bold" size="12.0" />
-            </font>
-        </Button>
-        <Button fx:id="previewButton" onAction="#previewPrescription" styleClass="preview-button" text="Preview">
-            <graphic>
-                <FontIcon iconColor="WHITE" iconLiteral="fas-eye" iconSize="14" />
-            </graphic>
-            <font>
-                <Font name="SansSerif Bold" size="12.0" />
-            </font>
-        </Button>
-        <Button fx:id="saveDraftButton" onAction="#saveDraft" styleClass="draft-button" text="Save as Draft">
-            <graphic>
-                <FontIcon iconColor="WHITE" iconLiteral="fas-file-alt" iconSize="14" />
-            </graphic>
-            <font>
-                <Font name="SansSerif Bold" size="12.0" />
-            </font>
-        </Button>
-    </HBox>
-
-    <!-- Padding for the entire container -->
-    <padding>
-        <Insets bottom="15.0" left="15.0" right="15.0" top="15.0" />
-    </padding>
-</VBox>
+    </content>
+</ScrollPane>

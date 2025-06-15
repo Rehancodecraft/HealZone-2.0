@@ -254,9 +254,9 @@ public class DoctorAppointmentHistoryController {
                     if (empty) {
                         setGraphic(null);
                     } else {
+                        setGraphic(actionBox);
                         Map<String, Object> appointmentData = getTableView().getItems().get(getIndex());
 //                        viewPrescriptionBtn.setOnAction(event -> viewPrescription(appointmentData));
-//                        setGraphic(actionBox);
                     }
                 }
             };
@@ -554,22 +554,28 @@ public class DoctorAppointmentHistoryController {
             default -> data;
         };
     }
-
+//
 //    private void viewPrescription(Map<String, Object> appointmentData) {
 //        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/PrescriptionView.fxml"));
+//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorPrescription.fxml"));
 //            Parent root = loader.load();
 //
-//            PrescriptionViewController controller = loader.getController();
-//            controller.setAppointmentData(appointmentData);
+//            DoctorPrescriptionController controller = loader.getController();
+//            controller.setPatientInfo(
+//                    String.valueOf(appointmentData.getOrDefault("patient_name", "Unknown")),
+//                    String.valueOf(appointmentData.getOrDefault("patient_age", "")),
+//                    String.valueOf(appointmentData.getOrDefault("patient_gender", ""))
+//            );
+//            controller.setPatientId(String.valueOf(appointmentData.getOrDefault("patient_id", "")));
+//            controller.setDoctorId(SessionManager.getCurrentDoctorId());
 //
 //            Stage prescriptionStage = new Stage();
-//            prescriptionStage.setTitle("Prescription - " + appointmentData.get("patient_name"));
+//            prescriptionStage.setTitle("View Prescription - " + appointmentData.getOrDefault("patient_name", "Unknown"));
 //            prescriptionStage.initModality(Modality.APPLICATION_MODAL);
 //            prescriptionStage.setScene(new Scene(root));
 //            prescriptionStage.setResizable(false);
-//            prescriptionStage.show();
-//
+//            prescriptionStage.initStyle(StageStyle.DECORATED);
+//            prescriptionStage.showAndWait();
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //            showError("Failed to open prescription view: " + e.getMessage());
