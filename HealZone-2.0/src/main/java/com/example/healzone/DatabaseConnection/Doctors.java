@@ -289,7 +289,7 @@ public class Doctors {
     public static Map<String, Object> getCurrentDoctorDetails(String email, String password) {
         String sql = """
             SELECT d.govt_id, d.first_name, d.last_name, d.email, d.phone_number,
-                   pd.specialization, pd.degrees, pd.medical_license_number, pd.bio,
+                   pd.specialization, pd.degrees, pd.medical_license_number, pd.bio, pd.experience,
                    pi.hospital_name, pi.hospital_address, pi.consultation_fee,
                    da.day_of_week, da.start_time, da.end_time
             FROM doctors d
@@ -305,13 +305,12 @@ public class Doctors {
             stmt.setString(1, email);
             stmt.setString(2, password);
             ResultSet rs = stmt.executeQuery();
-            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("h:mm a");
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm:ss"); // Match database time format
             boolean hasData = false;
             while (rs.next()) {
                 hasData = true;
                 // Scalar fields (set once from first row)
                 if (doctorData.isEmpty()) {
-                    System.out.println(rs.getString("govt_id"));
                     doctorData.put("govt_id", rs.getString("govt_id"));
                     doctorData.put("first_name", rs.getString("first_name"));
                     doctorData.put("last_name", rs.getString("last_name"));
@@ -321,6 +320,7 @@ public class Doctors {
                     doctorData.put("degrees", rs.getString("degrees"));
                     doctorData.put("medical_license_number", rs.getString("medical_license_number"));
                     doctorData.put("bio", rs.getString("bio"));
+                    doctorData.put("experience", rs.getString("experience"));
                     doctorData.put("hospital_name", rs.getString("hospital_name"));
                     doctorData.put("hospital_address", rs.getString("hospital_address"));
                     doctorData.put("consultation_fee", rs.getString("consultation_fee"));
@@ -334,11 +334,28 @@ public class Doctors {
                     LocalTime endTime = sqlEndTime != null ? sqlEndTime.toLocalTime() : null;
                     if (startTime != null && endTime != null) {
                         availability.put(day, new TimeSlot(startTime, endTime));
+                        System.out.println("Loaded availability for " + day + ": " + startTime + " - " + endTime); // Debug
                     }
                 }
             }
             if (hasData) {
                 doctorData.put("availability", availability);
+                // Set Doctor static fields
+                Doctor.setGovtID((String) doctorData.get("govt_id"));
+                Doctor.setFirstName((String) doctorData.get("first_name"));
+                Doctor.setLastName((String) doctorData.get("last_name"));
+                Doctor.setEmail((String) doctorData.get("email"));
+                Doctor.setPhone((String) doctorData.get("phone_number"));
+                Doctor.setSpecialization((String) doctorData.get("specialization"));
+                Doctor.setDegrees((String) doctorData.get("degrees"));
+                Doctor.setMedicalLicenseNumber((String) doctorData.get("medical_license_number"));
+                Doctor.setBio((String) doctorData.get("bio"));
+                Doctor.setExperience((String) doctorData.get("experience"));
+                Doctor.setHospitalName((String) doctorData.get("hospital_name"));
+                Doctor.setHospitalAddress((String) doctorData.get("hospital_address"));
+                Doctor.setConsultationFee((String) doctorData.get("consultation_fee"));
+                Doctor.clearAvailability();
+                availability.forEach(Doctor::addAvailability);
             }
             return doctorData;
         } catch (SQLException e) {
@@ -529,6 +546,86 @@ public class Doctors {
             e.printStackTrace();
         }
         return doctorList;
+    }
+    public static void updatePersonalDetails(String govtId, String firstName, String lastName, String email, String phone) {
+        String update = """
+            UPDATE doctors
+            SET first_name = ?, last_name = ?, email = ?, phone_number = ?
+            WHERE govt_id = ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(update)) {
+            ps.setString(1, firstName);
+            ps.setString(2, lastName);
+            ps.setString(3, email);
+            ps.setString(4, phone);
+            ps.setString(5, govtId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Personal details updated for govtId: " + govtId);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating personal details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Update professional details
+    public static void updateProfessionalDetails(String govtId, String specialization, String degrees, String licenseNumber, String bio, String experience) {
+        String update = """
+            UPDATE professional_details
+            SET specialization = ?, degrees = ?, medical_license_number = ?, bio = ?, experience = ?
+            WHERE govt_id = ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(update)) {
+            ps.setString(1, specialization);
+            ps.setString(2, degrees);
+            ps.setString(3, licenseNumber);
+            ps.setString(4, bio);
+            ps.setString(5, experience);
+            ps.setString(6, govtId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Professional details updated for govtId: " + govtId);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating professional details: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Update practice information
+    public static void updatePracticeInfo(String govtId, String hospitalName, String hospitalAddress, String consultationFee) {
+        String update = """
+            UPDATE practice_information
+            SET hospital_name = ?, hospital_address = ?, consultation_fee = ?
+            WHERE govt_id = ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(update)) {
+            ps.setString(1, hospitalName);
+            ps.setString(2, hospitalAddress);
+            ps.setString(3, consultationFee);
+            ps.setString(4, govtId);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Practice info updated for govtId: " + govtId);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error updating practice info: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // Clear existing availability
+    public static void clearDoctorAvailability(String govtId) {
+        String deleteSql = "DELETE FROM doctor_availability WHERE govt_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(deleteSql)) {
+            stmt.setString(1, govtId);
+            stmt.executeUpdate();
+            System.out.println("Old availability cleared for govtId: " + govtId);
+        } catch (SQLException e) {
+            System.err.println("Error clearing old availability: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public static void setTimeText(String startTimeStr, String endTimeStr) {

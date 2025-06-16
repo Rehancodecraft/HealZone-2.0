@@ -38,7 +38,7 @@ public class DoctorHomePageController {
     @FXML
     private FontIcon sideBarButton;
     @FXML
-    private Button loginButton, dashboardButton, upcomingButton, historyButton, profileButton, logoutButton, addDoctorButton;
+    private Button loginButton, dashboardButton, upcomingButton, historyButton, profileButton, logoutButton, addDoctorButton, availabilityButton; // Added availabilityButton
 
     private static final ZoneId PAKISTAN_ZONE = ZoneId.of("Asia/Karachi");
     private boolean sidebarVisible = true;
@@ -60,7 +60,7 @@ public class DoctorHomePageController {
             String firstName = Doctor.getFirstName();
             String lastName = Doctor.getLastName();
             if (firstName != null && lastName != null) {
-                displayName.setText("Dr."+firstName + " " + lastName);
+                displayName.setText("Dr." + firstName + " " + lastName);
             } else {
                 displayName.setText("Doctor");
             }
@@ -74,7 +74,6 @@ public class DoctorHomePageController {
         setupInitialScrollPaneStyle();
         setupResponsiveLayout();
         setupScrollPaneBackground();
-//        setupSearchFunctionality();
 
         // Load dashboard by default with delay to ensure UI is ready
         Platform.runLater(() -> loadDashboard());
@@ -205,6 +204,7 @@ public class DoctorHomePageController {
             }
         });
     }
+
     // Reused from PatientHomePageController
     @FXML
     protected void toggleSideBar() {
@@ -248,7 +248,6 @@ public class DoctorHomePageController {
 
     @FXML
     private void onDashboardButtonClicked() {
-
         loadDashboard();
         Node focustarget = dashboardButton;
         focustarget.requestFocus();
@@ -260,7 +259,6 @@ public class DoctorHomePageController {
             @Override
             protected Parent call() throws Exception {
                 try {
-                    // Try to load the FXML file
                     System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/DoctorDashboard.fxml");
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorDashboard.fxml"));
 
@@ -274,7 +272,6 @@ public class DoctorHomePageController {
                         throw new IOException("Failed to get DoctorDashboardController from FXML");
                     }
 
-                    // Store controller for later access
                     dashboard.getProperties().put("controller", controller);
                     System.out.println("Dashboard loaded successfully");
                     return dashboard;
@@ -294,7 +291,6 @@ public class DoctorHomePageController {
                         rootContainer.getChildren().setAll(dashboard);
                         animateContent();
 
-                        // Set dashboard values after a short delay to ensure UI is ready
                         Platform.runLater(() -> setDashboardValues());
                     } else {
                         showErrorAlert("Load Error", "Dashboard or container is null");
@@ -396,7 +392,6 @@ public class DoctorHomePageController {
                     if (rootContainer != null) {
                         rootContainer.getChildren().clear();
                         List<Map<String, Object>> appointments = loadTask.getValue();
-                        // Load UpcomingAppointmentsTable.fxml
                         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorUpcomingAppointments.fxml"));
                         Parent tableView = loader.load();
                         DoctorUpcomingAppointmentsController controller = loader.getController();
@@ -429,7 +424,6 @@ public class DoctorHomePageController {
             @Override
             protected Parent call() throws Exception {
                 try {
-                    // Load the DoctorAppointmentHistory.fxml
                     System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/DoctorAppointmentHistory.fxml");
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorAppointmentHistory.fxml"));
 
@@ -444,11 +438,9 @@ public class DoctorHomePageController {
                         throw new IOException("Failed to get DoctorAppointmentHistoryController from FXML");
                     }
 
-                    // Pass the appointment history data to the controller
                     List<Map<String, Object>> history = Appointments.getAppointmentHistoryForDoctor(doctorId);
                     controller.setHistoryData(history);
 
-                    // Store controller for potential future access
                     historyPage.getProperties().put("controller", controller);
                     System.out.println("History page loaded successfully");
                     return historyPage;
@@ -491,39 +483,66 @@ public class DoctorHomePageController {
 
     @FXML
     private void onProfileButtonClicked() {
-        Task<VBox> loadTask = new Task<>() {
+        Task<Parent> loadTask = new Task<>() {
             @Override
-            protected VBox call() throws Exception {
-                VBox profileBox = new VBox(10);
-                profileBox.setStyle("-fx-padding: 20;");
-
+            protected Parent call() throws Exception {
                 try {
-                    String firstName = Doctor.getFirstName();
-                    String lastName = Doctor.getLastName();
-                    String email = Doctor.getEmail();
-                    String specialization = Doctor.getSpecialization();
-                    String hospitalName = Doctor.getHospitalName();
+                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/DoctorProfile.fxml");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorProfile.fxml"));
+                    Parent profilePage = loader.load();
+                    DoctorProfileController controller = loader.getController();
 
-                    profileBox.getChildren().addAll(
-                            new Label("Name: " + (firstName != null ? firstName : "N/A") + " " + (lastName != null ? lastName : "N/A")),
-                            new Label("Email: " + (email != null ? email : "N/A")),
-                            new Label("Specialization: " + (specialization != null ? specialization : "N/A")),
-                            new Label("Hospital: " + (hospitalName != null ? hospitalName : "N/A"))
-                    );
+                    if (controller == null) {
+                        throw new IOException("Failed to get DoctorProfileController from FXML");
+                    }
+
+                    controller.setGovtIdField(Doctor.getGovtID() != null ? Doctor.getGovtID() : "");
+                    controller.setFirstNameField(Doctor.getFirstName() != null ? Doctor.getFirstName() : "");
+                    controller.setLastNameField(Doctor.getLastName() != null ? Doctor.getLastName() : "");
+                    controller.setEmailField(Doctor.getEmail() != null ? Doctor.getEmail() : "");
+                    controller.setPhoneNumberField(Doctor.getPhone() != null ? Doctor.getPhone() : "");
+                    controller.setSpecializationField(Doctor.getSpecialization() != null ? Doctor.getSpecialization() : "");
+                    controller.setLicenseNumberField(Doctor.getMedicalLicenseNumber() != null ? Doctor.getMedicalLicenseNumber() : "");
+                    controller.setExperienceField(Doctor.getExperience() != null ? Doctor.getExperience() : "");
+                    controller.setDegreesField(Doctor.getDegrees() != null ? Doctor.getDegrees() : "");
+                    controller.setBioTextArea(Doctor.getBio() != null ? Doctor.getBio() : "");
+                    controller.setHospitalNameField(Doctor.getHospitalName() != null ? Doctor.getHospitalName() : "");
+                    controller.setConsultationFeeField(Doctor.getConsultationFee() != null ? Doctor.getConsultationFee() : "");
+                    controller.setHospitalAddressArea(Doctor.getHospitalAddress() != null ? Doctor.getHospitalAddress() : "");
+
+                    Map<String, TimeSlot> availability = Doctor.getAvailability();
+                    if (availability != null && !availability.isEmpty()) {
+                        for (Map.Entry<String, TimeSlot> entry : availability.entrySet()) {
+                            String day = entry.getKey();
+                            TimeSlot slot = entry.getValue();
+//                            controller.addAvailabilityItem(day, slot.getStartTime().toString(), slot.getEndTime().toString());
+                        }
+                    }
+
+                    profilePage.getProperties().put("controller", controller);
+                    System.out.println("Profile page loaded successfully");
+                    return profilePage;
                 } catch (Exception e) {
-                    System.err.println("Error loading doctor profile: " + e.getMessage());
-                    profileBox.getChildren().add(new Label("Error loading profile information"));
+                    System.err.println("Error loading profile page: " + e.getMessage());
+                    e.printStackTrace();
+                    throw e;
                 }
-
-                return profileBox;
             }
         };
 
         loadTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
-                if (rootContainer != null) {
-                    rootContainer.getChildren().setAll(loadTask.getValue());
-                    animateContent();
+                try {
+                    Parent profilePage = loadTask.getValue();
+                    if (rootContainer != null && profilePage != null) {
+                        rootContainer.getChildren().setAll(profilePage);
+                        animateContent();
+                    } else {
+                        showErrorAlert("Load Error", "Profile page or container is null");
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error setting profile content: " + e.getMessage());
+                    showErrorAlert("Load Error", "Failed to set profile content: " + e.getMessage());
                 }
             });
         });
@@ -532,7 +551,64 @@ public class DoctorHomePageController {
             Platform.runLater(() -> {
                 Throwable exception = loadTask.getException();
                 String errorMessage = exception != null ? exception.getMessage() : "Unknown error";
+                System.err.println("Profile load failed: " + errorMessage);
                 showErrorAlert("Load Error", "Failed to load profile: " + errorMessage);
+            });
+        });
+
+        new Thread(loadTask).start();
+    }
+
+    @FXML
+    private void onAvailabilityButtonClicked() {
+        Task<Parent> loadTask = new Task<>() {
+            @Override
+            protected Parent call() throws Exception {
+                try {
+                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/DoctorAvailability.fxml");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorAvailability.fxml"));
+                    Parent availabilityPage = loader.load();
+                    DoctorAvailabilityController controller = loader.getController();
+
+                    if (controller == null) {
+                        throw new IOException("Failed to get DoctorAvailabilityController from FXML");
+                    }
+
+                    // No additional data initialization needed here as loadCurrentAvailability handles it
+                    availabilityPage.getProperties().put("controller", controller);
+                    System.out.println("Availability page loaded successfully");
+                    return availabilityPage;
+                } catch (Exception e) {
+                    System.err.println("Error loading availability page: " + e.getMessage());
+                    e.printStackTrace();
+                    throw e;
+                }
+            }
+        };
+
+        loadTask.setOnSucceeded(event -> {
+            Platform.runLater(() -> {
+                try {
+                    Parent availabilityPage = loadTask.getValue();
+                    if (rootContainer != null && availabilityPage != null) {
+                        rootContainer.getChildren().setAll(availabilityPage);
+                        animateContent();
+                    } else {
+                        showErrorAlert("Load Error", "Availability page or container is null");
+                    }
+                } catch (Exception e) {
+                    System.err.println("Error setting availability content: " + e.getMessage());
+                    showErrorAlert("Load Error", "Failed to set availability content: " + e.getMessage());
+                }
+            });
+        });
+
+        loadTask.setOnFailed(event -> {
+            Platform.runLater(() -> {
+                Throwable exception = loadTask.getException();
+                String errorMessage = exception != null ? exception.getMessage() : "Unknown error";
+                System.err.println("Availability load failed: " + errorMessage);
+                showErrorAlert("Load Error", "Failed to load availability: " + errorMessage);
             });
         });
 
@@ -544,6 +620,7 @@ public class DoctorHomePageController {
         SessionManager.logOut();
         logout();
     }
+
     private void logout() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/MainView.fxml"));

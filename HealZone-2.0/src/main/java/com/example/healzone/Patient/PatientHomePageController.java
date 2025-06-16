@@ -40,6 +40,8 @@ public class PatientHomePageController {
     @FXML
     private TextField searchBar;
     @FXML
+    private Button searchButton;
+    @FXML
     private Button loginButton;
     @FXML
     private ScrollPane doctorScrollPane;
@@ -432,6 +434,8 @@ public class PatientHomePageController {
         sortButton.setVisible(false);
         sectionTitle.setText("Upcoming Appointments");
         searchBar.setVisible(false);
+        searchButton.setVisible(false);
+
 
         doctorCardsContainer.getChildren().clear();
         noResultsMessage.setVisible(false);
@@ -448,6 +452,7 @@ public class PatientHomePageController {
         sectionTitle.setText("Available Doctors");
 //        backButton.setVisible(false);
         searchBar.setVisible(true);
+        searchButton.setVisible(true);
         doctorCardsContainer.getChildren().clear();
         loadDoctorCardsAsync("", INITIAL_CARD_LIMIT);
     }

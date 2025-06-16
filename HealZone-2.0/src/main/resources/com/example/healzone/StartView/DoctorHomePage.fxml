@@ -96,6 +96,11 @@
                                  <Font name="SansSerif Bold" size="18.0" />
                               </font>
                            </Button>
+                           <Button fx:id="availabilityButton" mnemonicParsing="false" onAction="#onAvailabilityButtonClicked" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Availability">
+                              <font>
+                                 <Font name="SansSerif Bold" size="18.0" />
+                              </font>
+                           </Button>
                            <Button fx:id="profileButton" mnemonicParsing="false" onAction="#onProfileButtonClicked" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="Profile">
                               <font>
                                  <Font name="SansSerif Bold" size="18.0" />

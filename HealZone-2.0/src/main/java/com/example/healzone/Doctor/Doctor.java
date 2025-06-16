@@ -1,7 +1,5 @@
-
 package com.example.healzone.Doctor;
 
-import java.sql.Time;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,11 +20,15 @@ public class Doctor {
     private static String bio;
     private static String experience;
 
-    // ✅ Temporary storage for availability (day -> TimeSlot)
+    // Temporary storage for availability (day -> TimeSlot)
     private static Map<String, TimeSlot> availability = new HashMap<>();
 
     public static void addAvailability(String day, TimeSlot slot) {
         availability.put(day, slot);
+    }
+
+    public static void clearAvailability() {
+        availability.clear();
     }
 
     public static Map<String, TimeSlot> getAvailability() {

@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
@@ -17,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox alignment="TOP_CENTER" prefHeight="600.0" prefWidth="1200.0" spacing="15" styleClass="profile-container" stylesheets="@../Design/DoctorProfile.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorProfileController">
+<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1200.0" spacing="15" styleClass="profile-container" stylesheets="@../Design/DoctorProfile.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorProfileController">
 
     <!-- Header Section -->
     <VBox spacing="8" styleClass="profile-header">
@@ -46,7 +45,7 @@
     </VBox>
 
     <!-- Main Content ScrollPane -->
-    <ScrollPane fx:id="profileScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="520.0" styleClass="profile-scroll-pane" VBox.vgrow="ALWAYS">
+    <ScrollPane fx:id="profileScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="600.0" styleClass="profile-scroll-pane" VBox.vgrow="ALWAYS">
         <VBox spacing="20" styleClass="profile-content">
 
             <!-- Personal Information Section -->
@@ -165,33 +164,6 @@
                     <Label styleClass="field-label" text="Hospital Address:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextArea fx:id="hospitalAddressArea" editable="false" prefHeight="80.0" styleClass="profile-text-area" wrapText="true" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" />
                 </GridPane>
-            </VBox>
-
-            <!-- Availability Section -->
-            <VBox spacing="12" styleClass="profile-section">
-                <HBox alignment="CENTER_LEFT" spacing="10">
-                    <FontIcon iconColor="#8b5cf6" iconLiteral="fas-clock" iconSize="16" />
-                    <Label styleClass="section-title" text="Availability Schedule">
-                        <font>
-                            <Font name="SansSerif Bold" size="16.0" />
-                        </font>
-                    </Label>
-                </HBox>
-
-                <VBox fx:id="availabilityContainer" spacing="8" styleClass="availability-container">
-                    <!-- Availability items will be populated dynamically -->
-                </VBox>
-
-                <HBox fx:id="addAvailabilityBox" alignment="CENTER_LEFT" spacing="12" styleClass="add-availability-container" visible="false">
-                    <ComboBox fx:id="dayComboBox" prefWidth="120.0" promptText="Day" styleClass="availability-combo" />
-                    <TextField fx:id="startTimeField" prefWidth="100.0" promptText="Start Time" styleClass="time-field" />
-                    <TextField fx:id="endTimeField" prefWidth="100.0" promptText="End Time" styleClass="time-field" />
-                    <Button fx:id="addAvailabilityButton" onAction="#addAvailability" styleClass="add-button" text="Add">
-                        <graphic>
-                            <FontIcon iconColor="WHITE" iconLiteral="fas-plus" iconSize="12" />
-                        </graphic>
-                    </Button>
-                </HBox>
             </VBox>
 
             <!-- Security Section -->

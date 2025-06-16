@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1200.0" spacing="15" styleClass="availability-container" stylesheets="@../Design/DoctorAvailability.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorAvailabilityController">
+
+    <!-- Header Section -->
+    <VBox spacing="8" styleClass="availability-header" stylesheets="@../Design/DoctorAvailability.css">
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <FontIcon iconColor="WHITE" iconLiteral="fas-clock" iconSize="20" />
+            <Label styleClass="availability-title" text="Doctor Availability Settings">
+                <font>
+                    <Font name="SansSerif Bold" size="22.0" />
+                </font>
+            </Label>
+            <Region prefWidth="600.0" />
+            <Button fx:id="updateAvailabilityButton" onAction="#toggleEditMode" styleClass="update-button" text="Update Timings">
+                <graphic>
+                    <FontIcon fx:id="updateIcon" iconColor="WHITE" iconLiteral="fas-edit" iconSize="14" />
+                </graphic>
+                <font>
+                    <Font name="SansSerif Bold" size="12.0" />
+                </font>
+            </Button>
+        </HBox>
+        <Label styleClass="availability-subtitle" text="Manage your practice hours and availability schedule">
+            <font>
+                <Font name="SansSerif" size="13.0" />
+            </font>
+        </Label>
+    </VBox>
+
+    <!-- Main Content ScrollPane -->
+    <ScrollPane fx:id="availabilityScrollPane" fitToHeight="true" fitToWidth="true" prefHeight="600.0" styleClass="availability-scroll-pane" VBox.vgrow="ALWAYS">
+        <VBox spacing="20" styleClass="availability-content">
+
+            <!-- Current Availability Overview Section -->
+            <VBox spacing="12" styleClass="availability-section">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <FontIcon iconColor="#10b981" iconLiteral="fas-calendar-check" iconSize="16" />
+                    <Label styleClass="section-title" text="Current Availability Overview">
+                        <font>
+                            <Font name="SansSerif Bold" size="16.0" />
+                        </font>
+                    </Label>
+                </HBox>
+
+                <VBox fx:id="currentAvailabilityContainer" spacing="8" styleClass="current-availability-container">
+                    <!-- Current availability items will be populated dynamically -->
+                    <Label fx:id="noAvailabilityLabel" styleClass="no-availability-label" text="No availability set. Click 'Update Timings' to add your schedule." visible="true" />
+                </VBox>
+            </VBox>
+
+            <!-- Weekly Schedule Section -->
+            <VBox spacing="12" styleClass="availability-section">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <FontIcon iconColor="#8b5cf6" iconLiteral="fas-calendar-alt" iconSize="16" />
+                    <Label styleClass="section-title" text="Weekly Schedule">
+                        <font>
+                            <Font name="SansSerif Bold" size="16.0" />
+                        </font>
+                    </Label>
+                </HBox>
+
+                <GridPane fx:id="weeklyScheduleGrid" hgap="15" styleClass="weekly-schedule-grid" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="120.0" prefWidth="150.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="100.0" prefWidth="120.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="80.0" prefWidth="100.0" />
+                    </columnConstraints>
+                    <rowConstraints>
+                        <RowConstraints minHeight="35.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="35.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="35.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="35.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="35.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="35.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="35.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                        <RowConstraints minHeight="35.0" prefHeight="40.0" vgrow="SOMETIMES" />
+                    </rowConstraints>
+
+                    <!-- Header Row -->
+                    <Label styleClass="schedule-header" text="Day" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                    <Label styleClass="schedule-header" text="Available" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                    <Label styleClass="schedule-header" text="Start Time" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                    <Label styleClass="schedule-header" text="End Time" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                    <Label styleClass="schedule-header" text="Action" GridPane.columnIndex="4" GridPane.rowIndex="0" />
+
+                    <!-- Monday -->
+                    <Label styleClass="day-label" text="Monday" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <ComboBox fx:id="mondayAvailableCombo" editable="false" prefWidth="100.0" styleClass="availability-combo" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                    <TextField fx:id="mondayStartField" editable="false" promptText="09:00" styleClass="time-field" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                    <TextField fx:id="mondayEndField" editable="false" promptText="17:00" styleClass="time-field" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                    <Button fx:id="mondayDeleteButton" onAction="#clearMondaySchedule" styleClass="delete-day-button" text="Clear" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="1">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-trash" iconSize="10" />
+                        </graphic>
+                    </Button>
+
+                    <!-- Tuesday -->
+                    <Label styleClass="day-label" text="Tuesday" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <ComboBox fx:id="tuesdayAvailableCombo" editable="false" prefWidth="100.0" styleClass="availability-combo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <TextField fx:id="tuesdayStartField" editable="false" promptText="09:00" styleClass="time-field" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                    <TextField fx:id="tuesdayEndField" editable="false" promptText="17:00" styleClass="time-field" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                    <Button fx:id="tuesdayDeleteButton" onAction="#clearTuesdaySchedule" styleClass="delete-day-button" text="Clear" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="2">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-trash" iconSize="10" />
+                        </graphic>
+                    </Button>
+
+                    <!-- Wednesday -->
+                    <Label styleClass="day-label" text="Wednesday" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                    <ComboBox fx:id="wednesdayAvailableCombo" editable="false" prefWidth="100.0" styleClass="availability-combo" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                    <TextField fx:id="wednesdayStartField" editable="false" promptText="09:00" styleClass="time-field" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                    <TextField fx:id="wednesdayEndField" editable="false" promptText="17:00" styleClass="time-field" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+                    <Button fx:id="wednesdayDeleteButton" onAction="#clearWednesdaySchedule" styleClass="delete-day-button" text="Clear" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="3">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-trash" iconSize="10" />
+                        </graphic>
+                    </Button>
+
+                    <!-- Thursday -->
+                    <Label styleClass="day-label" text="Thursday" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <ComboBox fx:id="thursdayAvailableCombo" editable="false" prefWidth="100.0" styleClass="availability-combo" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <TextField fx:id="thursdayStartField" editable="false" promptText="09:00" styleClass="time-field" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                    <TextField fx:id="thursdayEndField" editable="false" promptText="17:00" styleClass="time-field" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+                    <Button fx:id="thursdayDeleteButton" onAction="#clearThursdaySchedule" styleClass="delete-day-button" text="Clear" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="4">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-trash" iconSize="10" />
+                        </graphic>
+                    </Button>
+
+                    <!-- Friday -->
+                    <Label styleClass="day-label" text="Friday" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                    <ComboBox fx:id="fridayAvailableCombo" editable="false" prefWidth="100.0" styleClass="availability-combo" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    <TextField fx:id="fridayStartField" editable="false" promptText="09:00" styleClass="time-field" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                    <TextField fx:id="fridayEndField" editable="false" promptText="17:00" styleClass="time-field" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                    <Button fx:id="fridayDeleteButton" onAction="#clearFridaySchedule" styleClass="delete-day-button" text="Clear" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="5">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-trash" iconSize="10" />
+                        </graphic>
+                    </Button>
+
+                    <!-- Saturday -->
+                    <Label styleClass="day-label" text="Saturday" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+                    <ComboBox fx:id="saturdayAvailableCombo" editable="false" prefWidth="100.0" styleClass="availability-combo" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+                    <TextField fx:id="saturdayStartField" editable="false" promptText="09:00" styleClass="time-field" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+                    <TextField fx:id="saturdayEndField" editable="false" promptText="17:00" styleClass="time-field" GridPane.columnIndex="3" GridPane.rowIndex="6" />
+                    <Button fx:id="saturdayDeleteButton" onAction="#clearSaturdaySchedule" styleClass="delete-day-button" text="Clear" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="6">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-trash" iconSize="10" />
+                        </graphic>
+                    </Button>
+
+                    <!-- Sunday -->
+                    <Label styleClass="day-label" text="Sunday" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+                    <ComboBox fx:id="sundayAvailableCombo" editable="false" prefWidth="100.0" styleClass="availability-combo" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+                    <TextField fx:id="sundayStartField" editable="false" promptText="09:00" styleClass="time-field" GridPane.columnIndex="2" GridPane.rowIndex="7" />
+                    <TextField fx:id="sundayEndField" editable="false" promptText="17:00" styleClass="time-field" GridPane.columnIndex="3" GridPane.rowIndex="7" />
+                    <Button fx:id="sundayDeleteButton" onAction="#clearSundaySchedule" styleClass="delete-day-button" text="Clear" visible="false" GridPane.columnIndex="4" GridPane.rowIndex="7">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-trash" iconSize="10" />
+                        </graphic>
+                    </Button>
+                </GridPane>
+            </VBox>
+
+            <!-- Quick Templates Section -->
+            <VBox fx:id="templatesSection" spacing="12" styleClass="availability-section" visible="false">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <FontIcon iconColor="#f59e0b" iconLiteral="fas-magic" iconSize="16" />
+                    <Label styleClass="section-title" text="Quick Schedule Templates">
+                        <font>
+                            <Font name="SansSerif Bold" size="16.0" />
+                        </font>
+                    </Label>
+                </HBox>
+
+                <HBox alignment="CENTER_LEFT" spacing="15" styleClass="template-buttons-container">
+                    <Button fx:id="mondayToFridayButton" onAction="#applyMondayToFridayTemplate" styleClass="template-button" text="Mon-Fri (9AM-5PM)">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-business-time" iconSize="12" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="allWeekButton" onAction="#applyAllWeekTemplate" styleClass="template-button" text="All Week (9AM-5PM)">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-clock" iconSize="12" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="morningShiftButton" onAction="#applyMorningShiftTemplate" styleClass="template-button" text="Morning Shift (8AM-2PM)">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-sun" iconSize="12" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="eveningShiftButton" onAction="#applyEveningShiftTemplate" styleClass="template-button" text="Evening Shift (2PM-8PM)">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-moon" iconSize="12" />
+                        </graphic>
+                    </Button>
+                    <Button fx:id="clearAllButton" onAction="#clearAllSchedule" styleClass="clear-all-button" text="Clear All">
+                        <graphic>
+                            <FontIcon iconColor="WHITE" iconLiteral="fas-eraser" iconSize="12" />
+                        </graphic>
+                    </Button>
+                </HBox>
+            </VBox>
+
+            <!-- Action Buttons Section -->
+            <HBox fx:id="actionButtonsContainer" alignment="CENTER" spacing="20" styleClass="action-buttons-container" visible="false">
+                <Button fx:id="saveButton" onAction="#saveAvailability" styleClass="save-button" text="Save Schedule">
+                    <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fas-save" iconSize="14" />
+                    </graphic>
+                    <font>
+                        <Font name="SansSerif Bold" size="13.0" />
+                    </font>
+                </Button>
+
+                <Button fx:id="cancelButton" onAction="#cancelEdit" styleClass="cancel-button" text="Cancel">
+                    <graphic>
+                        <FontIcon iconColor="WHITE" iconLiteral="fas-times" iconSize="14" />
+                    </graphic>
+                    <font>
+                        <Font name="SansSerif Bold" size="13.0" />
+                    </font>
+                </Button>
+            </HBox>
+
+            <!-- Status Message -->
+            <Label fx:id="statusMessage" styleClass="status-message" visible="false" />
+        </VBox>
+    </ScrollPane>
+
+    <!-- Padding for the entire container -->
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+</VBox>

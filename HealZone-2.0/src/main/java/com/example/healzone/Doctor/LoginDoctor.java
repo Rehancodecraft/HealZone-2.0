@@ -35,6 +35,7 @@ public class LoginDoctor {
             Doctor.setHospitalName((String) doctorData.get("hospital_name"));
             Doctor.setHospitalAddress((String) doctorData.get("hospital_address"));
             Doctor.setConsultationFee((String) doctorData.get("consultation_fee"));
+            Doctor.setExperience((String) doctorData.get("experience")); // Add experience
 
             // Clear existing availability
             Doctor.getAvailability().clear();
