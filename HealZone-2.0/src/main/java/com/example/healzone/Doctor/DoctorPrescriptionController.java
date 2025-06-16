@@ -336,117 +336,6 @@ public class DoctorPrescriptionController implements Initializable {
         this.currentAppointment = appointment;
     }
     // In DoctorPrescriptionController.java
-    @FXML
-    private void previewPrescription(ActionEvent event) {
-        if (validatePrescription()) {
-            try {
-                URL fxmlUrl = getClass().getResource("/com/example/healzone/PrescriptionView.fxml");
-                if (fxmlUrl == null) {
-                    System.out.println("Error loading preview: FXML file not found at /com/example/healzone/PrescriptionView.fxml");
-                    return;
-                }
-                FXMLLoader loader = new FXMLLoader(fxmlUrl);
-                Parent root = loader.load();
-
-                PrescriptionViewController previewController = loader.getController();
-
-                // Fetch doctor information including hospital and contact details
-                DoctorInfo doctorInfo = fetchDoctorInfo(currentDoctorId);
-                if (doctorInfo == null) {
-                    System.out.println("Failed to load doctor information.");
-                    return;
-                }
-
-                // Prepare prescription data
-                ExtendedPrescriptionData prescriptionData = new ExtendedPrescriptionData();
-                prescriptionData.setPatientName(patientName);
-                prescriptionData.setPatientAge(patientAge != null && !patientAge.isEmpty() ? Integer.parseInt(patientAge) : 0);
-                prescriptionData.setPatientGender(patientGender);
-                prescriptionData.setPatientId(currentPatientId);
-                prescriptionData.setDoctorName(doctorInfo.getFullName());
-                prescriptionData.setDoctorSpecialization(doctorInfo.getSpecialization());
-                prescriptionData.setLicenseNumber(doctorInfo.getLicenseNumber());
-                prescriptionData.setHospitalName(doctorInfo.getHospitalName());
-                prescriptionData.setHospitalAddress(doctorInfo.getHospitalAddress());
-                prescriptionData.setDoctorPhone(doctorInfo.getDoctorPhone());
-                prescriptionData.setDoctorEmail(doctorInfo.getDoctorEmail());
-                prescriptionData.setDiagnosis(diagnosisArea.getText().trim());
-                prescriptionData.setPrecautions(precautionsArea.getText().trim());
-                prescriptionData.setFollowup(followupField.getText().trim() + " " + (followupUnitCombo.getValue() != null ? followupUnitCombo.getValue() : ""));
-                prescriptionData.setNotes(notesArea.getText().trim());
-                prescriptionData.setDoctorId(currentDoctorId);
-
-                ObservableList<MedicationData> medicationDataList = FXCollections.observableArrayList();
-                for (Medicine medicine : medicinesList) {
-                    MedicationData medData = new MedicationData(
-                            medicine.getMedicineName(),
-                            medicine.getType(),
-                            medicine.getDosage(),
-                            medicine.getFrequency(),
-                            medicine.getTiming(),
-                            medicine.getDuration(),
-                            medicine.getInstructions()
-                    );
-                    medicationDataList.add(medData);
-                }
-                prescriptionData.setMedications(medicationDataList);
-
-                // Load data into the preview controller
-                previewController.loadPrescription(prescriptionData);
-                previewController.setDoctorInfo(
-                        prescriptionData.getDoctorName(),
-                        prescriptionData.getDoctorSpecialization(),
-                        prescriptionData.getLicenseNumber(),
-                        prescriptionData.getHospitalName(),
-                        prescriptionData.getHospitalAddress(),
-                        prescriptionData.getDoctorPhone() != null && prescriptionData.getDoctorEmail() != null ?
-                                "Phone: " + prescriptionData.getDoctorPhone() + " | Email: " + prescriptionData.getDoctorEmail() : "Phone: N/A | Email: N/A",
-                        currentDoctorId
-                );
-                previewController.setCurrentAppointment(currentAppointment); // Pass current appointment
-                previewController.setDoctorPrescriptionData(currentDoctorId, currentPatientId, medicinesList);
-
-                Stage previewStage = new Stage();
-                previewStage.setTitle("Prescription Preview");
-                Scene scene = new Scene(root);
-                previewStage.setScene(scene);
-                previewStage.initModality(Modality.APPLICATION_MODAL);
-                previewStage.initOwner(((Node) event.getSource()).getScene().getWindow());
-
-                previewStage.setMinHeight(600.0);
-                previewStage.sizeToScene();
-
-                // Pass the parent stage as the DoctorPrescription window
-                Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                // Retrieve the dashboard controller from the scene or a global reference if available
-                DoctorDashboardController dashboardController = null;
-                Scene parentScene = parentStage.getScene();
-                if (parentScene != null) {
-                    Parent rootParent = parentScene.getRoot();
-                    if (rootParent instanceof VBox) {
-                        dashboardController = (DoctorDashboardController) ((VBox) rootParent).getUserData();
-                    }
-                    if (dashboardController == null) {
-                        dashboardController = new DoctorDashboardController(); // Fallback
-                        parentStage.setUserData(dashboardController);
-                    }
-                }
-                previewController.setParentStage(parentStage);
-                previewController.setDashboardController(dashboardController); // New method to pass dashboard controller
-
-                previewStage.setOnHidden(e -> {
-                    // No need to call loadNextAppointment() here; it will be handled by DoctorDashboardController
-                });
-
-                previewStage.showAndWait();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("Error loading preview: " + e.getMessage());
-            } catch (NumberFormatException e) {
-                System.out.println("Invalid patient age format: " + e.getMessage());
-            }
-        }
-    }
     // Add this method to PrescriptionViewController
 
 
@@ -729,5 +618,89 @@ public class DoctorPrescriptionController implements Initializable {
             System.err.println("Error fetching doctor info: " + e.getMessage());
         }
         return new DoctorInfo("Unknown", "Unknown", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+    }
+    // Add this method to your DoctorPrescriptionController class
+    private DoctorDashboardController dashboardController;
+
+    public void setDashboardController(DoctorDashboardController dashboardController) {
+        this.dashboardController = dashboardController;
+    }
+    private ExtendedPrescriptionData createPrescriptionData() {
+        ExtendedPrescriptionData prescriptionData = new ExtendedPrescriptionData();
+        prescriptionData.setPatientName(patientName);
+        prescriptionData.setPatientAge(patientAge != null && !patientAge.isEmpty() ? Integer.parseInt(patientAge) : 0);
+        prescriptionData.setPatientGender(patientGender);
+        prescriptionData.setPatientId(currentPatientId);
+        prescriptionData.setDoctorName(fetchDoctorInfo(currentDoctorId).getFullName());
+        prescriptionData.setDoctorSpecialization(fetchDoctorInfo(currentDoctorId).getSpecialization());
+        prescriptionData.setLicenseNumber(fetchDoctorInfo(currentDoctorId).getLicenseNumber());
+        prescriptionData.setHospitalName(fetchDoctorInfo(currentDoctorId).getHospitalName());
+        prescriptionData.setHospitalAddress(fetchDoctorInfo(currentDoctorId).getHospitalAddress());
+        prescriptionData.setDoctorPhone(fetchDoctorInfo(currentDoctorId).getDoctorPhone());
+        prescriptionData.setDoctorEmail(fetchDoctorInfo(currentDoctorId).getDoctorEmail());
+        prescriptionData.setDiagnosis(diagnosisArea.getText().trim());
+        prescriptionData.setPrecautions(precautionsArea.getText().trim());
+        prescriptionData.setFollowup(followupField.getText().trim() + " " + (followupUnitCombo.getValue() != null ? followupUnitCombo.getValue() : ""));
+        prescriptionData.setNotes(notesArea.getText().trim());
+        prescriptionData.setDoctorId(currentDoctorId);
+
+        ObservableList<MedicationData> medicationDataList = FXCollections.observableArrayList();
+        for (Medicine medicine : medicinesList) {
+            MedicationData medData = new MedicationData(
+                    medicine.getMedicineName(),
+                    medicine.getType(),
+                    medicine.getDosage(),
+                    medicine.getFrequency(),
+                    medicine.getTiming(),
+                    medicine.getDuration(),
+                    medicine.getInstructions()
+            );
+            medicationDataList.add(medData);
+        }
+        prescriptionData.setMedications(medicationDataList);
+
+        return prescriptionData;
+    }
+    // Update your onPreviewPrescriptionClicked method to pass the dashboard controller
+    @FXML
+    protected void onPreviewPrescriptionClicked() {
+        try {
+            // Create prescription data
+            PrescriptionData prescriptionData = createPrescriptionData();
+
+            // Load prescription view controller
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/PrescriptionView.fxml"));
+            Parent root = loader.load();
+
+            PrescriptionViewController controller = loader.getController();
+
+            // IMPORTANT: Pass the dashboard controller reference
+            if (dashboardController != null) {
+                controller.setDashboardController(dashboardController);
+            }
+
+            // Pass the current appointment to the preview controller
+            controller.setCurrentAppointment(currentAppointment);
+
+            // Load prescription data
+            controller.loadPrescription(prescriptionData);
+
+            // Create and show stage
+            Stage previewStage = new Stage();
+            previewStage.setTitle("Prescription Preview");
+            previewStage.initModality(Modality.APPLICATION_MODAL);
+            previewStage.setScene(new Scene(root));
+            previewStage.setResizable(true);
+            previewStage.setMaximized(false);
+
+            // Set parent stage reference for proper closing behavior
+            controller.setParentStage((Stage) previewButton.getScene().getWindow());
+
+            previewStage.showAndWait();
+
+        } catch (Exception e) {
+//            showErrorAlert("Preview Error", "Failed to show prescription preview: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 }

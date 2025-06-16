@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-
 import static com.example.healzone.DatabaseConnection.DatabaseConnection.connectToDatabase;
 
 public class Main extends Application {

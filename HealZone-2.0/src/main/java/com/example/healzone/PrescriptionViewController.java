@@ -265,6 +265,7 @@ public class PrescriptionViewController implements Initializable {
         return medicationItem;
     }
 
+    // Updated savePrescription method in PrescriptionViewController
     @FXML
     private void savePrescription(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -355,16 +356,20 @@ public class PrescriptionViewController implements Initializable {
                                             "\nLocation: " + finalFile.getAbsolutePath() +
                                             "\nFile size: " + finalFile.length() + " bytes" +
                                             "\nSaved to database.");
-                                    // Refresh dashboard before closing
-                                    if (dashboardController != null) {
-                                        dashboardController.refreshDashboard();
-                                    }
+
+                                    // IMPORTANT: Refresh dashboard using Platform.runLater to ensure it happens after save
+                                    Platform.runLater(() -> {
+                                        if (dashboardController != null) {
+                                            System.out.println("Refreshing dashboard after prescription save from preview...");
+                                            dashboardController.refreshDashboard();
+                                        }
+                                    });
+
+                                    // Close windows
                                     Stage stage = (Stage) saveButton.getScene().getWindow();
                                     stage.close();
-                                    refreshView();
                                     if (parentStage != null) {
                                         parentStage.close();
-                                        dashboardController.refreshDashboard();
                                     }
                                 } else {
                                     try {
@@ -378,7 +383,7 @@ public class PrescriptionViewController implements Initializable {
 
                         attendTask.setOnFailed(event1 -> {
                             Platform.runLater(() -> {
-//                                showErrorMessage("Failed to mark appointment as attended: " + attendTask.getException().getMessage());
+                                System.out.println("Failed to mark appointment as attended: " + attendTask.getException().getMessage());
                             });
                         });
 
@@ -397,15 +402,20 @@ public class PrescriptionViewController implements Initializable {
                             "\nLocation: " + finalFile.getAbsolutePath() +
                             "\nFile size: " + finalFile.length() + " bytes" +
                             "\nSaved to database.");
-                    // Refresh dashboard before closing
-                    if (dashboardController != null) {
-                        dashboardController.refreshDashboard();
-                    }
+
+                    // IMPORTANT: Refresh dashboard using Platform.runLater
+                    Platform.runLater(() -> {
+                        if (dashboardController != null) {
+                            System.out.println("Refreshing dashboard after prescription save from preview (no appointment)...");
+                            dashboardController.refreshDashboard();
+                        }
+                    });
+
+                    // Close windows
                     Stage stage = (Stage) saveButton.getScene().getWindow();
                     stage.close();
                     if (parentStage != null) {
                         parentStage.close();
-                        dashboardController.refreshDashboard();
                     }
                 } else {
                     throw new IOException("File not created or empty.");
@@ -417,6 +427,24 @@ public class PrescriptionViewController implements Initializable {
             } finally {
                 hideButtons(false);
             }
+        }
+    }
+
+    // Also update the closeWindow method to refresh dashboard
+    private void closeWindow(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+
+        // IMPORTANT: Refresh dashboard before closing using Platform.runLater
+        Platform.runLater(() -> {
+            if (dashboardController != null) {
+                System.out.println("Refreshing dashboard on prescription view close...");
+                dashboardController.refreshDashboard();
+            }
+        });
+
+        stage.close();
+        if (parentStage != null) {
+            parentStage.close();
         }
     }
 
@@ -464,20 +492,6 @@ public class PrescriptionViewController implements Initializable {
             System.out.println("Database Error: Error saving prescription to database: " + e.getMessage());
         }
     }
-
-    private void closeWindow(ActionEvent event) {
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        // Refresh dashboard before closing
-        if (dashboardController != null) {
-            dashboardController.refreshDashboard();
-        }
-        stage.close();
-        if (parentStage != null) {
-            parentStage.close();
-            dashboardController.refreshDashboard();
-        }
-    }
-
     private void saveAsPDF(File file, WritableImage image) throws IOException {
         PDDocument document = null;
         try {

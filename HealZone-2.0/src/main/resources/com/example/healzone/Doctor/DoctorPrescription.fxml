@@ -236,7 +236,7 @@
                         <Font name="SansSerif Bold" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="previewButton" onAction="#previewPrescription" styleClass="action-button" text="Print Pdf">
+                <Button fx:id="previewButton" onAction="#onPreviewPrescriptionClicked" styleClass="action-button" text="Print Pdf">
                     <font>
                         <Font name="SansSerif Bold" size="12.0" />
                     </font>

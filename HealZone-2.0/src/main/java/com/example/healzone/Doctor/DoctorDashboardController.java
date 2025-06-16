@@ -334,6 +334,7 @@ public class DoctorDashboardController {
     }
 
     // Updated openPrescriptionPopup method
+    // Updated openPrescriptionPopup method in DoctorDashboardController
     private void openPrescriptionPopup(Map<String, Object> appointmentData) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorPrescription.fxml"));
@@ -350,6 +351,9 @@ public class DoctorDashboardController {
             controller.setPatientId(patientPhone); // Set the correct patient_phone
             controller.setDoctorId(doctorId);
             controller.setCurrentAppointment(appointmentData); // Pass the current appointment
+
+            // IMPORTANT: Pass the dashboard controller reference
+            controller.setDashboardController(this);
 
             Stage prescriptionStage = new Stage();
             prescriptionStage.setTitle("Add Prescription - " + patientName);
