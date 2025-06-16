@@ -81,8 +81,9 @@ public class PrescriptionViewController implements Initializable {
     // Data Storage
     private PrescriptionData prescriptionData;
     private int prescriptionId; // Track the prescription ID for database-loaded prescriptions
-    private Map<String, Object> currentAppointment; // Add this line
+    private Map<String, Object> currentAppointment;
     private Stage parentStage;
+    private DoctorDashboardController dashboardController;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -94,6 +95,10 @@ public class PrescriptionViewController implements Initializable {
 
         // Initialize text areas to be non-focusable for better print appearance
         setupTextAreas();
+    }
+
+    public void setDashboardController(DoctorDashboardController dashboardController) {
+        this.dashboardController = dashboardController;
     }
 
     private void setupTextAreas() {
@@ -343,7 +348,6 @@ public class PrescriptionViewController implements Initializable {
 
                         attendTask.setOnSucceeded(event1 -> {
                             Platform.runLater(() -> {
-//                                showSuccessMessage("Appointment marked as attended.");
                                 // Save prescription using the appointment number
                                 savePrescriptionToDatabase();
                                 if (finalFile.exists() && finalFile.length() > 0) {
@@ -351,14 +355,16 @@ public class PrescriptionViewController implements Initializable {
                                             "\nLocation: " + finalFile.getAbsolutePath() +
                                             "\nFile size: " + finalFile.length() + " bytes" +
                                             "\nSaved to database.");
+                                    // Refresh dashboard before closing
+                                    if (dashboardController != null) {
+                                        dashboardController.refreshDashboard();
+                                    }
                                     Stage stage = (Stage) saveButton.getScene().getWindow();
                                     stage.close();
+                                    refreshView();
                                     if (parentStage != null) {
                                         parentStage.close();
-                                        DoctorDashboardController dashboardController = (DoctorDashboardController) parentStage.getUserData();
-                                        if (dashboardController != null) {
-                                            dashboardController.refreshDashboard();
-                                        }
+                                        dashboardController.refreshDashboard();
                                     }
                                 } else {
                                     try {
@@ -391,14 +397,15 @@ public class PrescriptionViewController implements Initializable {
                             "\nLocation: " + finalFile.getAbsolutePath() +
                             "\nFile size: " + finalFile.length() + " bytes" +
                             "\nSaved to database.");
+                    // Refresh dashboard before closing
+                    if (dashboardController != null) {
+                        dashboardController.refreshDashboard();
+                    }
                     Stage stage = (Stage) saveButton.getScene().getWindow();
                     stage.close();
                     if (parentStage != null) {
                         parentStage.close();
-                        DoctorDashboardController dashboardController = (DoctorDashboardController) parentStage.getUserData();
-                        if (dashboardController != null) {
-                            dashboardController.refreshDashboard();
-                        }
+                        dashboardController.refreshDashboard();
                     }
                 } else {
                     throw new IOException("File not created or empty.");
@@ -460,13 +467,14 @@ public class PrescriptionViewController implements Initializable {
 
     private void closeWindow(ActionEvent event) {
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        // Refresh dashboard before closing
+        if (dashboardController != null) {
+            dashboardController.refreshDashboard();
+        }
         stage.close();
         if (parentStage != null) {
             parentStage.close();
-            DoctorDashboardController dashboardController = (DoctorDashboardController) parentStage.getUserData();
-            if (dashboardController != null) {
-                dashboardController.refreshDashboard();
-            }
+            dashboardController.refreshDashboard();
         }
     }
 
@@ -605,15 +613,7 @@ public class PrescriptionViewController implements Initializable {
 
     @FXML
     private void closePrescription(ActionEvent event) {
-        Stage stage = (Stage) closeButton.getScene().getWindow();
-        stage.close();
-        if (parentStage != null) {
-            parentStage.close();
-            DoctorDashboardController dashboardController = (DoctorDashboardController) parentStage.getUserData();
-            if (dashboardController != null) {
-                dashboardController.refreshDashboard();
-            }
-        }
+        closeWindow(event);
     }
 
     public void setDoctorInfo(String name, String specialization, String license, String hospitalName, String hospitalAddress, String doctorPhoneEmail, String doctorId) {

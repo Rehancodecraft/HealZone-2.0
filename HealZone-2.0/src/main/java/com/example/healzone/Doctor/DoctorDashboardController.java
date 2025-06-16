@@ -106,7 +106,7 @@ public class DoctorDashboardController {
         });
     }
 
-    public void refreshDashboard() {
+    public  void refreshDashboard() {
         // Reload appointments and update UI
         loadNextAppointment(); // This will refresh the next appointment display
         // Optionally, update total booked, attended, and remaining counts if needed

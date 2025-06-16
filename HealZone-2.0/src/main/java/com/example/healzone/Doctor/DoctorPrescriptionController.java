@@ -20,6 +20,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.kordamp.ikonli.javafx.FontIcon;
@@ -417,12 +418,21 @@ public class DoctorPrescriptionController implements Initializable {
 
                 // Pass the parent stage as the DoctorPrescription window
                 Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                DoctorDashboardController dashboardController = (DoctorDashboardController) parentStage.getUserData();
-                if (dashboardController == null) {
-                    dashboardController = new DoctorDashboardController();
-                    parentStage.setUserData(dashboardController);
+                // Retrieve the dashboard controller from the scene or a global reference if available
+                DoctorDashboardController dashboardController = null;
+                Scene parentScene = parentStage.getScene();
+                if (parentScene != null) {
+                    Parent rootParent = parentScene.getRoot();
+                    if (rootParent instanceof VBox) {
+                        dashboardController = (DoctorDashboardController) ((VBox) rootParent).getUserData();
+                    }
+                    if (dashboardController == null) {
+                        dashboardController = new DoctorDashboardController(); // Fallback
+                        parentStage.setUserData(dashboardController);
+                    }
                 }
-                previewController.setParentStage(parentStage); // Set parentStage to DoctorPrescription window
+                previewController.setParentStage(parentStage);
+                previewController.setDashboardController(dashboardController); // New method to pass dashboard controller
 
                 previewStage.setOnHidden(e -> {
                     // No need to call loadNextAppointment() here; it will be handled by DoctorDashboardController
@@ -437,6 +447,8 @@ public class DoctorPrescriptionController implements Initializable {
             }
         }
     }
+    // Add this method to PrescriptionViewController
+
 
     // Add this method to get the current stage
     public Stage getCurrentStage() {
