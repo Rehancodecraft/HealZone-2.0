@@ -1,5 +1,6 @@
 package com.example.healzone.Patient;
 
+import com.example.healzone.DatabaseConnection.Appointments;
 import com.example.healzone.DatabaseConnection.Doctors;
 import com.example.healzone.Doctor.DoctorCardData;
 import com.example.healzone.Doctor.TimeSlot;
@@ -144,7 +145,7 @@ public class ConfirmAppointmentController {
             if (newVal != null) {
                 selectedDateLabel.setText(newVal.toString());
                 selectedDayLabel.setText(newVal.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US));
-                selectedTimeLabel.setText(data.getStartTime()+ "—" +data.getEndTime());
+                selectedTimeLabel.setText(data.getStartTime() + "—" + data.getEndTime());
             }
         });
 
@@ -175,18 +176,43 @@ public class ConfirmAppointmentController {
                 return;
             }
 
+            // Validate input fields
+            String patientName = patientNameField.getText().trim();
+            String patientPhone = patientPhoneField.getText().trim();
+            String patientAge = patientAgeField.getText().trim();
+            String description = descriptionField.getText().trim();
+
+            if (patientName.isEmpty() || patientPhone.isEmpty() || patientAge.isEmpty()) {
+                showAlert("Error", "Patient name, phone, and age are required.");
+                return;
+            }
+
+            if (!patientPhone.matches("\\d{11}")) {
+                showAlert("Error", "Phone number must be 11 digits.");
+                return;
+            }
+
+            // Generate unique appointment number
+            String appointmentNumber = getAppointmentNo(data.getGovtId());
+
             // Insert appointment with status "Upcoming"
             insertNewAppointment(
                     data.getGovtId(),
-                    getAppointmentNo(data.getGovtId()),
-                    patientPhoneField.getText(),
-                    patientNameField.getText(),
+                    appointmentNumber,
+                    patientPhone,
+                    patientName,
                     selectedDate,
                     "Upcoming"
             );
-            System.out.println("Appointment confirmed for " + doctorData.getFullName() + " on " + selectedDate);
-            showAlert("Success", "Appointment booked successfully!");
-            ((Stage) confirmationContainer.getScene().getWindow()).close();
+
+            // Verify insertion
+            Map<String, Object> insertedAppointment = Appointments.getAppointmentById(data.getGovtId(), appointmentNumber);
+            if (insertedAppointment != null) {
+                showAlert("Success", "Appointment booked successfully! Appointment No: " + appointmentNumber);
+                ((Stage) confirmationContainer.getScene().getWindow()).close();
+            } else {
+                showAlert("Error", "Failed to book appointment. Please try again.");
+            }
         });
     }
 
@@ -201,7 +227,6 @@ public class ConfirmAppointmentController {
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(message);
-        // Set the owner to the current popup stage
         Stage popupStage = (Stage) confirmationContainer.getScene().getWindow();
         alert.initOwner(popupStage);
         alert.showAndWait();

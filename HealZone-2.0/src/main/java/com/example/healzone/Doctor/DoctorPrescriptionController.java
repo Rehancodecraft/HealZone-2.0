@@ -3,11 +3,13 @@ package com.example.healzone.Doctor;
 import com.example.healzone.DatabaseConnection.Appointments;
 import com.example.healzone.DatabaseConnection.Prescription;
 import com.example.healzone.MedicationData;
-import com.example.healzone.PrescriptionData; // Import the top-level PrescriptionData
+import com.example.healzone.PrescriptionData;
 import com.example.healzone.PrescriptionViewController;
+import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -29,6 +31,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -83,6 +86,7 @@ public class DoctorPrescriptionController implements Initializable {
     private ObservableList<Medicine> medicinesList;
     private String currentPatientId; // Represents patient_phone
     private String currentDoctorId;
+    private Map<String, Object> currentAppointment;
 
     // Patient Information
     private String patientName = "";
@@ -95,8 +99,8 @@ public class DoctorPrescriptionController implements Initializable {
         initializeTable();
         setupValidation();
         setCurrentDate();
-        // Ensure labels are updated after initialization if patientId is already set
-        if (currentPatientId != null) {
+        // Ensure labels are updated after initialization if patientId or appointment is already set
+        if (currentPatientId != null || currentAppointment != null) {
             setPatientInfo(null, null, null);
         }
     }
@@ -173,7 +177,7 @@ public class DoctorPrescriptionController implements Initializable {
     private void setCurrentDate() {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        prescriptionDateLabel.setText(currentDate.format(formatter)); // Will show 15/06/2025
+        prescriptionDateLabel.setText(currentDate.format(formatter)); // Will show 16/06/2025
     }
 
     private void validateForm() {
@@ -264,12 +268,71 @@ public class DoctorPrescriptionController implements Initializable {
     private void savePrescription(ActionEvent event) {
         if (validatePrescription()) {
             try {
-                savePrescriptionToDatabase();
+                // Check if there is a current appointment and prompt confirmation
+                if (currentAppointment != null) {
+                    Dialog<ButtonType> dialog = new Dialog<>();
+                    dialog.setTitle("Confirm Attendance");
+                    dialog.setHeaderText("Mark appointment as attended?");
+                    dialog.setContentText("Patient: " + currentAppointment.get("patient_name") +
+                            "\nAppointment #: " + currentAppointment.get("appointment_number"));
+
+                    // Define buttons
+                    ButtonType okayButton = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                    dialog.getDialogPane().getButtonTypes().addAll(okayButton, ButtonType.CANCEL);
+
+                    // Show dialog and handle result
+                    Optional<ButtonType> result = dialog.showAndWait();
+                    if (result.isPresent() && result.get() == okayButton) {
+                        // Mark appointment as attended
+                        Task<Void> attendTask = new Task<>() {
+                            @Override
+                            protected Void call() {
+                                Appointments.markAsAttended(currentDoctorId, (String) currentAppointment.get("appointment_number"));
+                                return null;
+                            }
+                        };
+
+                        attendTask.setOnSucceeded(event1 -> {
+                            Platform.runLater(() -> {
+                                showSuccessMessage("Appointment marked as attended.");
+                                // Save prescription using the appointment number before resetting
+                                String appointmentNumber = (String) currentAppointment.get("appointment_number");
+                                savePrescriptionToDatabase(appointmentNumber); // Pass appointment number
+                                // Now clear current appointment
+                                currentAppointment = null;
+                                closeWindow(event);
+                            });
+                        });
+
+                        attendTask.setOnFailed(event1 -> {
+                            Platform.runLater(() -> {
+                                showErrorMessage("Failed to mark appointment as attended: " + attendTask.getException().getMessage());
+                            });
+                        });
+
+                        new Thread(attendTask).start();
+                        return; // Exit early to wait for task completion
+                    } else {
+                        // If cancelled, do not proceed with saving
+                        return;
+                    }
+                }
+
+                // If no appointment or cancelled, save prescription directly with null appointment
+                savePrescriptionToDatabase(null); // Pass null if no appointment
                 closeWindow(event);
             } catch (Exception e) {
                 showErrorMessage("Error saving prescription: " + e.getMessage());
             }
         }
+    }
+
+    public Map<String, Object> getCurrentAppointment() {
+        return currentAppointment;
+    }
+
+    public void setCurrentAppointment(Map<String, Object> appointment) {
+        this.currentAppointment = appointment;
     }
 
     @FXML
@@ -297,7 +360,6 @@ public class DoctorPrescriptionController implements Initializable {
     private void previewPrescription(ActionEvent event) {
         if (validatePrescription()) {
             try {
-                // Load the FXML for PrescriptionViewController
                 URL fxmlUrl = getClass().getResource("/com/example/healzone/PrescriptionView.fxml");
                 if (fxmlUrl == null) {
                     showErrorMessage("Error loading preview: FXML file not found at /com/example/healzone/PrescriptionView.fxml");
@@ -306,18 +368,17 @@ public class DoctorPrescriptionController implements Initializable {
                 FXMLLoader loader = new FXMLLoader(fxmlUrl);
                 Parent root = loader.load();
 
-                // Get the controller
                 PrescriptionViewController previewController = loader.getController();
 
-                // Fetch doctor information
+                // Fetch doctor information including hospital and contact details
                 DoctorInfo doctorInfo = fetchDoctorInfo(currentDoctorId);
                 if (doctorInfo == null) {
                     showErrorMessage("Failed to load doctor information.");
                     return;
                 }
 
-                // Prepare prescription data from the current form
-                PrescriptionData prescriptionData = new PrescriptionData();
+                // Prepare prescription data
+                ExtendedPrescriptionData prescriptionData = new ExtendedPrescriptionData();
                 prescriptionData.setPatientName(patientName);
                 prescriptionData.setPatientAge(patientAge != null && !patientAge.isEmpty() ? Integer.parseInt(patientAge) : 0);
                 prescriptionData.setPatientGender(patientGender);
@@ -325,13 +386,16 @@ public class DoctorPrescriptionController implements Initializable {
                 prescriptionData.setDoctorName(doctorInfo.getFullName());
                 prescriptionData.setDoctorSpecialization(doctorInfo.getSpecialization());
                 prescriptionData.setLicenseNumber(doctorInfo.getLicenseNumber());
-                prescriptionData.setRegistrationNumber(doctorInfo.getRegistrationNumber());
+                prescriptionData.setHospitalName(doctorInfo.getHospitalName());
+                prescriptionData.setHospitalAddress(doctorInfo.getHospitalAddress());
+                prescriptionData.setDoctorPhone(doctorInfo.getDoctorPhone());
+                prescriptionData.setDoctorEmail(doctorInfo.getDoctorEmail());
                 prescriptionData.setDiagnosis(diagnosisArea.getText().trim());
                 prescriptionData.setPrecautions(precautionsArea.getText().trim());
                 prescriptionData.setFollowup(followupField.getText().trim() + " " + (followupUnitCombo.getValue() != null ? followupUnitCombo.getValue() : ""));
                 prescriptionData.setNotes(notesArea.getText().trim());
+                prescriptionData.setDoctorId(currentDoctorId);
 
-                // Convert medicines to MedicationData list
                 ObservableList<MedicationData> medicationDataList = FXCollections.observableArrayList();
                 for (Medicine medicine : medicinesList) {
                     MedicationData medData = new MedicationData(
@@ -353,11 +417,15 @@ public class DoctorPrescriptionController implements Initializable {
                         prescriptionData.getDoctorName(),
                         prescriptionData.getDoctorSpecialization(),
                         prescriptionData.getLicenseNumber(),
-                        prescriptionData.getRegistrationNumber()
+                        prescriptionData.getHospitalName(),
+                        prescriptionData.getHospitalAddress(),
+                        prescriptionData.getDoctorPhone() != null && prescriptionData.getDoctorEmail() != null ?
+                                "Phone: " + prescriptionData.getDoctorPhone() + " | Email: " + prescriptionData.getDoctorEmail() : "Phone: N/A | Email: N/A",
+                        currentDoctorId
                 );
-                previewController.populateView();
+                previewController.setCurrentAppointment(currentAppointment); // Pass current appointment
+                previewController.setDoctorPrescriptionData(currentDoctorId, currentPatientId, medicinesList); // Pass additional data
 
-                // Create a new stage for preview
                 Stage previewStage = new Stage();
                 previewStage.setTitle("Prescription Preview");
                 Scene scene = new Scene(root);
@@ -365,19 +433,31 @@ public class DoctorPrescriptionController implements Initializable {
                 previewStage.initModality(Modality.APPLICATION_MODAL);
                 previewStage.initOwner(((Node) event.getSource()).getScene().getWindow());
 
-                // Set minimum height to ensure all content is accessible
                 previewStage.setMinHeight(600.0);
                 previewStage.sizeToScene();
+
+                // Pass the parent stage to the preview controller
+                Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                previewController.setParentStage(parentStage);
+
+                previewStage.setOnHidden(e -> {
+                    // No need to call loadNextAppointment() here; it will be handled by DoctorDashboardController
+                });
 
                 previewStage.showAndWait();
 
             } catch (IOException e) {
-                e.printStackTrace(); // Debug full stack trace
+                e.printStackTrace();
                 showErrorMessage("Error loading preview: " + e.getMessage());
             } catch (NumberFormatException e) {
                 showErrorMessage("Invalid patient age format: " + e.getMessage());
             }
         }
+    }
+
+    // Add this method to get the current stage
+    public Stage getCurrentStage() {
+        return (Stage) saveButton.getScene().getWindow();
     }
 
     @FXML
@@ -410,6 +490,9 @@ public class DoctorPrescriptionController implements Initializable {
         if (diagnosisArea.getText().trim().isEmpty()) errors.append("- Diagnosis is required\n");
         if (currentPatientId == null) errors.append("- Patient ID is not set\n");
         if (currentDoctorId == null) errors.append("- Doctor ID is not set\n");
+        if (currentAppointment == null || currentAppointment.get("appointment_number") == null) {
+            errors.append("- No valid appointment number associated\n");
+        }
         if (errors.length() > 0) {
             showErrorMessage("Please fix the following errors:\n" + errors.toString());
             return false;
@@ -417,28 +500,48 @@ public class DoctorPrescriptionController implements Initializable {
         return true;
     }
 
-    private void savePrescriptionToDatabase() {
+    private void savePrescriptionToDatabase(String appointmentNumber) {
         Prescription prescription = new Prescription();
         prescription.setDoctorId(currentDoctorId);
-        prescription.setPatientId(currentPatientId); // patient_phone
+        prescription.setPatientId(currentPatientId);
         prescription.setPatientName(patientName);
+        prescription.setAppointmentNumber(appointmentNumber != null ? appointmentNumber : ""); // Use provided or empty string
         prescription.setDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
         prescription.setDiagnosis(diagnosisArea.getText().trim());
         prescription.setPrecautions(precautionsArea.getText().trim());
         prescription.setFollowup(followupField.getText().trim() + " " + (followupUnitCombo.getValue() != null ? followupUnitCombo.getValue() : ""));
         prescription.setNotes(notesArea.getText().trim());
+
         StringBuilder medicinesString = new StringBuilder();
+        boolean first = true;
         for (Medicine medicine : medicinesList) {
-            medicinesString.append(String.format("%s (%s) - %s, %s, %s, %s, %s%n",
-                    medicine.getMedicineName(), medicine.getType(), medicine.getDosage(),
-                    medicine.getFrequency(), medicine.getTiming(), medicine.getDuration(),
-                    medicine.getInstructions()));
+            if (!first) medicinesString.append(";");
+            medicinesString.append(String.format("%s|%s|%s|%s|%s|%s|%s",
+                    medicine.getMedicineName(),
+                    medicine.getType(),
+                    medicine.getDosage(),
+                    medicine.getFrequency(),
+                    medicine.getTiming(),
+                    medicine.getDuration(),
+                    medicine.getInstructions() != null ? medicine.getInstructions() : ""
+            ));
+            first = false;
         }
         prescription.setMedicines(medicinesString.toString());
+
         try {
+            if (connection == null || connection.isClosed()) {
+                throw new SQLException("Database connection is null or closed");
+            }
             prescription.save();
             showSuccessMessage("Prescription saved successfully!");
+        } catch (SQLException e) {
+            System.err.println("SQL Error details: " + e.getMessage());
+            e.printStackTrace();
+            showErrorMessage("Error saving prescription: " + e.getMessage() + ". Check logs for details.");
         } catch (Exception e) {
+            System.err.println("General error: " + e.getMessage());
+            e.printStackTrace();
             showErrorMessage("Error saving prescription: " + e.getMessage());
         }
     }
@@ -477,29 +580,47 @@ public class DoctorPrescriptionController implements Initializable {
     }
 
     public void setPatientInfo(String name, String age, String gender) {
-        this.patientName = name != null ? name : fetchPatientNameFromAppointments();
-        this.patientAge = age != null ? age : fetchPatientAgeFromAppointments();
-        this.patientGender = gender != null ? gender : fetchPatientGenderFromAppointments();
+        // Try to get data from currentAppointment first
+        if (currentAppointment != null) {
+            this.patientName = (String) currentAppointment.getOrDefault("patient_name", fetchPatientNameFromAppointments());
+            this.patientAge = (String) currentAppointment.getOrDefault("patient_age", fetchPatientAgeFromAppointments());
+            this.patientGender = (String) currentAppointment.getOrDefault("patient_gender", fetchPatientGenderFromAppointments());
+        } else if (currentPatientId != null) {
+            // Fallback to fetching from patients table if no appointment
+            Map<String, Object> patientInfo = Appointments.getPatientInfoByPhone(currentPatientId);
+            this.patientName = name != null ? name : (patientInfo != null ? (String) patientInfo.get("patient_name") : fetchPatientNameFromAppointments());
+            this.patientAge = age != null ? age : (patientInfo != null ? (String) patientInfo.get("patient_age") : fetchPatientAgeFromAppointments());
+            this.patientGender = gender != null ? gender : (patientInfo != null ? (String) patientInfo.get("patient_gender") : fetchPatientGenderFromAppointments());
+        } else {
+            this.patientName = name != null ? name : fetchPatientNameFromAppointments();
+            this.patientAge = age != null ? age : fetchPatientAgeFromAppointments();
+            this.patientGender = gender != null ? gender : fetchPatientGenderFromAppointments();
+        }
         updateLabels();
         System.out.println("Updated patient info - Name: " + patientName + ", Age: " + patientAge + ", Gender: " + patientGender);
     }
 
     private String fetchPatientNameFromAppointments() {
-        if (currentPatientId == null) {
-            System.out.println("currentPatientId is null");
+        if (currentAppointment == null || currentAppointment.get("appointment_number") == null) {
+            System.out.println("currentAppointment or appointment_number is null");
             return "Unknown";
         }
-        System.out.println("Fetching patient name for patient_phone: " + currentPatientId);
-        String query = "SELECT patient_name FROM appointments WHERE patient_phone = ? ORDER BY appointment_date DESC LIMIT 1";
+        System.out.println("Fetching patient name for appointment_number: " + currentAppointment.get("appointment_number"));
+        String query = """
+        SELECT COALESCE(a.patient_name, p.name) AS patient_name
+        FROM appointments a
+        LEFT JOIN patients p ON a.patient_phone = p.phone_number
+        WHERE a.appointment_number = ?
+        """;
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, currentPatientId);
+            stmt.setString(1, (String) currentAppointment.get("appointment_number"));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 String name = rs.getString("patient_name");
                 System.out.println("Fetched patient_name: " + name);
                 return name != null ? name : "Unknown";
             } else {
-                System.out.println("No record found for patient_phone: " + currentPatientId);
+                System.out.println("No record found for appointment_number: " + currentAppointment.get("appointment_number"));
             }
         } catch (SQLException e) {
             System.err.println("Error fetching patient name: " + e.getMessage());
@@ -508,21 +629,21 @@ public class DoctorPrescriptionController implements Initializable {
     }
 
     private String fetchPatientAgeFromAppointments() {
-        if (currentPatientId == null) {
-            System.out.println("currentPatientId is null");
+        if (currentAppointment == null || currentAppointment.get("appointment_number") == null) {
+            System.out.println("currentAppointment or appointment_number is null");
             return "N/A";
         }
-        System.out.println("Fetching patient age for patient_phone: " + currentPatientId);
-        String query = "SELECT patient_age FROM appointments WHERE patient_phone = ? ORDER BY appointment_date DESC LIMIT 1";
+        System.out.println("Fetching patient age for appointment_number: " + currentAppointment.get("appointment_number"));
+        String query = "SELECT patient_age FROM appointments WHERE appointment_number = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, currentPatientId);
+            stmt.setString(1, (String) currentAppointment.get("appointment_number"));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 String age = rs.getString("patient_age");
                 System.out.println("Fetched patient_age: " + age);
                 return age != null ? age : "N/A";
             } else {
-                System.out.println("No record found for patient_phone: " + currentPatientId);
+                System.out.println("No record found for appointment_number: " + currentAppointment.get("appointment_number"));
             }
         } catch (SQLException e) {
             System.err.println("Error fetching patient age: " + e.getMessage());
@@ -531,21 +652,21 @@ public class DoctorPrescriptionController implements Initializable {
     }
 
     private String fetchPatientGenderFromAppointments() {
-        if (currentPatientId == null) {
-            System.out.println("currentPatientId is null");
+        if (currentAppointment == null || currentAppointment.get("appointment_number") == null) {
+            System.out.println("currentAppointment or appointment_number is null");
             return "N/A";
         }
-        System.out.println("Fetching patient gender for patient_phone: " + currentPatientId);
-        String query = "SELECT patient_gender FROM appointments WHERE patient_phone = ? ORDER BY appointment_date DESC LIMIT 1";
+        System.out.println("Fetching patient gender for appointment_number: " + currentAppointment.get("appointment_number"));
+        String query = "SELECT patient_gender FROM appointments WHERE appointment_number = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
-            stmt.setString(1, currentPatientId);
+            stmt.setString(1, (String) currentAppointment.get("appointment_number"));
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 String gender = rs.getString("patient_gender");
                 System.out.println("Fetched patient_gender: " + gender);
                 return gender != null ? gender : "N/A";
             } else {
-                System.out.println("No record found for patient_phone: " + currentPatientId);
+                System.out.println("No record found for appointment_number: " + currentAppointment.get("appointment_number"));
             }
         } catch (SQLException e) {
             System.err.println("Error fetching patient gender: " + e.getMessage());
@@ -565,7 +686,7 @@ public class DoctorPrescriptionController implements Initializable {
         this.currentPatientId = patientPhone;
         System.out.println("Setting patientId to: " + patientPhone);
         // Re-fetch and update patient info when patientPhone changes
-        setPatientInfo(null, null, null); // Trigger fetch from appointments
+        setPatientInfo(null, null, null); // Trigger fetch from appointments or patient info
     }
 
     public void setDoctorId(String doctorId) {
@@ -576,11 +697,13 @@ public class DoctorPrescriptionController implements Initializable {
     private DoctorInfo fetchDoctorInfo(String doctorId) {
         if (doctorId == null) {
             System.out.println("doctorId is null");
-            return new DoctorInfo("Unknown", "Unknown", "N/A", "N/A");
+            return new DoctorInfo("Unknown", "Unknown", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
         }
-        String query = "SELECT d.first_name, d.last_name, pd.specialization, pd.medical_license_number " +
+        String query = "SELECT d.first_name, d.last_name, pd.specialization, pd.medical_license_number, " +
+                "pi.hospital_name, pi.hospital_address, d.phone_number, d.email " +
                 "FROM doctors d " +
                 "LEFT JOIN professional_details pd ON d.govt_id = pd.govt_id " +
+                "LEFT JOIN practice_information pi ON d.govt_id = pi.govt_id " +
                 "WHERE d.govt_id = ?";
         try (PreparedStatement stmt = connection.prepareStatement(query)) {
             stmt.setString(1, doctorId);
@@ -590,11 +713,19 @@ public class DoctorPrescriptionController implements Initializable {
                 String lastName = rs.getString("last_name");
                 String specialization = rs.getString("specialization");
                 String licenseNumber = rs.getString("medical_license_number");
+                String hospitalName = rs.getString("hospital_name");
+                String hospitalAddress = rs.getString("hospital_address");
+                String doctorPhone = rs.getString("phone_number");
+                String doctorEmail = rs.getString("email");
                 return new DoctorInfo(
                         (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : ""),
                         specialization != null ? specialization : "Unknown",
                         licenseNumber != null ? licenseNumber : "N/A",
-                        "N/A" // No registration_number in schema
+                        "N/A", // No registration_number in schema
+                        hospitalName != null ? hospitalName : "N/A",
+                        hospitalAddress != null ? hospitalAddress : "N/A",
+                        doctorPhone != null ? doctorPhone : "N/A",
+                        doctorEmail != null ? doctorEmail : "N/A"
                 );
             } else {
                 System.out.println("No doctor record found for govt_id: " + doctorId);
@@ -602,6 +733,6 @@ public class DoctorPrescriptionController implements Initializable {
         } catch (SQLException e) {
             System.err.println("Error fetching doctor info: " + e.getMessage());
         }
-        return new DoctorInfo("Unknown", "Unknown", "N/A", "N/A");
+        return new DoctorInfo("Unknown", "Unknown", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
     }
 }

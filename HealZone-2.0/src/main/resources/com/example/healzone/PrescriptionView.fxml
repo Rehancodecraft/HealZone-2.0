@@ -16,7 +16,7 @@
 
 <BorderPane maxWidth="793.0" minWidth="793.0" stylesheets="@Design/prescription-view.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.PrescriptionViewController">
     <center>
-        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="2000.0" styleClass="content-scroll" vbarPolicy="AS_NEEDED">
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" prefHeight="800.0" styleClass="content-scroll" vbarPolicy="AS_NEEDED">
             <VBox prefHeight="800.0" prefWidth="784.0" spacing="0" styleClass="a4-page-container">
 
                 <!-- Header Section -->

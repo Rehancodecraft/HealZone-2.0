@@ -1,6 +1,10 @@
 package com.example.healzone.Doctor;
 
 import com.example.healzone.DatabaseConnection.Appointments;
+import com.example.healzone.DatabaseConnection.Prescription;
+import com.example.healzone.MedicationData;
+import com.example.healzone.PrescriptionData;
+import com.example.healzone.PrescriptionViewController;
 import com.example.healzone.SessionManager;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
@@ -19,16 +23,21 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Callback;
 import org.kordamp.ikonli.javafx.FontIcon;
 
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
+import static com.example.healzone.DatabaseConnection.DatabaseConnection.connection;
 
 public class DoctorAppointmentHistoryController {
     @FXML
@@ -246,6 +255,12 @@ public class DoctorAppointmentHistoryController {
 
                     actionBox.getChildren().add(viewPrescriptionBtn);
                     actionBox.setAlignment(javafx.geometry.Pos.CENTER);
+
+                    // Add action handler
+                    viewPrescriptionBtn.setOnAction(event -> {
+                        Map<String, Object> appointmentData = getTableView().getItems().get(getIndex());
+                        viewPrescription(appointmentData);
+                    });
                 }
 
                 @Override
@@ -255,8 +270,6 @@ public class DoctorAppointmentHistoryController {
                         setGraphic(null);
                     } else {
                         setGraphic(actionBox);
-                        Map<String, Object> appointmentData = getTableView().getItems().get(getIndex());
-//                        viewPrescriptionBtn.setOnAction(event -> viewPrescription(appointmentData));
                     }
                 }
             };
@@ -554,33 +567,117 @@ public class DoctorAppointmentHistoryController {
             default -> data;
         };
     }
-//
-//    private void viewPrescription(Map<String, Object> appointmentData) {
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorPrescription.fxml"));
-//            Parent root = loader.load();
-//
-//            DoctorPrescriptionController controller = loader.getController();
-//            controller.setPatientInfo(
-//                    String.valueOf(appointmentData.getOrDefault("patient_name", "Unknown")),
-//                    String.valueOf(appointmentData.getOrDefault("patient_age", "")),
-//                    String.valueOf(appointmentData.getOrDefault("patient_gender", ""))
-//            );
-//            controller.setPatientId(String.valueOf(appointmentData.getOrDefault("patient_id", "")));
-//            controller.setDoctorId(SessionManager.getCurrentDoctorId());
-//
-//            Stage prescriptionStage = new Stage();
-//            prescriptionStage.setTitle("View Prescription - " + appointmentData.getOrDefault("patient_name", "Unknown"));
-//            prescriptionStage.initModality(Modality.APPLICATION_MODAL);
-//            prescriptionStage.setScene(new Scene(root));
-//            prescriptionStage.setResizable(false);
-//            prescriptionStage.initStyle(StageStyle.DECORATED);
-//            prescriptionStage.showAndWait();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//            showError("Failed to open prescription view: " + e.getMessage());
-//        }
-//    }
+
+    private void viewPrescription(Map<String, Object> appointmentData) {
+        try {
+            String appointmentNumber = (String) appointmentData.get("appointment_number");
+            if (appointmentNumber == null) {
+                showError("No appointment number found for this record.");
+                return;
+            }
+
+            // Fetch prescription using appointment number
+            PrescriptionData prescriptionData = Prescription.fetchPrescriptionById(appointmentNumber);
+            if (prescriptionData == null) {
+                showError("No prescription found for appointment #" + appointmentNumber);
+                return;
+            }
+
+            // Fetch doctor info using the current doctor ID
+            String doctorId = SessionManager.getCurrentDoctorId();
+            if (doctorId != null) {
+                DoctorInfo doctorInfo = fetchDoctorInfo(doctorId);
+                if (doctorInfo != null) {
+                    prescriptionData.setDoctorName(doctorInfo.getFullName());
+                    prescriptionData.setDoctorSpecialization(doctorInfo.getSpecialization());
+                    prescriptionData.setLicenseNumber(doctorInfo.getLicenseNumber());
+                    prescriptionData.setHospitalName(doctorInfo.getHospitalName());
+                    prescriptionData.setHospitalAddress(doctorInfo.getHospitalAddress());
+                    prescriptionData.setDoctorPhone(doctorInfo.getDoctorPhone());
+                    prescriptionData.setDoctorEmail(doctorInfo.getDoctorEmail());
+                }
+            }
+
+            // Fetch additional patient info from appointments table if missing
+            String patientPhone = (String) appointmentData.get("patient_phone");
+            if (patientPhone != null && (prescriptionData.getPatientAge() == 0 || prescriptionData.getPatientGender() == null)) {
+                Map<String, Object> patientInfo = Appointments.getPatientInfoByPhone(patientPhone);
+                if (patientInfo != null) {
+                    String ageStr = (String) patientInfo.get("patient_age");
+                    prescriptionData.setPatientAge(ageStr != null ? Integer.parseInt(ageStr) : 0);
+                    prescriptionData.setPatientGender((String) patientInfo.get("patient_gender"));
+                    if (prescriptionData.getPatientName() == null) {
+                        prescriptionData.setPatientName((String) appointmentData.get("patient_name"));
+                    }
+                }
+            }
+
+            // Ensure patient phone is set
+            if (prescriptionData.getPatientId() == null && patientPhone != null) {
+                prescriptionData.setPatientId(patientPhone);
+            }
+
+            // Load the PrescriptionView and pass prescription data
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/PrescriptionView.fxml"));
+            Parent root = loader.load();
+
+            PrescriptionViewController controller = loader.getController();
+            controller.loadPrescription(prescriptionData);
+
+            Stage prescriptionStage = new Stage();
+            prescriptionStage.setTitle("View Prescription - " + (prescriptionData.getPatientName() != null ? prescriptionData.getPatientName() : "Unknown"));
+            prescriptionStage.initModality(Modality.APPLICATION_MODAL);
+            prescriptionStage.setScene(new Scene(root));
+            prescriptionStage.setResizable(false);
+            prescriptionStage.initStyle(StageStyle.DECORATED);
+            controller.setParentStage(prescriptionStage);
+            prescriptionStage.showAndWait();
+        } catch (NumberFormatException e) {
+            showError("Invalid patient age format: " + e.getMessage());
+        } catch (Exception e) {
+            e.printStackTrace();
+            showError("Failed to open prescription view: " + e.getMessage());
+        }
+    }
+    private DoctorInfo fetchDoctorInfo(String doctorId) {
+        // Reuse or implement similar to DoctorPrescriptionController.fetchDoctorInfo
+        if (doctorId == null) {
+            return new DoctorInfo("Unknown", "Unknown", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+        }
+        String query = "SELECT d.first_name, d.last_name, pd.specialization, pd.medical_license_number, " +
+                "pi.hospital_name, pi.hospital_address, d.phone_number, d.email " +
+                "FROM doctors d " +
+                "LEFT JOIN professional_details pd ON d.govt_id = pd.govt_id " +
+                "LEFT JOIN practice_information pi ON d.govt_id = pi.govt_id " +
+                "WHERE d.govt_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setString(1, doctorId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String firstName = rs.getString("first_name");
+                String lastName = rs.getString("last_name");
+                String specialization = rs.getString("specialization");
+                String licenseNumber = rs.getString("medical_license_number");
+                String hospitalName = rs.getString("hospital_name");
+                String hospitalAddress = rs.getString("hospital_address");
+                String doctorPhone = rs.getString("phone_number");
+                String doctorEmail = rs.getString("email");
+                return new DoctorInfo(
+                        (firstName != null ? firstName : "") + " " + (lastName != null ? lastName : ""),
+                        specialization != null ? specialization : "Unknown",
+                        licenseNumber != null ? licenseNumber : "N/A",
+                        "N/A", // No registration_number in schema
+                        hospitalName != null ? hospitalName : "N/A",
+                        hospitalAddress != null ? hospitalAddress : "N/A",
+                        doctorPhone != null ? doctorPhone : "N/A",
+                        doctorEmail != null ? doctorEmail : "N/A"
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Error fetching doctor info: " + e.getMessage());
+        }
+        return new DoctorInfo("Unknown", "Unknown", "N/A", "N/A", "N/A", "N/A", "N/A", "N/A");
+    }
 
     private void showError(String message) {
         Platform.runLater(() -> {

@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 public class UpcomingAppointmentModel {
-        private int appointmentNumber;
+        private String appointmentNumber;
         private String doctorId;
         private String doctorName;
         private String speciality;
@@ -20,11 +20,11 @@ public class UpcomingAppointmentModel {
 
         // Add constructor, getters, and setters
 
-    public int getAppointmentNumber() {
+    public String getAppointmentNumber() {
         return appointmentNumber;
     }
 
-    public void setAppointmentNumber(int appointmentNumber) {
+    public void setAppointmentNumber(String appointmentNumber) {
         this.appointmentNumber = appointmentNumber;
     }
 

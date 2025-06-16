@@ -9,6 +9,7 @@ import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -92,6 +93,13 @@ public class DoctorDashboardController {
         });
     }
 
+    public void refreshDashboard() {
+        // Reload appointments and update UI
+        loadNextAppointment(); // This will refresh the next appointment display
+        // Optionally, update total booked, attended, and remaining counts if needed
+        // For now, assume loadNextAppointment() handles the UI update
+    }
+
     private LocalTime getAvailabilityStartTime() {
         String dayOfWeek = LocalDate.now(PAKISTAN_ZONE).getDayOfWeek().toString().substring(0, 1).toUpperCase() +
                 LocalDate.now(PAKISTAN_ZONE).getDayOfWeek().toString().substring(1).toLowerCase();
@@ -130,8 +138,8 @@ public class DoctorDashboardController {
         Task<Optional<Map<String, Object>>> loadTask = new Task<>() {
             @Override
             protected Optional<Map<String, Object>> call() {
-                LocalDate today = LocalDate.now(PAKISTAN_ZONE);
-                LocalTime now = LocalTime.now(PAKISTAN_ZONE);
+                LocalDate today = LocalDate.now(PAKISTAN_ZONE); // Current: 2025-06-16
+                LocalTime now = LocalTime.now(PAKISTAN_ZONE); // Current: 02:07 AM
                 LocalTime availabilityStartTime = getAvailabilityStartTime();
                 if (now.isBefore(availabilityStartTime)) {
                     return Optional.empty();
@@ -139,7 +147,14 @@ public class DoctorDashboardController {
                 List<Map<String, Object>> appointments = Appointments.getAppointmentsForDoctorToday(doctorId, today);
                 return appointments.stream()
                         .filter(a -> "Upcoming".equals(a.get("status")))
-                        .min((a1, a2) -> Integer.compare((Integer) a1.get("appointment_number"), (Integer) a2.get("appointment_number")));
+                        .min((a1, a2) -> {
+                            String num1 = String.valueOf(a1.get("appointment_number"));
+                            String num2 = String.valueOf(a2.get("appointment_number"));
+                            // Extract the incremental part (after hyphen) and compare
+                            int seq1 = Integer.parseInt(num1.split("-")[1]);
+                            int seq2 = Integer.parseInt(num2.split("-")[1]);
+                            return Integer.compare(seq1, seq2);
+                        });
             }
         };
 
@@ -194,7 +209,14 @@ public class DoctorDashboardController {
                             return (patientName != null && patientName.toLowerCase().contains(query.toLowerCase())) ||
                                     (patientPhone != null && patientPhone.contains(query));
                         })
-                        .findFirst();
+                        .min((a1, a2) -> {
+                            String num1 = String.valueOf(a1.get("appointment_number"));
+                            String num2 = String.valueOf(a2.get("appointment_number"));
+                            // Extract the incremental part (after hyphen) and compare
+                            int seq1 = Integer.parseInt(num1.split("-")[1]);
+                            int seq2 = Integer.parseInt(num2.split("-")[1]);
+                            return Integer.compare(seq1, seq2);
+                        });
             }
         };
 
@@ -254,7 +276,7 @@ public class DoctorDashboardController {
                 Task<Void> attendTask = new Task<>() {
                     @Override
                     protected Void call() {
-                        Appointments.markAsAttended(doctorId, (Integer) currentAppointment.get("appointment_number"));
+                        Appointments.markAsAttended(doctorId, (String) currentAppointment.get("appointment_number"));
                         return null;
                     }
                 };
@@ -296,13 +318,27 @@ public class DoctorDashboardController {
             controller.setPatientInfo(patientName, patientAge, patientGender);
             controller.setPatientId(patientPhone); // Set the correct patient_phone
             controller.setDoctorId(doctorId);
+            controller.setCurrentAppointment(appointmentData); // Pass the current appointment
 
             Stage prescriptionStage = new Stage();
             prescriptionStage.setTitle("Add Prescription - " + patientName);
             prescriptionStage.initModality(Modality.APPLICATION_MODAL);
             prescriptionStage.setScene(new Scene(root));
             prescriptionStage.setResizable(false);
-            prescriptionStage.initStyle(StageStyle.DECORATED); // Changed from UNDECORATED
+            prescriptionStage.initStyle(StageStyle.DECORATED);
+
+            // Add listener for stage close with debug logging
+            prescriptionStage.setOnHidden(e -> {
+                System.out.println("Prescription window closed. Controller currentAppointment: " +
+                        controller.getCurrentAppointment() + ", Dashboard currentAppointment: " + currentAppointment);
+                if (controller.getCurrentAppointment() == null && currentAppointment != null) {
+                    currentAppointment = null; // Sync with prescription controller
+                    System.out.println("Triggering refreshDashboard...");
+                    loadNextAppointment(); // Reload next appointment
+                    refreshDashboard(); // Ensure dashboard refreshes
+                }
+            });
+
             prescriptionStage.showAndWait();
         } catch (Exception e) {
             e.printStackTrace();

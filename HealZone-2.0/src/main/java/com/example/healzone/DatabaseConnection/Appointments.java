@@ -17,7 +17,7 @@ public class Appointments {
         String sql = """
         CREATE TABLE IF NOT EXISTS appointments (
             doctor_id VARCHAR(50) NOT NULL,
-            appointment_number INTEGER NOT NULL,
+            appointment_number VARCHAR(8) NOT NULL,
             patient_phone VARCHAR(15) NOT NULL,
             patient_age VARCHAR(10), -- Add this
             patient_gender VARCHAR(10), -- Add this
@@ -33,7 +33,7 @@ public class Appointments {
             speciality VARCHAR(100),
             status VARCHAR(20) CHECK (status IN ('Upcoming', 'Completed', 'Cancelled')),
             created_at TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-            PRIMARY KEY (doctor_id, appointment_number),
+            PRIMARY KEY (appointment_number), -- Changed to use appointment_number as primary key
             FOREIGN KEY (doctor_id) REFERENCES doctors(govt_id) ON DELETE CASCADE,
             FOREIGN KEY (patient_phone) REFERENCES patients(phone_number) ON DELETE CASCADE
         )
@@ -66,7 +66,7 @@ public class Appointments {
             while (rs.next()) {
                 Map<String, Object> appointment = new HashMap<>();
                 appointment.put("doctor_id", rs.getString("doctor_id"));
-                appointment.put("appointment_number", rs.getInt("appointment_number"));
+                appointment.put("appointment_number", rs.getString("appointment_number")); // Changed to String to match VARCHAR
                 appointment.put("patient_phone", rs.getString("patient_phone"));
                 appointment.put("appointment_date", rs.getDate("appointment_date"));
                 appointment.put("day_of_week", rs.getString("day_of_week"));
@@ -89,139 +89,168 @@ public class Appointments {
             return appointments;
         }
     }
-
-// Similarly update getAppointmentsForDoctorToday and getAppointmentHistoryForDoctor with the same JOIN
-
-    public static int getAppointmentNo(String doctorGovtId) {
-        String countQuery = "SELECT COALESCE(MAX(appointment_number), 0) FROM appointments WHERE doctor_id = ?";
-        try (PreparedStatement countStmt = connection.prepareStatement(countQuery)) {
-            countStmt.setString(1, doctorGovtId);
-            ResultSet rs = countStmt.executeQuery();
+    public static Map<String, Object> getPatientInfoByPhone(String patientPhone) {
+        String query = """
+        SELECT name, age, gender
+        FROM patients
+        WHERE phone_number = ?
+        """;
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, patientPhone);
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
-                return rs.getInt(1) + 1;
+                Map<String, Object> patientInfo = new HashMap<>();
+                patientInfo.put("patient_name", rs.getString("name")); // Adjust column name
+                patientInfo.put("patient_age", rs.getString("age"));
+                patientInfo.put("patient_gender", rs.getString("gender"));
+                return patientInfo;
             }
-            return 1;
+            return null;
         } catch (SQLException e) {
-            System.err.println("Error getting appointment number: " + e.getMessage());
+            System.err.println("Error getting patient info by phone: " + e.getMessage());
             e.printStackTrace();
-            return 0;
+            return null;
         }
     }
 
-    public static void insertNewAppointment(String doctorGovtId, int appointmentNumber, String patientPhone, String patientName, LocalDate appointmentDate, String status) {
-        String dayOfWeek = appointmentDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
+// Similarly update getAppointmentsForDoctorToday and getAppointmentHistoryForDoctor with the same JOIN
 
-        // Fetch practice information
-        String practiceQuery = """
+    public static String getAppointmentNo(String doctorGovtId) {
+        // Step 1: Generate a random 4-digit number
+        int randomNumber = new Random().nextInt(9000) + 1000; // Ensures 1000–9999
+        String randomPart = String.valueOf(randomNumber);
+
+        // Step 2: Get the total number of appointments for the doctor to determine the next sequence
+        String countQuery = "SELECT COUNT(*) FROM appointments WHERE doctor_id = ?";
+        try (PreparedStatement countStmt = connection.prepareStatement(countQuery)) {
+            countStmt.setString(1, doctorGovtId);
+            ResultSet rs = countStmt.executeQuery();
+            int totalAppointments = 0;
+            if (rs.next()) {
+                totalAppointments = rs.getInt(1);
+            }
+            int nextAppointmentNumber = totalAppointments + 1; // Increment based on total count
+            return randomPart + "-" + nextAppointmentNumber;
+        } catch (SQLException e) {
+            System.err.println("Error getting appointment number: " + e.getMessage());
+            e.printStackTrace();
+            return randomPart + "-1"; // Fallback with increment
+        }
+    }
+public static void insertNewAppointment(String doctorGovtId, String appointmentNumber, String patientPhone, String patientName, LocalDate appointmentDate, String status) {
+    String dayOfWeek = appointmentDate.getDayOfWeek().getDisplayName(TextStyle.FULL, Locale.US);
+
+    // Fetch practice information
+    String practiceQuery = """
             SELECT consultation_fee, hospital_name, hospital_address
             FROM practice_information
             WHERE govt_id = ?
             """;
-        String consultationFee = null;
-        String hospitalName = null;
-        String hospitalAddress = null;
-        try (PreparedStatement practiceStmt = connection.prepareStatement(practiceQuery)) {
-            practiceStmt.setString(1, doctorGovtId);
-            ResultSet rs = practiceStmt.executeQuery();
-            if (rs.next()) {
-                consultationFee = rs.getString("consultation_fee");
-                hospitalName = rs.getString("hospital_name");
-                hospitalAddress = rs.getString("hospital_address");
-            } else {
-                throw new SQLException("No practice information found for doctor ID: " + doctorGovtId);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching practice information: " + e.getMessage());
-            e.printStackTrace();
-            return;
+    String consultationFee = null;
+    String hospitalName = null;
+    String hospitalAddress = null;
+    try (PreparedStatement practiceStmt = connection.prepareStatement(practiceQuery)) {
+        practiceStmt.setString(1, doctorGovtId);
+        ResultSet rs = practiceStmt.executeQuery();
+        if (rs.next()) {
+            consultationFee = rs.getString("consultation_fee");
+            hospitalName = rs.getString("hospital_name");
+            hospitalAddress = rs.getString("hospital_address");
+        } else {
+            throw new SQLException("No practice information found for doctor ID: " + doctorGovtId);
         }
+    } catch (SQLException e) {
+        System.err.println("Error fetching practice information: " + e.getMessage());
+        e.printStackTrace();
+        return;
+    }
 
-        // Fetch doctor name
-        String doctorQuery = """
+    // Fetch doctor name
+    String doctorQuery = """
             SELECT first_name, last_name
             FROM doctors
             WHERE govt_id = ?
             """;
-        String doctorName = null;
-        try (PreparedStatement doctorStmt = connection.prepareStatement(doctorQuery)) {
-            doctorStmt.setString(1, doctorGovtId);
-            ResultSet rs = doctorStmt.executeQuery();
-            if (rs.next()) {
-                doctorName = rs.getString("first_name") + " " + rs.getString("last_name");
-            } else {
-                throw new SQLException("No doctor found with ID: " + doctorGovtId);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching doctor name: " + e.getMessage());
-            e.printStackTrace();
-            return;
+    String doctorName = null;
+    try (PreparedStatement doctorStmt = connection.prepareStatement(doctorQuery)) {
+        doctorStmt.setString(1, doctorGovtId);
+        ResultSet rs = doctorStmt.executeQuery();
+        if (rs.next()) {
+            doctorName = rs.getString("first_name") + " " + rs.getString("last_name");
+        } else {
+            throw new SQLException("No doctor found with ID: " + doctorGovtId);
         }
+    } catch (SQLException e) {
+        System.err.println("Error fetching doctor name: " + e.getMessage());
+        e.printStackTrace();
+        return;
+    }
 
-        // Fetch doctor availability
-        LocalTime startTime = null;
-        LocalTime endTime = null;
-        try (PreparedStatement timeStmt = connection.prepareStatement("""
+    // Fetch doctor availability
+    LocalTime startTime = null;
+    LocalTime endTime = null;
+    try (PreparedStatement timeStmt = connection.prepareStatement("""
             SELECT start_time, end_time FROM doctor_availability
             WHERE govt_id = ? AND day_of_week = ?
             """)) {
-            timeStmt.setString(1, doctorGovtId);
-            timeStmt.setString(2, dayOfWeek);
-            ResultSet rs = timeStmt.executeQuery();
-            if (rs.next()) {
-                Time sqlStart = rs.getTime("start_time");
-                Time sqlEnd = rs.getTime("end_time");
-                if (sqlStart != null && sqlEnd != null) {
-                    startTime = sqlStart.toLocalTime();
-                    endTime = sqlEnd.toLocalTime();
-                }
-            } else {
-                throw new SQLException("No availability found for " + dayOfWeek);
+        timeStmt.setString(1, doctorGovtId);
+        timeStmt.setString(2, dayOfWeek);
+        ResultSet rs = timeStmt.executeQuery();
+        if (rs.next()) {
+            Time sqlStart = rs.getTime("start_time");
+            Time sqlEnd = rs.getTime("end_time");
+            if (sqlStart != null && sqlEnd != null) {
+                startTime = sqlStart.toLocalTime();
+                endTime = sqlEnd.toLocalTime();
             }
-        } catch (SQLException e) {
-            System.err.println("Error fetching doctor availability: " + e.getMessage());
-            e.printStackTrace();
+        } else {
+            throw new SQLException("No availability found for " + dayOfWeek);
+        }
+    } catch (SQLException e) {
+        System.err.println("Error fetching doctor availability: " + e.getMessage());
+        e.printStackTrace();
+        return;
+    }
+
+    // Fetch speciality
+    String speciality = null;
+    String fetchSpecialityQuery = "SELECT specialization FROM professional_details WHERE govt_id = ?";
+    try (PreparedStatement fetchStmt = connection.prepareStatement(fetchSpecialityQuery)) {
+        fetchStmt.setString(1, doctorGovtId);
+        ResultSet rs = fetchStmt.executeQuery();
+        if (rs.next()) {
+            speciality = rs.getString("specialization");
+        } else {
+            System.err.println("No specialization found for doctorGovtId: " + doctorGovtId);
             return;
         }
+    } catch (SQLException e) {
+        System.out.println(e.getMessage());
+    }
 
-        // Fetch speciality
-        String speciality = null;
-        String fetchSpecialityQuery = "SELECT specialization FROM professional_details WHERE govt_id = ?";
-        try (PreparedStatement fetchStmt = connection.prepareStatement(fetchSpecialityQuery)) {
-            fetchStmt.setString(1, doctorGovtId);
-            ResultSet rs = fetchStmt.executeQuery();
-            if (rs.next()) {
-                speciality = rs.getString("specialization");
-            } else {
-                System.err.println("No specialization found for doctorGovtId: " + doctorGovtId);
-                return;
-            }
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        // Fetch patient age and gender
-        String patientAge = null;
-        String patientGender = null;
-        String patientQuery = """
+    // Fetch patient age and gender
+    String patientAge = null;
+    String patientGender = null;
+    String patientQuery = """
             SELECT age, gender FROM patients WHERE phone_number = ?
             """;
-        try (PreparedStatement patientStmt = connection.prepareStatement(patientQuery)) {
-            patientStmt.setString(1, patientPhone);
-            ResultSet rs = patientStmt.executeQuery();
-            if (rs.next()) {
-                patientAge = rs.getString("age");
-                patientGender = rs.getString("gender");
-            } else {
-                throw new SQLException("No patient found with phone number: " + patientPhone);
-            }
-        } catch (SQLException e) {
-            System.err.println("Error fetching patient details: " + e.getMessage());
-            e.printStackTrace();
-            return;
+    try (PreparedStatement patientStmt = connection.prepareStatement(patientQuery)) {
+        patientStmt.setString(1, patientPhone);
+        ResultSet rs = patientStmt.executeQuery();
+        if (rs.next()) {
+            patientAge = rs.getString("age");
+            patientGender = rs.getString("gender");
+        } else {
+            throw new SQLException("No patient found with phone number: " + patientPhone);
         }
+    } catch (SQLException e) {
+        System.err.println("Error fetching patient details: " + e.getMessage());
+        e.printStackTrace();
+        return;
+    }
 
-        // Updated insert query to include patient_age and patient_gender
-        String insertQuery = """
+    // Insert appointment
+    String insertQuery = """
             INSERT INTO appointments (
                 doctor_id, appointment_number, patient_phone, patient_age, patient_gender,
                 appointment_date, day_of_week, start_time, end_time, consultation_fee,
@@ -229,29 +258,34 @@ public class Appointments {
             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
             """;
 
-        try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
-            stmt.setString(1, doctorGovtId);
-            stmt.setInt(2, appointmentNumber);
-            stmt.setString(3, patientPhone);
-            stmt.setString(4, patientAge); // New field
-            stmt.setString(5, patientGender); // New field
-            stmt.setDate(6, Date.valueOf(appointmentDate));
-            stmt.setString(7, dayOfWeek);
-            stmt.setTime(8, Time.valueOf(startTime));
-            stmt.setTime(9, Time.valueOf(endTime));
-            stmt.setString(10, consultationFee);
-            stmt.setString(11, hospitalName);
-            stmt.setString(12, hospitalAddress);
-            stmt.setString(13, doctorName);
-            stmt.setString(14, patientName);
-            stmt.setString(15, speciality);
-            stmt.setString(16, status);
-            stmt.executeUpdate();
-            System.out.println("Appointment inserted successfully");
-        } catch (SQLException e) {
-            System.err.println("Insert Error: " + e.getMessage());
+    try (PreparedStatement stmt = connection.prepareStatement(insertQuery)) {
+        stmt.setString(1, doctorGovtId);
+        stmt.setString(2, appointmentNumber);
+        stmt.setString(3, patientPhone);
+        stmt.setString(4, patientAge);
+        stmt.setString(5, patientGender);
+        stmt.setDate(6, Date.valueOf(appointmentDate));
+        stmt.setString(7, dayOfWeek);
+        stmt.setTime(8, Time.valueOf(startTime));
+        stmt.setTime(9, Time.valueOf(endTime));
+        stmt.setString(10, consultationFee);
+        stmt.setString(11, hospitalName);
+        stmt.setString(12, hospitalAddress);
+        stmt.setString(13, doctorName);
+        stmt.setString(14, patientName);
+        stmt.setString(15, speciality);
+        stmt.setString(16, status);
+        int rowsAffected = stmt.executeUpdate();
+        if (rowsAffected > 0) {
+            System.out.println("Appointment inserted successfully: " + appointmentNumber);
+        } else {
+            System.err.println("Failed to insert appointment: " + appointmentNumber);
         }
+    } catch (SQLException e) {
+        System.err.println("Insert Error: " + e.getMessage());
+        e.printStackTrace();
     }
+}
 
     public static List<UpcomingAppointmentModel> getUpcomingAppointmentsForPatient(String phone) {
         String query = """
@@ -267,7 +301,7 @@ public class Appointments {
             try (ResultSet rs = ps.executeQuery()) {
                 while (rs.next()) {
                     UpcomingAppointmentModel appt = new UpcomingAppointmentModel();
-                    appt.setAppointmentNumber(rs.getInt("appointment_number"));
+                    appt.setAppointmentNumber(rs.getString("appointment_number")); // Changed to match VARCHAR
                     appt.setDoctorId(rs.getString("doctor_id"));
                     appt.setDoctorName(rs.getString("doctor_name"));
                     appt.setSpeciality(rs.getString("speciality"));
@@ -323,7 +357,7 @@ public class Appointments {
             while (rs.next()) {
                 Map<String, Object> appointment = new HashMap<>();
                 appointment.put("doctor_id", rs.getString("doctor_id"));
-                appointment.put("appointment_number", rs.getInt("appointment_number"));
+                appointment.put("appointment_number", rs.getString("appointment_number")); // Changed to String
                 appointment.put("patient_phone", rs.getString("patient_phone"));
                 appointment.put("appointment_date", rs.getDate("appointment_date"));
                 appointment.put("day_of_week", rs.getString("day_of_week"));
@@ -345,12 +379,13 @@ public class Appointments {
     }
     public static List<Map<String, Object>> getAppointmentsForDoctorToday(String doctorId, LocalDate date) {
         String query = """
-            SELECT doctor_id, appointment_number, patient_phone, appointment_date, day_of_week,
-                   consultation_fee, hospital_name, hospital_address, doctor_name, patient_name,
-                   status, created_at
-            FROM appointments
-            WHERE doctor_id = ? AND appointment_date = ?
-            """;
+        SELECT a.doctor_id, a.appointment_number, a.patient_phone, a.appointment_date, a.day_of_week,
+               a.consultation_fee, a.hospital_name, a.hospital_address, a.doctor_name, COALESCE(a.patient_name, p.name) AS patient_name,
+               a.status, a.created_at, a.patient_age, a.patient_gender
+        FROM appointments a
+        LEFT JOIN patients p ON a.patient_phone = p.phone_number
+        WHERE a.doctor_id = ? AND a.appointment_date = ?
+        """;
         List<Map<String, Object>> appointments = new ArrayList<>();
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, doctorId);
@@ -359,7 +394,7 @@ public class Appointments {
             while (rs.next()) {
                 Map<String, Object> appointment = new HashMap<>();
                 appointment.put("doctor_id", rs.getString("doctor_id"));
-                appointment.put("appointment_number", rs.getInt("appointment_number"));
+                appointment.put("appointment_number", rs.getString("appointment_number"));
                 appointment.put("patient_phone", rs.getString("patient_phone"));
                 appointment.put("appointment_date", rs.getDate("appointment_date"));
                 appointment.put("day_of_week", rs.getString("day_of_week"));
@@ -370,6 +405,8 @@ public class Appointments {
                 appointment.put("patient_name", rs.getString("patient_name"));
                 appointment.put("status", rs.getString("status"));
                 appointment.put("created_at", rs.getTimestamp("created_at"));
+                appointment.put("patient_age", rs.getString("patient_age"));
+                appointment.put("patient_gender", rs.getString("patient_gender"));
                 appointments.add(appointment);
             }
             return appointments;
@@ -380,7 +417,8 @@ public class Appointments {
         }
     }
 
-    public static void markAsAttended(String doctorId, int appointmentNumber) {
+
+    public static void markAsAttended(String doctorId, String appointmentNumber) { // Changed to String
         String query = """
             UPDATE appointments
             SET status = 'Completed'
@@ -388,7 +426,7 @@ public class Appointments {
             """;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, doctorId);
-            ps.setInt(2, appointmentNumber);
+            ps.setString(2, appointmentNumber); // Changed to String
             int rows = ps.executeUpdate();
             if (rows > 0) {
                 System.out.println("Appointment marked as attended: " + doctorId + ", " + appointmentNumber);
@@ -401,7 +439,7 @@ public class Appointments {
         }
     }
 
-    public static Map<String, Object> getAppointmentById(String doctorId, int appointmentNumber) {
+    public static Map<String, Object> getAppointmentById(String doctorId, String appointmentNumber) { // Changed to String
         String query = """
             SELECT doctor_id, appointment_number, patient_phone, appointment_date, day_of_week,
                    consultation_fee, hospital_name, hospital_address, doctor_name, patient_name,
@@ -411,12 +449,12 @@ public class Appointments {
             """;
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, doctorId);
-            ps.setInt(2, appointmentNumber);
+            ps.setString(2, appointmentNumber); // Changed to String
             ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 Map<String, Object> appointment = new HashMap<>();
                 appointment.put("doctor_id", rs.getString("doctor_id"));
-                appointment.put("appointment_number", rs.getInt("appointment_number"));
+                appointment.put("appointment_number", rs.getString("appointment_number"));
                 appointment.put("patient_phone", rs.getString("patient_phone"));
                 appointment.put("appointment_date", rs.getDate("appointment_date"));
                 appointment.put("day_of_week", rs.getString("day_of_week"));
@@ -516,7 +554,7 @@ public class Appointments {
             while (rs.next()) {
                 Map<String, Object> appointment = new HashMap<>();
                 appointment.put("doctor_id", rs.getString("doctor_id"));
-                appointment.put("appointment_number", rs.getInt("appointment_number"));
+                appointment.put("appointment_number", rs.getString("appointment_number")); // Changed to String
                 appointment.put("patient_phone", rs.getString("patient_phone"));
                 appointment.put("appointment_date", rs.getDate("appointment_date"));
                 appointment.put("day_of_week", rs.getString("day_of_week"));
@@ -600,7 +638,7 @@ public class Appointments {
     }
 
     // Update appointment status
-    public static boolean updateAppointmentStatus(String doctorId, int appointmentNumber, String newStatus) {
+    public static boolean updateAppointmentStatus(String doctorId, String appointmentNumber, String newStatus) { // Changed to String
         String query = """
             UPDATE appointments
             SET status = ?
@@ -609,7 +647,7 @@ public class Appointments {
         try (PreparedStatement ps = connection.prepareStatement(query)) {
             ps.setString(1, newStatus);
             ps.setString(2, doctorId);
-            ps.setInt(3, appointmentNumber);
+            ps.setString(3, appointmentNumber); // Changed to String
             int rows = ps.executeUpdate();
             return rows > 0;
         } catch (SQLException e) {

@@ -28,19 +28,6 @@
                         </font>
                     </Label>
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button fx:id="printButton" onAction="#printPrescription" styleClass="action-button" text="Print">
-                        <graphic>
-                            <FontIcon iconColor="WHITE" iconLiteral="fas-print" iconSize="14" />
-                        </graphic>
-                        <font>
-                            <Font name="SansSerif Bold" size="12.0" />
-                        </font>
-                    </Button>
-                    <Button fx:id="exitButton" onAction="#exitPrescription" prefHeight="30" prefWidth="30" styleClass="exit-button">
-                        <graphic>
-                            <FontIcon iconColor="WHITE" iconLiteral="fas-times" iconSize="14" />
-                        </graphic>
-                    </Button>
                 </HBox>
 
                 <!-- Patient Information -->
@@ -217,8 +204,8 @@
                                 </font>
                             </Label>
                             <HBox spacing="10">
-                                <TextField fx:id="followupField" prefWidth="100.0" promptText="7" styleClass="search-bar" />
-                                <ComboBox fx:id="followupUnitCombo" prefWidth="80.0" styleClass="combo-box" />
+                                <TextField fx:id="followupField" prefWidth="100.0" promptText="7" styleClass="dosagefeild" />
+                                <ComboBox fx:id="followupUnitCombo" prefHeight="39.0" prefWidth="97.0" styleClass="combo-box" />
                                 <Label styleClass="filter-label" text="after" />
                             </HBox>
                         </VBox>
@@ -249,17 +236,17 @@
                         <Font name="SansSerif Bold" size="12.0" />
                     </font>
                 </Button>
-                <Button fx:id="previewButton" onAction="#previewPrescription" styleClass="action-button" text="Preview">
-                    <graphic>
-                        <FontIcon iconColor="WHITE" iconLiteral="fas-eye" iconSize="14" />
-                    </graphic>
+                <Button fx:id="previewButton" onAction="#previewPrescription" styleClass="action-button" text="Print Pdf">
                     <font>
                         <Font name="SansSerif Bold" size="12.0" />
                     </font>
+               <graphic>
+                  <FontIcon iconColor="WHITE" iconLiteral="fas-print" iconSize="20" selectionEnd="0" selectionStart="0" />
+               </graphic>
                 </Button>
                  <Button fx:id="saveButton" onAction="#savePrescription" styleClass="action-button" text="Save Prescription">
                      <graphic>
-                         <FontIcon iconColor="WHITE" iconLiteral="fas-save" iconSize="14" />
+                         <FontIcon iconColor="WHITE" iconLiteral="fas-save" iconSize="20" />
                      </graphic>
                      <font>
                          <Font name="SansSerif Bold" size="12.0" />

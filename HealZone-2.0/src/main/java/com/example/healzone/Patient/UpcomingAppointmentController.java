@@ -48,7 +48,7 @@ public class UpcomingAppointmentController {
         System.out.println(appt.getPatientName());
         System.out.println(appt.getStartTime());
 
-        appointmentNo.setText("Appointment No #" + String.format("%03d", appt.getAppointmentNumber()));
+        appointmentNo.setText("Appointment No #" + String.format(appt.getAppointmentNumber()));
         doctorName.setText(appt.getDoctorName());
         speciality.setText(appt.getSpeciality());
         hospitalName.setText(appt.getHospitalName());

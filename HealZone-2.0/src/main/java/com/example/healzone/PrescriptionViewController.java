@@ -1,5 +1,8 @@
 package com.example.healzone;
 
+import com.example.healzone.Doctor.ExtendedPrescriptionData;
+import com.example.healzone.Doctor.Medicine;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -27,6 +30,7 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -44,7 +48,9 @@ public class PrescriptionViewController implements Initializable {
     @FXML private Label doctorNameLabel;
     @FXML private Label doctorSpecializationLabel;
     @FXML private Label licenseLabel;
-    @FXML private Label registrationLabel;
+    @FXML private Label hospitalName;
+    @FXML private Label hospitalAddress;
+    @FXML private Label doctorPhoneEmail;
 
     // Patient Information Labels
     @FXML private Label patientNameLabel;
@@ -66,13 +72,14 @@ public class PrescriptionViewController implements Initializable {
     @FXML private Label prescriptionIdLabel;
 
     // Buttons
-    @FXML private Button printButton;
     @FXML private Button saveButton;
     @FXML private Button closeButton;
 
     // Data Storage
     private PrescriptionData prescriptionData;
     private int prescriptionId; // Track the prescription ID for database-loaded prescriptions
+    private Map<String, Object> currentAppointment; // Add this line
+    private Stage parentStage;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -95,7 +102,7 @@ public class PrescriptionViewController implements Initializable {
     private void setCurrentDate() {
         LocalDate currentDate = LocalDate.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        prescriptionDateLabel.setText(currentDate.format(formatter)); // Will show 15/06/2025
+        prescriptionDateLabel.setText(currentDate.format(formatter)); // Will show 16/06/2025
     }
 
     private void generatePrescriptionId() {
@@ -104,25 +111,12 @@ public class PrescriptionViewController implements Initializable {
         prescriptionIdLabel.setText("Prescription ID: " + prescriptionId);
     }
 
-    // Method to load prescription by ID from database
-//    public void loadPrescription(int id) {
-//        this.prescriptionId = id;
-//        this.prescriptionData = Prescription.fetchPrescriptionById(id);
-//        if (prescriptionData != null) {
-//            populateView();
-//        } else {
-//            showErrorAlert("Load Error", "Failed to load prescription with ID: " + id);
-//        }
-//    }
-
-    // Overloaded method to load prescription data directly for preview
-    public void loadPrescription(PrescriptionData data) {
-        this.prescriptionId = -1; // Indicate this is a preview (not saved)
-        this.prescriptionData = data;
+    public void loadPrescription(PrescriptionData prescriptionData) {
+        this.prescriptionData = prescriptionData;
         if (prescriptionData != null) {
             populateView();
         } else {
-            showErrorAlert("Load Error", "No prescription data available.");
+            System.out.println("Prescription data is null");
         }
     }
 
@@ -135,12 +129,15 @@ public class PrescriptionViewController implements Initializable {
         patientGenderLabel.setText(prescriptionData.getPatientGender() != null ? prescriptionData.getPatientGender() : "N/A");
         patientIdLabel.setText(prescriptionData.getPatientId() != null ? prescriptionData.getPatientId() : "N/A");
 
-        // Set doctor information
+        // Set doctor information using setDoctorInfo
         setDoctorInfo(
                 prescriptionData.getDoctorName(),
                 prescriptionData.getDoctorSpecialization(),
                 prescriptionData.getLicenseNumber(),
-                prescriptionData.getRegistrationNumber()
+                prescriptionData.getHospitalName(),
+                prescriptionData.getHospitalAddress(),
+                formatDoctorContact(prescriptionData.getDoctorPhone(), prescriptionData.getDoctorEmail()),
+                prescriptionData.getDoctorId()
         );
 
         // Set diagnosis
@@ -168,7 +165,7 @@ public class PrescriptionViewController implements Initializable {
 
         // Set follow-up
         if (prescriptionData.getFollowup() != null && !prescriptionData.getFollowup().trim().isEmpty()) {
-            followupText.setText("Next visit in " + prescriptionData.getFollowup());
+            followupText.setText("Next visit in " + prescriptionData.getFollowup().trim());
             followupSection.setVisible(true);
             followupSection.setManaged(true);
         } else {
@@ -196,12 +193,18 @@ public class PrescriptionViewController implements Initializable {
 
     private void populateMedications() {
         medicationsContainer.getChildren().clear();
+        System.out.println("Populating medications for prescription ID: " + prescriptionId);
 
         List<MedicationData> medications = prescriptionData.getMedications();
-        if (medications == null || medications.isEmpty()) return;
+        if (medications == null || medications.isEmpty()) {
+            System.out.println("No medications found in prescription data.");
+            return;
+        }
 
+        System.out.println("Found " + medications.size() + " medications to display.");
         int counter = 1;
         for (MedicationData medication : medications) {
+            System.out.println("Adding medication: " + medication.getMedicineName());
             VBox medicationItem = createMedicationItem(counter, medication);
             medicationsContainer.getChildren().add(medicationItem);
             counter++;
@@ -255,41 +258,6 @@ public class PrescriptionViewController implements Initializable {
     }
 
     @FXML
-    private void printPrescription(ActionEvent event) {
-        try {
-            // Check for available printers
-            ObservableList<Printer> printers = (ObservableList<Printer>) Printer.getAllPrinters();
-            if (printers.isEmpty()) {
-                showErrorAlert("Printer Error", "No printer detected. Please ensure a printer is connected and installed.");
-                return;
-            }
-
-            PrinterJob printerJob = PrinterJob.createPrinterJob();
-            if (printerJob != null) {
-                hideButtons(true);
-                if (printerJob.showPrintDialog(printButton.getScene().getWindow())) {
-                    Node contentToPrint = printButton.getScene().getRoot();
-                    boolean success = printerJob.printPage(contentToPrint);
-                    if (success) {
-                        printerJob.endJob();
-                        showSuccessAlert("Print Success", "Prescription printed successfully!");
-                    } else {
-                        showErrorAlert("Print Error", "Failed to print prescription. Please try again.");
-                    }
-                } else {
-                    showInfoAlert("Print Cancelled", "Printing was cancelled by user.");
-                }
-            } else {
-                showErrorAlert("Printer Error", "No printer available. Please check your printer connections.");
-            }
-        } catch (Exception e) {
-            showErrorAlert("Print Error", "An error occurred while printing: " + e.getMessage());
-        } finally {
-            hideButtons(false);
-        }
-    }
-
-    @FXML
     private void savePrescription(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Save Prescription");
@@ -299,8 +267,8 @@ public class PrescriptionViewController implements Initializable {
         FileChooser.ExtensionFilter pngFilter = new FileChooser.ExtensionFilter("PNG Images", "*.png");
         FileChooser.ExtensionFilter pdfFilter = new FileChooser.ExtensionFilter("PDF Files", "*.pdf");
 
-        fileChooser.getExtensionFilters().addAll(pdfFilter, pngFilter); // PDF first as default
-        fileChooser.setSelectedExtensionFilter(pdfFilter); // Set PDF as default
+        fileChooser.getExtensionFilters().addAll(pdfFilter, pngFilter);
+        fileChooser.setSelectedExtensionFilter(pdfFilter);
         fileChooser.setInitialFileName(baseFileName + ".pdf");
 
         // Ensure directory exists
@@ -317,27 +285,110 @@ public class PrescriptionViewController implements Initializable {
 
                 // Force correct extension based on selected filter
                 String fileName = selectedFile.getName().toLowerCase();
-                File finalFile = selectedFile;
+                File finalFile;
 
-                // Check if file has correct extension, if not add it
                 FileChooser.ExtensionFilter selectedFilter = fileChooser.getSelectedExtensionFilter();
                 if (selectedFilter == pdfFilter && !fileName.endsWith(".pdf")) {
                     finalFile = new File(selectedFile.getParentFile(), selectedFile.getName() + ".pdf");
                 } else if (selectedFilter == pngFilter && !fileName.endsWith(".png")) {
                     finalFile = new File(selectedFile.getParentFile(), selectedFile.getName() + ".png");
+                } else {
+                    finalFile = selectedFile;
                 }
 
                 System.out.println("Selected file: " + selectedFile.getAbsolutePath());
                 System.out.println("Final file: " + finalFile.getAbsolutePath());
                 System.out.println("Selected filter: " + (selectedFilter == pdfFilter ? "PDF" : "PNG"));
 
+                // Check if there is a current appointment and prompt confirmation
+                if (currentAppointment != null) {
+                    Dialog<ButtonType> dialog = new Dialog<>();
+                    dialog.setTitle("Confirm Attendance");
+                    dialog.setHeaderText("Mark appointment as attended?");
+                    dialog.setContentText("Patient: " + currentAppointment.get("patient_name") +
+                            "\nAppointment #: " + currentAppointment.get("appointment_number"));
+
+                    ButtonType okayButton = new ButtonType("Okay", ButtonBar.ButtonData.OK_DONE);
+                    dialog.getDialogPane().getButtonTypes().addAll(okayButton, ButtonType.CANCEL);
+
+                    Optional<ButtonType> result = dialog.showAndWait();
+                    if (result.isPresent() && result.get() == okayButton) {
+                        // Mark appointment as attended
+                        Task<Void> attendTask = new Task<>() {
+                            @Override
+                            protected Void call() throws Exception {
+                                com.example.healzone.DatabaseConnection.Appointments.markAsAttended(
+                                        prescriptionData.getDoctorId(), (String) currentAppointment.get("appointment_number"));
+                                return null;
+                            }
+                        };
+
+                        attendTask.setOnSucceeded(event1 -> {
+                            Platform.runLater(() -> {
+                                showSuccessAlert("Attendance Success", "Appointment marked as attended.");
+                                currentAppointment = null; // Clear to signal reload
+                                // Proceed with saving the file and database
+                                WritableImage image = takeScreenshot();
+                                if (image == null) {
+                                    showErrorAlert("Save Error", "Failed to capture screenshot.");
+                                    return;
+                                }
+
+                                try {
+                                    String finalFileName = finalFile.getName().toLowerCase();
+                                    if (finalFileName.endsWith(".pdf")) {
+                                        saveAsPDF(finalFile, image);
+                                    } else if (finalFileName.endsWith(".png")) {
+                                        BufferedImage bufferedImage = SwingFXUtils.fromFXImage(image, null);
+                                        if (bufferedImage == null) {
+                                            throw new IOException("Failed to convert image");
+                                        }
+                                        ImageIO.write(bufferedImage, "PNG", finalFile);
+                                    } else {
+                                        throw new IOException("Unsupported file format.");
+                                    }
+
+                                    // Save to database
+                                    savePrescriptionToDatabase();
+                                    if (finalFile.exists() && finalFile.length() > 0) {
+                                        showSuccessAlert("Save Success", "Prescription saved successfully as " + finalFile.getName() +
+                                                "\nLocation: " + finalFile.getAbsolutePath() +
+                                                "\nFile size: " + finalFile.length() + " bytes" +
+                                                "\nSaved to database.");
+                                        Stage stage = (Stage) saveButton.getScene().getWindow();
+                                        stage.close();
+                                        if (parentStage != null) {
+                                            parentStage.close();
+                                        }
+                                    } else {
+                                        throw new IOException("File not created or empty.");
+                                    }
+                                } catch (Exception e) {
+                                    showErrorAlert("Save Error", "Failed to save prescription: " + e.getMessage());
+                                }
+                            });
+                        });
+
+                        attendTask.setOnFailed(event1 -> {
+                            Platform.runLater(() -> {
+                                showErrorAlert("Attendance Error", "Failed to mark appointment as attended: " + attendTask.getException().getMessage());
+                            });
+                        });
+
+                        new Thread(attendTask).start();
+                        return; // Exit early to wait for task completion
+                    } else {
+                        return; // If cancelled, do not proceed with saving
+                    }
+                }
+
+                // If no appointment or cancelled, save directly
                 WritableImage image = takeScreenshot();
                 if (image == null) {
                     throw new IOException("Failed to capture screenshot");
                 }
 
                 String finalFileName = finalFile.getName().toLowerCase();
-
                 if (finalFileName.endsWith(".pdf")) {
                     saveAsPDF(finalFile, image);
                 } else if (finalFileName.endsWith(".png")) {
@@ -347,17 +398,24 @@ public class PrescriptionViewController implements Initializable {
                     }
                     ImageIO.write(bufferedImage, "PNG", finalFile);
                 } else {
-                    throw new IOException("Unsupported file format. Please use .pdf or .png extension.");
+                    throw new IOException("Unsupported file format.");
                 }
 
+                // Save to database
+                savePrescriptionToDatabase();
                 if (finalFile.exists() && finalFile.length() > 0) {
                     showSuccessAlert("Save Success", "Prescription saved successfully as " + finalFile.getName() +
                             "\nLocation: " + finalFile.getAbsolutePath() +
-                            "\nFile size: " + finalFile.length() + " bytes");
+                            "\nFile size: " + finalFile.length() + " bytes" +
+                            "\nSaved to database.");
+                    Stage stage = (Stage) saveButton.getScene().getWindow();
+                    stage.close();
+                    if (parentStage != null) {
+                        parentStage.close();
+                    }
                 } else {
-                    throw new IOException("File not created or empty: " + finalFile.getAbsolutePath());
+                    throw new IOException("File not created or empty.");
                 }
-
             } catch (Exception e) {
                 System.out.println("Save error: " + e.getMessage());
                 e.printStackTrace();
@@ -366,6 +424,51 @@ public class PrescriptionViewController implements Initializable {
                 hideButtons(false);
             }
         }
+    }
+
+    private void savePrescriptionToDatabase() {
+        Prescription prescription = new Prescription();
+        prescription.setDoctorId(prescriptionData.getDoctorId());
+        prescription.setPatientId(prescriptionData.getPatientId());
+        prescription.setPatientName(prescriptionData.getPatientName());
+        // Handle potential NullPointerException due to currentAppointment being null after attendance
+        prescription.setAppointmentNumber(currentAppointment != null ? (String) currentAppointment.get("appointment_number") : "");
+        prescription.setDate(LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+        prescription.setDiagnosis(prescriptionData.getDiagnosis());
+        prescription.setPrecautions(prescriptionData.getPrecautions());
+        prescription.setFollowup(prescriptionData.getFollowup());
+        prescription.setNotes(prescriptionData.getNotes());
+
+        // Build medicines string with semicolon separation
+        StringBuilder medicinesString = new StringBuilder();
+        boolean first = true;
+        for (MedicationData medication : prescriptionData.getMedications()) {
+            if (!first) {
+                medicinesString.append(";");
+            }
+            medicinesString.append(String.format("%s|%s|%s|%s|%s|%s|%s",
+                    medication.getMedicineName(),
+                    medication.getType(),
+                    medication.getDosage(),
+                    medication.getFrequency(),
+                    medication.getTiming(),
+                    medication.getDuration(),
+                    medication.getInstructions() != null ? medication.getInstructions() : ""
+            ));
+            first = false;
+        }
+        prescription.setMedicines(medicinesString.toString());
+        try {
+            prescription.save();
+            showSuccessAlert("Database Success", "Prescription saved to database.");
+        } catch (Exception e) {
+            showErrorAlert("Database Error", "Error saving prescription to database: " + e.getMessage());
+        }
+    }
+
+    private void closeWindow(ActionEvent event) {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.close();
     }
 
     private void saveAsPDF(File file, WritableImage image) throws IOException {
@@ -476,6 +579,7 @@ public class PrescriptionViewController implements Initializable {
             hideButtons(false);
         }
     }
+
     private Node findScrollableContent(Node node) {
         if (node instanceof ScrollPane) {
             return ((ScrollPane) node).getContent();
@@ -494,10 +598,8 @@ public class PrescriptionViewController implements Initializable {
     }
 
     private void hideButtons(boolean hide) {
-        printButton.setVisible(!hide);
         saveButton.setVisible(!hide);
         closeButton.setVisible(!hide);
-        printButton.setManaged(!hide);
         saveButton.setManaged(!hide);
         closeButton.setManaged(!hide);
     }
@@ -506,8 +608,6 @@ public class PrescriptionViewController implements Initializable {
     private void closePrescription(ActionEvent event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle("Close Prescription");
-        alert.setHeaderText("Are you sure you want to close this prescription?");
-        alert.setContentText("Any unsaved changes will be lost.");
         Optional<ButtonType> result = alert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
             Stage stage = (Stage) closeButton.getScene().getWindow();
@@ -539,34 +639,7 @@ public class PrescriptionViewController implements Initializable {
         alert.showAndWait();
     }
 
-    private void showProgressDialog(String message, Runnable task) {
-        Alert progressAlert = new Alert(Alert.AlertType.INFORMATION);
-        progressAlert.setTitle("Processing");
-        progressAlert.setHeaderText(null);
-        progressAlert.setContentText(message + " Please wait...");
-
-        Task<Void> backgroundTask = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                task.run();
-                return null;
-            }
-        };
-
-        backgroundTask.setOnSucceeded(e -> progressAlert.close());
-        backgroundTask.setOnFailed(e -> {
-            progressAlert.close();
-            showErrorAlert("Error", "Operation failed: " + backgroundTask.getException().getMessage());
-        });
-
-        Thread taskThread = new Thread(backgroundTask);
-        taskThread.setDaemon(true);
-        taskThread.start();
-
-        progressAlert.show();
-    }
-
-    public void setDoctorInfo(String name, String specialization, String license, String registration) {
+    public void setDoctorInfo(String name, String specialization, String license, String hospitalName, String hospitalAddress, String doctorPhoneEmail, String doctorId) {
         if (name != null && !name.trim().isEmpty()) {
             doctorNameLabel.setText(name);
         }
@@ -576,9 +649,16 @@ public class PrescriptionViewController implements Initializable {
         if (license != null && !license.trim().isEmpty()) {
             licenseLabel.setText("License No: " + license);
         }
-        if (registration != null && !registration.trim().isEmpty()) {
-            registrationLabel.setText("Registration: " + registration);
+        if (hospitalName != null && !hospitalName.trim().isEmpty()) {
+            this.hospitalName.setText(hospitalName);
         }
+        if (hospitalAddress != null && !hospitalAddress.trim().isEmpty()) {
+            this.hospitalAddress.setText(hospitalAddress);
+        }
+        if (doctorPhoneEmail != null && !doctorPhoneEmail.trim().isEmpty()) {
+            this.doctorPhoneEmail.setText(doctorPhoneEmail);
+        }
+        this.prescriptionData.setDoctorId(doctorId); // Assuming setDoctorId exists in PrescriptionData
     }
 
     public void refreshView() {
@@ -604,5 +684,55 @@ public class PrescriptionViewController implements Initializable {
         }
 
         return true;
+    }
+
+    private String formatDoctorContact(String phone, String email) {
+        String formattedPhone = (phone != null && !phone.trim().isEmpty()) ? formatPhoneNumber(phone.trim()) : "N/A";
+        String formattedEmail = (email != null && !email.trim().isEmpty()) ? email.trim() : "N/A";
+        return "Phone: " + formattedPhone + " | Email: " + formattedEmail;
+    }
+
+    private String formatPhoneNumber(String phone) {
+        if (phone != null && phone.length() == 11 && phone.matches("\\d+")) {
+            return "+92" + phone.substring(1);
+        }
+        return phone != null ? phone : "";
+    }
+
+    public Map<String, Object> getCurrentAppointment() {
+        return currentAppointment;
+    }
+
+    public void setParentStage(Stage parentStage) {
+        this.parentStage = parentStage;
+    }
+
+    public void setCurrentAppointment(Map<String, Object> appointment) {
+        this.currentAppointment = appointment;
+    }
+
+    public void setDoctorPrescriptionData(String doctorId, String patientId, ObservableList<Medicine> medicinesList) {
+        if (prescriptionData == null) {
+            prescriptionData = new PrescriptionData();
+        }
+        prescriptionData.setDoctorId(doctorId);
+        prescriptionData.setPatientId(patientId);
+        // Convert medicinesList to MedicationData list
+        ObservableList<MedicationData> medicationDataList = FXCollections.observableArrayList();
+        if (medicinesList != null) {
+            for (Medicine medicine : medicinesList) {
+                MedicationData medData = new MedicationData(
+                        medicine.getMedicineName(),
+                        medicine.getType(),
+                        medicine.getDosage(),
+                        medicine.getFrequency(),
+                        medicine.getTiming(),
+                        medicine.getDuration(),
+                        medicine.getInstructions()
+                );
+                medicationDataList.add(medData);
+            }
+            prescriptionData.setMedications(medicationDataList);
+        }
     }
 }
