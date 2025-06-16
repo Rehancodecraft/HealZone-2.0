@@ -74,6 +74,19 @@ public class DoctorDashboardController {
             showErrorAlert("Session Error", "No doctor logged in.");
             return;
         }
+
+        // Check and initialize nextAppointmentPane
+        if (nextAppointmentPane == null) {
+            System.out.println("Warning: nextAppointmentPane is not initialized. Creating a default VBox.");
+            nextAppointmentPane = new VBox(); // Fallback if FXML injection fails
+            nextAppointmentPane.setVisible(false); // Default to hidden
+        }
+        if (noAppointmentPane == null) {
+            System.out.println("Warning: noAppointmentPane is not initialized. Creating a default VBox.");
+            noAppointmentPane = new VBox(); // Fallback if FXML injection fails
+            noAppointmentPane.setVisible(false); // Default to hidden
+        }
+
         loadNextAppointment();
 
         // Setup search functionality
@@ -139,7 +152,7 @@ public class DoctorDashboardController {
             @Override
             protected Optional<Map<String, Object>> call() {
                 LocalDate today = LocalDate.now(PAKISTAN_ZONE); // Current: 2025-06-16
-                LocalTime now = LocalTime.now(PAKISTAN_ZONE); // Current: 02:07 AM
+                LocalTime now = LocalTime.now(PAKISTAN_ZONE); // Current: ~07:12 AM
                 LocalTime availabilityStartTime = getAvailabilityStartTime();
                 if (now.isBefore(availabilityStartTime)) {
                     return Optional.empty();
@@ -161,6 +174,15 @@ public class DoctorDashboardController {
         loadTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
                 Optional<Map<String, Object>> appointmentOpt = loadTask.getValue();
+                if (nextAppointmentPane == null) {
+                    System.out.println("Error: nextAppointmentPane is null. Skipping update.");
+                    return;
+                }
+                if (noAppointmentPane == null) {
+                    System.out.println("Error: noAppointmentPane is null. Skipping update.");
+                    return;
+                }
+
                 if (appointmentOpt.isPresent()) {
                     currentAppointment = appointmentOpt.get();
                     patientNameLabel.setText("Patient: " + currentAppointment.get("patient_name"));
@@ -181,8 +203,8 @@ public class DoctorDashboardController {
         loadTask.setOnFailed(event -> {
             Platform.runLater(() -> {
                 showErrorAlert("Appointment Error", "Failed to load next appointment: " + loadTask.getException().getMessage());
-                nextAppointmentPane.setVisible(false);
-                noAppointmentPane.setVisible(true);
+                if (nextAppointmentPane != null) nextAppointmentPane.setVisible(false);
+                if (noAppointmentPane != null) noAppointmentPane.setVisible(true);
             });
         });
 
@@ -223,6 +245,15 @@ public class DoctorDashboardController {
         searchTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
                 Optional<Map<String, Object>> appointmentOpt = searchTask.getValue();
+                if (nextAppointmentPane == null) {
+                    System.out.println("Error: nextAppointmentPane is null. Skipping update.");
+                    return;
+                }
+                if (noAppointmentPane == null) {
+                    System.out.println("Error: noAppointmentPane is null. Skipping update.");
+                    return;
+                }
+
                 if (appointmentOpt.isPresent()) {
                     currentAppointment = appointmentOpt.get();
                     patientNameLabel.setText("Patient: " + currentAppointment.get("patient_name"));
@@ -243,8 +274,8 @@ public class DoctorDashboardController {
         searchTask.setOnFailed(event -> {
             Platform.runLater(() -> {
                 showErrorAlert("Search Error", "Failed to search patient: " + searchTask.getException().getMessage());
-                nextAppointmentPane.setVisible(false);
-                noAppointmentPane.setVisible(true);
+                if (nextAppointmentPane != null) nextAppointmentPane.setVisible(false);
+                if (noAppointmentPane != null) noAppointmentPane.setVisible(true);
             });
         });
 
@@ -373,10 +404,12 @@ public class DoctorDashboardController {
     }
 
     private void animateNode(VBox node) {
-        FadeTransition fade = new FadeTransition(Duration.millis(300), node);
-        fade.setFromValue(0.0);
-        fade.setToValue(1.0);
-        fade.play();
+        if (node != null) {
+            FadeTransition fade = new FadeTransition(Duration.millis(300), node);
+            fade.setFromValue(0.0);
+            fade.setToValue(1.0);
+            fade.play();
+        }
     }
 
     private void showErrorAlert(String title, String message) {

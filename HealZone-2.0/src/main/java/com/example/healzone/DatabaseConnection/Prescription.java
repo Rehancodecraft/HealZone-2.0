@@ -236,7 +236,4 @@ public class Prescription {
     }
 
     // Static block to create table on class load
-    static {
-        createPrescriptionTable();
-    }
 }

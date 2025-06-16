@@ -334,35 +334,14 @@ public class DoctorPrescriptionController implements Initializable {
     public void setCurrentAppointment(Map<String, Object> appointment) {
         this.currentAppointment = appointment;
     }
-
-    @FXML
-    private void printPrescription(ActionEvent event) {
-        if (validatePrescription()) {
-            PrinterJob printerJob = PrinterJob.createPrinterJob();
-            if (printerJob != null && printerJob.showPrintDialog(printButton.getScene().getWindow())) {
-                try {
-                    Node printNode = createPrintableContent();
-                    boolean success = printerJob.printPage(printNode);
-                    if (success) {
-                        printerJob.endJob();
-                        showSuccessMessage("Prescription sent to printer!");
-                    } else {
-                        showErrorMessage("Failed to print prescription");
-                    }
-                } catch (Exception e) {
-                    showErrorMessage("Error printing prescription: " + e.getMessage());
-                }
-            }
-        }
-    }
-
+    // In DoctorPrescriptionController.java
     @FXML
     private void previewPrescription(ActionEvent event) {
         if (validatePrescription()) {
             try {
                 URL fxmlUrl = getClass().getResource("/com/example/healzone/PrescriptionView.fxml");
                 if (fxmlUrl == null) {
-                    showErrorMessage("Error loading preview: FXML file not found at /com/example/healzone/PrescriptionView.fxml");
+                    System.out.println("Error loading preview: FXML file not found at /com/example/healzone/PrescriptionView.fxml");
                     return;
                 }
                 FXMLLoader loader = new FXMLLoader(fxmlUrl);
@@ -373,7 +352,7 @@ public class DoctorPrescriptionController implements Initializable {
                 // Fetch doctor information including hospital and contact details
                 DoctorInfo doctorInfo = fetchDoctorInfo(currentDoctorId);
                 if (doctorInfo == null) {
-                    showErrorMessage("Failed to load doctor information.");
+                    System.out.println("Failed to load doctor information.");
                     return;
                 }
 
@@ -424,7 +403,7 @@ public class DoctorPrescriptionController implements Initializable {
                         currentDoctorId
                 );
                 previewController.setCurrentAppointment(currentAppointment); // Pass current appointment
-                previewController.setDoctorPrescriptionData(currentDoctorId, currentPatientId, medicinesList); // Pass additional data
+                previewController.setDoctorPrescriptionData(currentDoctorId, currentPatientId, medicinesList);
 
                 Stage previewStage = new Stage();
                 previewStage.setTitle("Prescription Preview");
@@ -436,21 +415,25 @@ public class DoctorPrescriptionController implements Initializable {
                 previewStage.setMinHeight(600.0);
                 previewStage.sizeToScene();
 
-                // Pass the parent stage to the preview controller
+                // Pass the parent stage as the DoctorPrescription window
                 Stage parentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-                previewController.setParentStage(parentStage);
+                DoctorDashboardController dashboardController = (DoctorDashboardController) parentStage.getUserData();
+                if (dashboardController == null) {
+                    dashboardController = new DoctorDashboardController();
+                    parentStage.setUserData(dashboardController);
+                }
+                previewController.setParentStage(parentStage); // Set parentStage to DoctorPrescription window
 
                 previewStage.setOnHidden(e -> {
                     // No need to call loadNextAppointment() here; it will be handled by DoctorDashboardController
                 });
 
                 previewStage.showAndWait();
-
             } catch (IOException e) {
                 e.printStackTrace();
-                showErrorMessage("Error loading preview: " + e.getMessage());
+                System.out.println("Error loading preview: " + e.getMessage());
             } catch (NumberFormatException e) {
-                showErrorMessage("Invalid patient age format: " + e.getMessage());
+                System.out.println("Invalid patient age format: " + e.getMessage());
             }
         }
     }
