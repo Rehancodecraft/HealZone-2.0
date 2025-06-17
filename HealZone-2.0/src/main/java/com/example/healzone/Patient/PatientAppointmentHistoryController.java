@@ -113,7 +113,8 @@ public class PatientAppointmentHistoryController {
 
     private void setupFiltersAndSearch() {
         statusFilter.getItems().addAll("All", "Completed", "Cancelled", "No-Show", "Pending", "Confirmed");
-        statusFilter.setValue("All");
+        statusFilter.setValue("Completed"); // Set default to Completed
+        statusFilter.setDisable(true); // Disable status filter to match doctor controller
 
         sortComboBox.getItems().addAll(
                 "Date (Newest First)",
@@ -363,14 +364,17 @@ public class PatientAppointmentHistoryController {
             protected List<Map<String, Object>> call() throws Exception {
                 String patientPhone = Patient.getPhone();
                 if (patientPhone == null) return List.of();
-                return getAppointmentHistoryForPatient(patientPhone);
+                return getAppointmentHistoryForPatient(patientPhone)
+                        .stream()
+                        .filter(appointment -> "Completed".equalsIgnoreCase(String.valueOf(appointment.get("status"))))
+                        .collect(Collectors.toList());
             }
         };
 
         loadTask.setOnSucceeded(event -> {
             Platform.runLater(() -> {
                 originalHistoryData = loadTask.getValue();
-                filteredHistoryData = new ArrayList<>(originalHistoryData); // Initialize with original data
+                filteredHistoryData = new ArrayList<>(originalHistoryData); // Initialize with completed data
                 applyCurrentFilters();
             });
         });
@@ -500,14 +504,6 @@ public class PatientAppointmentHistoryController {
             }
         }
 
-        String statusFilterValue = statusFilter != null ? statusFilter.getValue() : "All";
-        if (!"All".equals(statusFilterValue)) {
-            String appointmentStatus = String.valueOf(appointment.getOrDefault("status", ""));
-            if (!statusFilterValue.equalsIgnoreCase(appointmentStatus)) {
-                return false;
-            }
-        }
-
         LocalDate fromDate = fromDatePicker != null ? fromDatePicker.getValue() : null;
         LocalDate toDate = toDatePicker != null ? toDatePicker.getValue() : null;
         if (fromDate != null || toDate != null) {
@@ -521,7 +517,6 @@ public class PatientAppointmentHistoryController {
 
         return true;
     }
-
     private List<Map<String, Object>> applySorting(List<Map<String, Object>> data) {
         String sortBy = sortComboBox != null ? sortComboBox.getValue() : "Date (Newest First)";
 
