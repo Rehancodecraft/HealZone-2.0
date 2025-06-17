@@ -1,4 +1,5 @@
 package com.example.healzone.DatabaseConnection;
+
 import com.example.healzone.Patient.Patient;
 
 import java.sql.*;
@@ -107,6 +108,15 @@ public class Patients {
                 patientData.put("age", rs.getString("age"));
                 patientData.put("gender", rs.getString("gender"));
                 patientData.put("password", rs.getString("password"));
+
+                // Update Patient static fields
+                Patient.setName(rs.getString("name"));
+                Patient.setFatherName(rs.getString("father_name"));
+                Patient.setPhone(rs.getString("phone_number"));
+                Patient.setEmail(rs.getString("email"));
+                Patient.setAge(rs.getString("age"));
+                Patient.setGender(rs.getString("gender"));
+                Patient.setPassword(rs.getString("password")); // Store for verification
             }
             return patientData;
         } catch (SQLException e) {
@@ -123,11 +133,62 @@ public class Patients {
             stmt.setString(2, email);
             stmt.executeUpdate();
             System.out.println("Password reset successfully");
+            Patient.setPassword(password); // Update static field
         } catch (SQLException e) {
             System.err.println("Error resetting password: " + e.getMessage());
             e.printStackTrace();
         }
     }
+
+    public static boolean verifyPassword(String phoneNumber, String password) {
+        String sql = "SELECT password FROM patients WHERE phone_number = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setString(1, phoneNumber);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                String storedPassword = rs.getString("password");
+                return storedPassword != null && storedPassword.equals(password);
+            }
+            return false;
+        } catch (SQLException e) {
+            System.err.println("Error verifying password: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    public static boolean updatePatientDetails(String phoneNumber, String name, String fatherName, String email, String age, String gender) {
+        String update = """
+            UPDATE patients
+            SET name = ?, father_name = ?, email = ?, age = ?, gender = ?
+            WHERE phone_number = ?
+            """;
+        try (PreparedStatement ps = connection.prepareStatement(update)) {
+            ps.setString(1, name);
+            ps.setString(2, fatherName);
+            ps.setString(3, email);
+            ps.setString(4, age);
+            ps.setString(5, gender);
+            ps.setString(6, phoneNumber);
+            int rowsAffected = ps.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Patient details updated for phoneNumber: " + phoneNumber);
+                // Update static fields in Patient class
+                Patient.setName(name);
+                Patient.setFatherName(fatherName);
+                Patient.setEmail(email);
+                Patient.setAge(age);
+                Patient.setGender(gender);
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            System.err.println("Error updating patient details: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static void getNameOfPatient(String email) {
         String sql = "SELECT name FROM patients WHERE email = ?";
         try (PreparedStatement stmt = connection.prepareStatement(sql)) {

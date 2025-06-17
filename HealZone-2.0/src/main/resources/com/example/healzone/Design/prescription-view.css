@@ -2,6 +2,7 @@
 
 /* Root Styles - Flexible A4 Page Setup */
 .root {
+
     -fx-font-family: "Segoe UI", "Calibri", "Arial", sans-serif;
     -fx-background-color: #ffffff;
     -fx-pref-width: 794px;  /* A4 width in pixels at 96 DPI */

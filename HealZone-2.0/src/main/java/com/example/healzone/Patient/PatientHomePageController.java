@@ -12,6 +12,7 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,9 +25,14 @@ import javafx.util.Duration;
 import org.kordamp.ikonli.javafx.FontIcon;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 public class PatientHomePageController {
+    private static PatientHomePageController instance; // Static instance for access
+
     @FXML
     private BorderPane rootPane;
     @FXML
@@ -59,15 +65,17 @@ public class PatientHomePageController {
     private Button filterButton;
     @FXML
     private Button sortButton;
-//    @FXML
-//    private Button backButton;
+    @FXML
+    private Button profileButton;
+    @FXML
+    private Button dashboardButton; // Add dashboard button reference
 
     // State variables
     private boolean sidebarVisible = true;
     private Set<String> loadedDoctorIds = new HashSet<>();
     private boolean scrollPaneStyled = false;
     private Timeline cardAnimationTimeline;
-    private boolean showingAppointments = false;
+    private String currentView = "dashboard"; // Track current view: dashboard, appointments, profile
     private boolean isLoadingMore = false;
     private static final int INITIAL_CARD_LIMIT = 10;
     private static final int LOAD_MORE_LIMIT = 5;
@@ -75,6 +83,7 @@ public class PatientHomePageController {
 
     @FXML
     protected void initialize() {
+        instance = this; // Set the instance
         displayName.setText(Patient.getName());
         setupInitialScrollPaneStyle();
         setupResponsiveLayout();
@@ -84,8 +93,25 @@ public class PatientHomePageController {
 
         Platform.runLater(() -> {
             setupScrollPaneBackground();
-            loadDoctorCardsAsync("", INITIAL_CARD_LIMIT);
+            loadDashboard(); // Load dashboard by default
         });
+    }
+
+    public static PatientHomePageController getInstance() {
+        return instance;
+    }
+
+    public void updateDisplayName(String newName) {
+        Platform.runLater(() -> {
+            displayName.setText(newName != null ? newName : "");
+            if ("profile".equals(currentView)) {
+                reloadProfile(); // Optional: Reload profile with updated data
+            }
+        });
+    }
+
+    private void reloadProfile() {
+        onProfileButtonClicked(null); // Trigger profile reload
     }
 
     private void constrainWelcomeBar() {
@@ -112,7 +138,6 @@ public class PatientHomePageController {
         Platform.runLater(() -> {
             adjustScrollPaneSize();
 
-            // Listener for sidebar visibility changes
             sideBar.visibleProperty().addListener((obs, oldVal, newVal) -> {
                 sidebarVisible = newVal;
                 Platform.runLater(() -> {
@@ -121,21 +146,18 @@ public class PatientHomePageController {
                 });
             });
 
-            // Listener for mainContentPane width changes
             mainContentPane.widthProperty().addListener((obs, oldVal, newVal) -> {
                 if (newVal.doubleValue() > 0) {
                     Platform.runLater(this::adjustScrollPaneSize);
                 }
             });
 
-            // Listener for rootPane width changes
             rootPane.widthProperty().addListener((obs, oldVal, newVal) -> {
                 if (newVal.doubleValue() > 0) {
                     Platform.runLater(this::adjustScrollPaneSize);
                 }
             });
 
-            // Listener for scene width changes
             rootPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
                 if (newScene != null) {
                     newScene.widthProperty().addListener((obsWidth, oldWidth, newWidth) -> {
@@ -152,45 +174,37 @@ public class PatientHomePageController {
         if (doctorScrollPane == null || rootPane == null || mainContentPane == null) return;
 
         try {
-            // Get mainContentPane's width
             double mainContentWidth = mainContentPane.getWidth();
             if (mainContentWidth <= 0) {
                 mainContentWidth = rootPane.getWidth() - (sidebarVisible ? SIDEBAR_WIDTH : 0);
             }
             mainContentWidth = Math.max(mainContentWidth, 800);
 
-            // Calculate ScrollPane width and padding
-            double availableWidth = mainContentWidth - 40; // 20px padding on each side
+            double availableWidth = mainContentWidth - 40;
             availableWidth = Math.max(availableWidth, 800);
 
-            // Center ScrollPane when sidebar is hidden
             double offsetX = sidebarVisible ? 0.0 : (mainContentWidth - availableWidth) / 2.0;
             doctorScrollPane.setLayoutX(offsetX);
 
-            // Update ScrollPane dimensions
             doctorScrollPane.setPrefWidth(availableWidth);
             doctorScrollPane.setMaxWidth(availableWidth);
             doctorScrollPane.setMinWidth(500);
 
-            // Update FlowPane dimensions
             if (doctorCardsContainer != null) {
                 doctorCardsContainer.setPrefWrapLength(availableWidth - 40);
                 doctorCardsContainer.setMaxWidth(availableWidth - 40);
             }
 
-            // Ensure visibility
             mainContentPane.setVisible(true);
             doctorScrollPane.setVisible(true);
 
-            // Force layout update
             mainContentPane.requestLayout();
             doctorScrollPane.requestLayout();
 
             System.out.println("AdjustScrollPaneSize: sidebarVisible=" + sidebarVisible +
                     ", mainContentWidth=" + mainContentWidth +
                     ", availableWidth=" + availableWidth +
-                    ", offsetX=" + offsetX +
-                    ", scrollPaneWidth=" + doctorScrollPane.getWidth());
+                    ", offsetX=" + offsetX);
         } catch (Exception e) {
             System.err.println("Error adjusting scroll pane size: " + e.getMessage());
             e.printStackTrace();
@@ -241,7 +255,7 @@ public class PatientHomePageController {
                 }
 
                 cardAnimationTimeline = new Timeline(new KeyFrame(Duration.millis(300), e -> {
-                    if (!showingAppointments) {
+                    if ("dashboard".equals(currentView)) {
                         System.out.println("Search triggered: " + newValue.trim());
                         loadDoctorCardsAsync(newValue.trim(), INITIAL_CARD_LIMIT);
                     }
@@ -253,7 +267,7 @@ public class PatientHomePageController {
 
     private void setupScrollListener() {
         doctorScrollPane.vvalueProperty().addListener((obs, oldValue, newValue) -> {
-            if (!isLoadingMore && !showingAppointments && newValue.doubleValue() > 0.9) {
+            if (!isLoadingMore && "dashboard".equals(currentView) && newValue.doubleValue() > 0.9) {
                 isLoadingMore = true;
                 System.out.println("Scroll triggered: Loading more doctor cards");
                 loadDoctorCardsAsync(searchBar.getText().trim(), LOAD_MORE_LIMIT, true);
@@ -261,13 +275,47 @@ public class PatientHomePageController {
         });
     }
 
+    // Helper method to restore the original scroll pane content structure
+    private void restoreOriginalScrollPaneContent() {
+        if (doctorScrollPane.getContent() != doctorCardsContainer) {
+            System.out.println("Restoring original scroll pane content");
+            doctorScrollPane.setContent(doctorCardsContainer);
+        }
+    }
+
+    // New method to load dashboard
+    private void loadDashboard() {
+        System.out.println("Loading dashboard...");
+        currentView = "dashboard";
+
+        // Restore original content structure
+        restoreOriginalScrollPaneContent();
+
+        // Show search and filter controls
+        searchBar.setVisible(true);
+        searchButton.setVisible(true);
+        filterButton.setVisible(true);
+        sortButton.setVisible(true);
+        sectionTitle.setText("Available Doctors");
+
+        // Clear existing data and reset scroll pane content
+        doctorCardsContainer.getChildren().clear();
+        loadedDoctorIds.clear();
+
+        // Load doctor cards
+        loadDoctorCardsAsync("", INITIAL_CARD_LIMIT);
+
+        // Animate content
+        animateContent();
+    }
+
     private void loadDoctorCardsAsync(String searchTerm, int limit) {
         loadDoctorCardsAsync(searchTerm, limit, false);
     }
 
     private void loadDoctorCardsAsync(String searchTerm, int limit, boolean append) {
-        if (showingAppointments) {
-            System.out.println("loadDoctorCardsAsync skipped: showingAppointments=true");
+        if (!"dashboard".equals(currentView)) {
+            System.out.println("loadDoctorCardsAsync skipped: currentView=" + currentView);
             return;
         }
 
@@ -285,6 +333,8 @@ public class PatientHomePageController {
             protected List<VBox> call() throws Exception {
                 List<VBox> cardNodes = new ArrayList<>();
                 List<DoctorCardData> doctorList = Doctors.loadDoctorCards(searchTerm, limit);
+
+                // Remove duplicates from the fetched list
                 doctorList = removeDuplicates(doctorList);
 
                 if (doctorList.isEmpty() && !searchTerm.isEmpty()) {
@@ -316,7 +366,8 @@ public class PatientHomePageController {
             Platform.runLater(() -> {
                 if (!append) {
                     doctorCardsContainer.getChildren().clear();
-                    loadedDoctorIds.clear();
+                    // Don't clear loadedDoctorIds here if we want to prevent duplicates across searches
+                    // Only clear when switching views
                 }
 
                 if (cardNodes.isEmpty()) {
@@ -425,100 +476,208 @@ public class PatientHomePageController {
     }
 
     @FXML
-    protected void onUpcomingButtonClicked() {
-        if (showingAppointments) return;
+    protected void onDashboardButtonClicked() {
+        System.out.println("Dashboard button clicked");
+        loadDashboard();
+    }
 
+    @FXML
+    protected void onUpcomingButtonClicked() {
         System.out.println("Switching to upcoming appointments");
-        showingAppointments = true;
+        currentView = "appointments";
+
+        // Restore original content structure FIRST
+        restoreOriginalScrollPaneContent();
+
+        // Hide search and filter controls
+        searchBar.setVisible(false);
+        searchButton.setVisible(false);
         filterButton.setVisible(false);
         sortButton.setVisible(false);
         sectionTitle.setText("Upcoming Appointments");
-        searchBar.setVisible(false);
-        searchButton.setVisible(false);
 
-
+        // Clear existing content and load appointments
         doctorCardsContainer.getChildren().clear();
+        loadedDoctorIds.clear();
         noResultsMessage.setVisible(false);
         loadUpcomingAppointments();
     }
 
-    @FXML
-    protected void onDashboardButtonClicked() {
-        System.out.println("Switching back to dashboard");
-        showingAppointments = false;
-        doctorCardsContainer.setVisible(true);
-        filterButton.setVisible(true);
-        sortButton.setVisible(true);
-        sectionTitle.setText("Available Doctors");
-//        backButton.setVisible(false);
-        searchBar.setVisible(true);
-        searchButton.setVisible(true);
-        doctorCardsContainer.getChildren().clear();
-        loadDoctorCardsAsync("", INITIAL_CARD_LIMIT);
-    }
     private void loadUpcomingAppointments() {
         System.out.println("Loading upcoming appointments");
-        List<UpcomingAppointmentModel> appointments = Appointments.getUpcomingAppointmentsForPatient(Patient.getPhone());
+
+        Task<List<UpcomingAppointmentModel>> loadTask = new Task<>() {
+            @Override
+            protected List<UpcomingAppointmentModel> call() throws Exception {
+                return Appointments.getUpcomingAppointmentsForPatient(Patient.getPhone());
+            }
+        };
+
+        loadTask.setOnSucceeded(event -> {
+            Platform.runLater(() -> {
+                List<UpcomingAppointmentModel> appointments = loadTask.getValue();
+
+                loadingIndicator.setVisible(false);
+
+                if (appointments.isEmpty()) {
+                    noResultsMessage.setVisible(true);
+                    noResultsMessage.getChildren().setAll(
+                            new FontIcon("fas fa-calendar-alt:60"),
+                            new Label("No upcoming appointments") {{
+                                setTextFill(javafx.scene.paint.Color.WHITE);
+                                setFont(new javafx.scene.text.Font("SansSerif Bold", 20.0));
+                            }},
+                            new Label("Book an appointment to get started") {{
+                                setTextFill(javafx.scene.paint.Color.WHITE);
+                                setFont(new javafx.scene.text.Font(14.0));
+                            }}
+                    );
+                } else {
+                    for (UpcomingAppointmentModel appt : appointments) {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/UpcomingAppointments.fxml"));
+                            VBox card = loader.load();
+                            UpcomingAppointmentController controller = loader.getController();
+                            controller.initializeReceipt(appt);
+
+                            card.setVisible(true);
+                            card.setOpacity(1.0);
+                            card.setScaleX(1.0);
+                            card.setScaleY(1.0);
+
+                            doctorCardsContainer.getChildren().add(card);
+
+                            FadeTransition fade = new FadeTransition(Duration.millis(150), card);
+                            fade.setFromValue(0.95);
+                            fade.setToValue(1.0);
+
+                            ScaleTransition scale = new ScaleTransition(Duration.millis(150), card);
+                            scale.setFromX(0.99);
+                            scale.setToX(1.0);
+                            scale.setFromY(0.99);
+                            scale.setToY(1.0);
+
+                            new ParallelTransition(fade, scale).play();
+                        } catch (IOException e) {
+                            System.err.println("Error loading appointment card: " + e.getMessage());
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                adjustScrollPaneSize();
+                animateContent();
+            });
+        });
+
+        loadTask.setOnFailed(event -> {
+            Platform.runLater(() -> {
+                Throwable exception = loadTask.getException();
+                String errorMessage = exception != null ? exception.getMessage() : "Unknown error";
+                System.err.println("Appointments load failed: " + errorMessage);
+                loadingIndicator.setVisible(false);
+                showErrorAlert("Load Error", "Failed to load appointments: " + errorMessage);
+            });
+        });
 
         loadingIndicator.setVisible(true);
-        noResultsMessage.setVisible(false);
-        doctorCardsContainer.getChildren().clear();
-        doctorCardsContainer.setVisible(true);
+        new Thread(loadTask).start();
+    }
 
-        if (appointments.isEmpty()) {
-            loadingIndicator.setVisible(false);
-            noResultsMessage.setVisible(true);
-            noResultsMessage.getChildren().setAll(
-                    new FontIcon("fas fa-calendar-alt:60"),
-                    new Label("No upcoming appointments") {{
-                        setTextFill(javafx.scene.paint.Color.WHITE);
-                        setFont(new javafx.scene.text.Font("SansSerif Bold", 20.0));
-                    }},
-                    new Label("Book an appointment to get started") {{
-                        setTextFill(javafx.scene.paint.Color.WHITE);
-                        setFont(new javafx.scene.text.Font(14.0));
-                    }}
-            );
-        } else {
-            for (UpcomingAppointmentModel appt : appointments) {
+    @FXML
+    protected void onProfileButtonClicked(ActionEvent event) {
+        System.out.println("Profile button clicked at " +
+                LocalDateTime.now(ZoneId.of("Asia/Karachi")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        currentView = "profile";
+
+        // Hide search and filter controls
+        searchBar.setVisible(false);
+        searchButton.setVisible(false);
+        filterButton.setVisible(false);
+        sortButton.setVisible(false);
+        sectionTitle.setText("Patient Profile");
+
+        Task<Parent> loadTask = new Task<>() {
+            @Override
+            protected Parent call() throws Exception {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/UpcomingAppointments.fxml"));
-                    VBox card = loader.load();
-                    UpcomingAppointmentController controller = loader.getController();
-                    controller.initializeReceipt(appt);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/PatientProfile.fxml"));
+                    Parent profileView = loader.load();
+                    PatientProfileController profileController = loader.getController();
 
-                    card.setVisible(true);
-                    card.setOpacity(1.0);
-                    card.setScaleX(1.0);
-                    card.setScaleY(1.0);
+                    // Set initial values in the profile controller
+                    profileController.setNameField(Patient.getName() != null ? Patient.getName() : "");
+                    profileController.setFatherNameField(Patient.getFatherName() != null ? Patient.getFatherName() : "");
+                    profileController.setPhoneNumberField(Patient.getPhone() != null ? Patient.getPhone() : "");
+                    profileController.setEmailField(Patient.getEmail() != null ? Patient.getEmail() : "");
+                    profileController.setAgeField(Patient.getAge() != null ? Patient.getAge() : "");
+                    profileController.setGenderComboBox(Patient.getGender() != null ? Patient.getGender() : "");
 
-                    doctorCardsContainer.getChildren().add(card);
-
-                    FadeTransition fade = new FadeTransition(Duration.millis(150), card);
-                    fade.setFromValue(0.95);
-                    fade.setToValue(1.0);
-
-                    ScaleTransition scale = new ScaleTransition(Duration.millis(150), card);
-                    scale.setFromX(0.99);
-                    scale.setToX(1.0);
-                    scale.setFromY(0.99);
-                    scale.setToY(1.0);
-
-                    new ParallelTransition(fade, scale).play();
-                } catch (IOException e) {
-                    System.err.println("Error loading appointment card: " + e.getMessage());
+                    profileView.getProperties().put("controller", profileController);
+                    return profileView;
+                } catch (Exception e) {
+                    System.err.println("Error loading profile: " + e.getMessage());
                     e.printStackTrace();
+                    throw e;
                 }
             }
-            loadingIndicator.setVisible(false);
-        }
+        };
 
-        Platform.runLater(this::adjustScrollPaneSize);
+        loadTask.setOnSucceeded(loadEvent -> {
+            Platform.runLater(() -> {
+                try {
+                    Parent profileView = loadTask.getValue();
+
+                    // Clear existing content and set profile as the content
+                    doctorCardsContainer.getChildren().clear();
+                    loadedDoctorIds.clear();
+                    VBox contentWrapper = new VBox(profileView);
+                    contentWrapper.setPadding(new Insets(20, 20, 20, 20));
+                    doctorScrollPane.setContent(contentWrapper);
+
+                    // Apply transition animation
+                    animateContent();
+
+                } catch (Exception e) {
+                    System.err.println("Error setting profile content: " + e.getMessage());
+                    showErrorAlert("Load Error", "Failed to set profile content: " + e.getMessage());
+                }
+            });
+        });
+
+        loadTask.setOnFailed(loadEvent -> {
+            Platform.runLater(() -> {
+                Throwable exception = loadTask.getException();
+                String errorMessage = exception != null ? exception.getMessage() : "Unknown error";
+                System.err.println("Profile load failed: " + errorMessage);
+                showErrorAlert("Load Error", "Failed to load profile: " + errorMessage);
+            });
+        });
+
+        new Thread(loadTask).start();
     }
 
     private List<DoctorCardData> removeDuplicates(List<DoctorCardData> doctorList) {
         Set<String> seenIds = new HashSet<>();
         doctorList.removeIf(doctor -> !seenIds.add(doctor.getGovtId()));
         return doctorList;
+    }
+
+    private void animateContent() {
+        if (doctorScrollPane != null) {
+            FadeTransition fade = new FadeTransition(Duration.millis(300), doctorScrollPane);
+            fade.setFromValue(0);
+            fade.setToValue(1);
+            fade.play();
+        }
+    }
+
+    private void showErrorAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }

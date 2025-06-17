@@ -1,19 +1,36 @@
 /* Main prescription container - enhanced glassmorphism theme */
-.prescription-container {
-    -fx-background-color: transparent;
+.prescription-scroll-pane {
+    -fx-background-image: url("../Images/Prescription.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
+
+    /* This overlay color simulates image opacity */
+    -fx-background-color:
+            rgba(255, 255, 255, 0.25),  /* translucent white overlay */
+            linear-gradient(135deg,
+            rgba(30, 58, 138, 0.7) 0%,
+            rgba(59, 130, 246, 0.6) 25%,
+            rgba(124, 58, 237, 0.7) 50%,
+            rgba(37, 99, 235, 0.6) 75%,
+            rgba(30, 64, 175, 0.8) 100%
+            );
+
+    -fx-background-insets: 0, 0;
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
-    -fx-padding: 18px;
-    -fx-spacing: 15px;
-    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 8, 0, 0, 2);
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 15, 0, 0, 5);
 }
-.prescription-scroll-pane {
-    -fx-background-color: linear-gradient(135deg,
-    rgba(30, 58, 138, 0.7) 0%,
-    rgba(59, 130, 246, 0.6) 25%,
-    rgba(124, 58, 237, 0.7) 50%,
-    rgba(37, 99, 235, 0.6) 75%,
-    rgba(30, 64, 175, 0.8) 100%);
+
+
+/* Alternative approach - if you want the image as base layer with overlay */
+.prescription-scroll-pane-alt {
+    -fx-background-image: url("../Images/Prescription.jpg");
+    -fx-background-size: cover;
+    -fx-background-position: center center;
+    -fx-background-repeat: no-repeat;
     -fx-background-radius: 12px;
     -fx-border-radius: 12px;
     -fx-border-color: rgba(255, 255, 255, 0.2);
