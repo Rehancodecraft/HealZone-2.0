@@ -264,17 +264,10 @@ public class PatientAppointmentHistoryController {
             @Override
             protected void updateItem(String item, boolean empty) {
                 super.updateItem(item, empty);
-                if (empty) {
+                if (empty || getIndex() < 0 || getIndex() >= getTableView().getItems().size()) {
                     setGraphic(null);
                 } else {
-                    Map<String, Object> appointmentData = getTableView().getItems().get(getIndex());
-                    String status = String.valueOf(appointmentData.getOrDefault("status", ""));
-                    String appointmentNumber = String.valueOf(appointmentData.getOrDefault("appointment_number", ""));
-                    if ("Completed".equalsIgnoreCase(status) && hasPrescription(appointmentNumber)) {
-                        setGraphic(actionBox);
-                    } else {
-                        setGraphic(null);
-                    }
+                    setGraphic(actionBox); // Show button for all rows
                 }
             }
         };
@@ -678,7 +671,7 @@ public class PatientAppointmentHistoryController {
         String query = """
             SELECT a.doctor_id, a.appointment_number, a.patient_phone, a.appointment_date, a.day_of_week,
                    a.consultation_fee, a.hospital_name, a.hospital_address, a.doctor_name, a.patient_name,
-                   a.status, a.created_at, a.diagnosis
+                   a.status, a.created_at
             FROM appointments a
             WHERE a.patient_phone = ?
             ORDER BY a.appointment_date DESC
@@ -701,7 +694,7 @@ public class PatientAppointmentHistoryController {
                     appointment.put("patient_name", rs.getString("patient_name"));
                     appointment.put("status", rs.getString("status"));
                     appointment.put("created_at", rs.getTimestamp("created_at"));
-                    appointment.put("diagnosis", rs.getString("diagnosis")); // Added diagnosis
+//                    appointment.put("diagnosis", rs.getString("diagnosis")); // Added diagnosis
                     appointments.add(appointment);
                 }
             }
