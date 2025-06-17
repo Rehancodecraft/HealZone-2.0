@@ -276,12 +276,7 @@ public class PatientHomePageController {
     }
 
     // Helper method to restore the original scroll pane content structure
-    private void restoreOriginalScrollPaneContent() {
-        if (doctorScrollPane.getContent() != doctorCardsContainer) {
-            System.out.println("Restoring original scroll pane content");
-            doctorScrollPane.setContent(doctorCardsContainer);
-        }
-    }
+
 
     // New method to load dashboard
     private void loadDashboard() {
@@ -582,6 +577,88 @@ public class PatientHomePageController {
 
         loadingIndicator.setVisible(true);
         new Thread(loadTask).start();
+    }
+    @FXML
+    protected void onHistoryButtonClicked(ActionEvent event) {
+        System.out.println("History button clicked at " +
+                LocalDateTime.now(ZoneId.of("Asia/Karachi")).format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+
+        currentView = "history";
+
+        // Hide search and filter controls
+        searchBar.setVisible(false);
+        searchButton.setVisible(false);
+        filterButton.setVisible(false);
+        sortButton.setVisible(false);
+        sectionTitle.setText("Appointment History");
+
+        Task<Parent> loadTask = new Task<>() {
+            @Override
+            protected Parent call() throws Exception {
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/PatientAppointmentHistory.fxml"));
+                    Parent historyView = loader.load();
+                    PatientAppointmentHistoryController historyController = loader.getController();
+
+                    // Store the controller reference if needed for future updates
+                    historyView.getProperties().put("controller", historyController);
+                    return historyView;
+                } catch (Exception e) {
+                    System.err.println("Error loading appointment history: " + e.getMessage());
+                    e.printStackTrace();
+                    throw e;
+                }
+            }
+        };
+
+        loadTask.setOnSucceeded(loadEvent -> {
+            Platform.runLater(() -> {
+                try {
+                    Parent historyView = loadTask.getValue();
+
+                    // Clear existing content and set history as the content
+                    doctorCardsContainer.getChildren().clear();
+                    loadedDoctorIds.clear();
+                    VBox contentWrapper = new VBox(historyView);
+                    contentWrapper.setPadding(new Insets(20, 20, 20, 20));
+                    doctorScrollPane.setContent(contentWrapper);
+
+                    // Apply transition animation
+                    animateContent();
+
+                } catch (Exception e) {
+                    System.err.println("Error setting history content: " + e.getMessage());
+                    showErrorAlert("Load Error", "Failed to set history content: " + e.getMessage());
+                }
+            });
+        });
+
+        loadTask.setOnFailed(loadEvent -> {
+            Platform.runLater(() -> {
+                Throwable exception = loadTask.getException();
+                String errorMessage = exception != null ? exception.getMessage() : "Unknown error";
+                System.err.println("History load failed: " + errorMessage);
+//                showErrorAlert("Load Error", "Failed to load appointment history: " + errorMessage);
+            });
+        });
+
+        new Thread(loadTask).start();
+    }
+
+    // Update the restoreOriginalScrollPaneContent method to handle the history view
+    private void restoreOriginalScrollPaneContent() {
+        if (doctorScrollPane.getContent() != doctorCardsContainer) {
+            System.out.println("Restoring original scroll pane content from: " + currentView);
+            doctorScrollPane.setContent(doctorCardsContainer);
+
+            // Reset visibility of search controls when returning to dashboard
+            if ("dashboard".equals(currentView)) {
+                searchBar.setVisible(true);
+                searchButton.setVisible(true);
+                filterButton.setVisible(true);
+                sortButton.setVisible(true);
+            }
+        }
     }
 
     @FXML

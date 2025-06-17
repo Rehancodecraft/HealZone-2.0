@@ -112,6 +112,49 @@ public class Appointments {
             return null;
         }
     }
+    public static List<Map<String, Object>> getAppointmentHistoryForPatient(String patientPhone) {
+        String query = """
+            SELECT a.doctor_id, a.appointment_number, a.patient_phone, a.appointment_date, a.day_of_week,
+                   a.start_time, a.end_time, a.consultation_fee, a.hospital_name, a.hospital_address,
+                   a.doctor_name, a.patient_name, a.speciality, a.status, a.diagnosis, a.created_at,
+                   a.patient_age, a.patient_gender
+            FROM appointments a
+            WHERE a.patient_phone = ?
+            ORDER BY a.appointment_date DESC
+            """;
+        List<Map<String, Object>> appointments = new ArrayList<>();
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, patientPhone);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    Map<String, Object> appointment = new HashMap<>();
+                    appointment.put("doctor_id", rs.getString("doctor_id"));
+                    appointment.put("appointment_number", rs.getString("appointment_number"));
+                    appointment.put("patient_phone", rs.getString("patient_phone"));
+                    appointment.put("appointment_date", rs.getDate("appointment_date"));
+                    appointment.put("day_of_week", rs.getString("day_of_week"));
+                    appointment.put("start_time", rs.getTime("start_time"));
+                    appointment.put("end_time", rs.getTime("end_time"));
+                    appointment.put("consultation_fee", rs.getString("consultation_fee"));
+                    appointment.put("hospital_name", rs.getString("hospital_name"));
+                    appointment.put("hospital_address", rs.getString("hospital_address"));
+                    appointment.put("doctor_name", rs.getString("doctor_name"));
+                    appointment.put("patient_name", rs.getString("patient_name"));
+                    appointment.put("speciality", rs.getString("speciality"));
+                    appointment.put("status", rs.getString("status"));
+                    appointment.put("diagnosis", rs.getString("diagnosis"));
+                    appointment.put("created_at", rs.getTimestamp("created_at"));
+                    appointment.put("patient_age", rs.getString("patient_age"));
+                    appointment.put("patient_gender", rs.getString("patient_gender"));
+                    appointments.add(appointment);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting appointment history for patient: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return appointments;
+    }
 
 // Similarly update getAppointmentsForDoctorToday and getAppointmentHistoryForDoctor with the same JOIN
 

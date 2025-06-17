@@ -109,7 +109,7 @@
                                  <Font name="SansSerif Bold" size="18.0" />
                               </font>
                            </Button>
-                           <Button fx:id="historyButton" mnemonicParsing="false" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="History">
+                           <Button fx:id="historyButton" mnemonicParsing="false" onAction="#onHistoryButtonClicked" prefHeight="42.0" prefWidth="190.0" styleClass="navButton" text="History">
                               <font>
                                  <Font name="SansSerif Bold" size="18.0" />
                               </font>
