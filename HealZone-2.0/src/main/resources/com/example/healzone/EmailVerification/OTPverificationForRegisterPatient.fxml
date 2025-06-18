@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane prefHeight="494.0" prefWidth="1115.0" stylesheets="@../Design/Login.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.OTPVerificationForRegisteration.OTPverificationForRegisterPatientController">
+<AnchorPane prefHeight="494.0" prefWidth="1115.0" stylesheets="@../Design/Login.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.OTPVerificationForRegisteration.OTPRegistrationPatientController">
    <children>
       <Label layoutX="637.0" layoutY="189.0" text="Email Verification" textFill="WHITE">
          <font>

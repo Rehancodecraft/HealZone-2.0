@@ -11,16 +11,10 @@ module com.example.healzone {
     requires org.apache.pdfbox; // Ensures javafx.embed.swing is available
     opens com.example.healzone to javafx.fxml;
     exports com.example.healzone;
-    exports com.example.healzone.Patient;
     opens com.example.healzone.Patient to javafx.fxml;
-    exports com.example.healzone.Doctor;
     opens com.example.healzone.Doctor to javafx.fxml;
-    exports com.example.healzone.DatabaseConnection;
-    opens com.example.healzone.DatabaseConnection to javafx.fxml;
-    exports com.example.healzone.PasswordEncryption;
-    opens com.example.healzone.PasswordEncryption to javafx.fxml;
-    exports com.example.healzone.StartView;
-    opens com.example.healzone.StartView to javafx.fxml;
+    exports com.example.healzone.repository;
+    opens com.example.healzone.repository to javafx.fxml;
     exports com.example.healzone.ResetPassword;
     opens com.example.healzone.ResetPassword to javafx.fxml;
     exports com.example.healzone.EmailVerificationForRegistration;
@@ -33,6 +27,18 @@ module com.example.healzone {
     opens com.example.healzone.OTPVerificationForResetPassword to javafx.fxml;
     exports com.example.healzone.OTPVerificationForRegisteration;
     opens com.example.healzone.OTPVerificationForRegisteration to javafx.fxml;
-    exports com.example.healzone.Doctor.SignUp;
-    opens com.example.healzone.Doctor.SignUp to javafx.fxml;
+    exports com.example.healzone.controller.doctor.SignUp;
+    opens com.example.healzone.controller.doctor.SignUp to javafx.fxml;
+    exports com.example.healzone.config;
+    opens com.example.healzone.config to javafx.fxml;
+    exports com.example.healzone.model;
+    opens com.example.healzone.model to javafx.fxml;
+    exports com.example.healzone.controller.doctor;
+    opens com.example.healzone.controller.doctor to javafx.fxml;
+    exports com.example.healzone.controller.patient;
+    opens com.example.healzone.controller.patient to javafx.fxml;
+    exports com.example.healzone.controller.shared;
+    opens com.example.healzone.controller.shared to javafx.fxml;
+    exports com.example.healzone.util;
+    opens com.example.healzone.util to javafx.fxml;
 }

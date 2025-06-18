@@ -15,8 +15,8 @@
     -fx-background-color: #1b0599;
     -fx-background: #1b0599;
     -fx-border-color: #1b0599;
-    -fx-border-radius: 20;
-    -fx-background-radius: 20;
+    /*-fx-border-radius: 20;*/
+    /*-fx-background-radius: 20;*/
     -fx-border-width: 0;
     -fx-padding: 10;
     -fx-fit-to-width: true;
@@ -109,8 +109,8 @@
 .confirmation-container {
     -fx-background-color: #1b0599;
     -fx-spacing: 20;
-    -fx-background-radius: 20;
-    -fx-border-radius: 20;
+    /*-fx-background-radius: 20;*/
+    /*-fx-border-radius: 20;*/
 }
 
 /* Header Section */
@@ -150,9 +150,10 @@
 }
 
 .profile-image {
-    -fx-background-radius: 40;
+    -fx-background-radius: 40px; /* Half of fitWidth/fitHeight (80/2) */
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 5, 0, 0, 2);
-    -fx-clip-shape: circle(40px); /* Attempt to use CSS clip, fallback to controller */
+    -fx-clip-shape: circle(40px); /* CSS circular clip */
+    -fx-background-color: transparent; /* Ensure background doesn't interfere */
 }
 
 .doctor-name-summary {

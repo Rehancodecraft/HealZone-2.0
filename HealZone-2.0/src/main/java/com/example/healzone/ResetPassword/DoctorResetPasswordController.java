@@ -1,7 +1,7 @@
 package com.example.healzone.ResetPassword;
 
-import com.example.healzone.Doctor.Doctor;
-import com.example.healzone.StartView.MainViewController;
+import com.example.healzone.model.DoctorModel;
+import com.example.healzone.controller.shared.MainViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -9,9 +9,9 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
-import static com.example.healzone.Checks.ChecksForDoctor.isPasswordMatch;
-import static com.example.healzone.Checks.ChecksForDoctor.isPasswordValid;
-import static com.example.healzone.DatabaseConnection.Doctors.resetPassword;
+import static com.example.healzone.Checks.ChecksForDoctorFields.isPasswordMatch;
+import static com.example.healzone.Checks.ChecksForDoctorFields.isPasswordValid;
+import static com.example.healzone.repository.DoctorRepository.resetPassword;
 
 public class DoctorResetPasswordController {
     @FXML
@@ -77,8 +77,8 @@ public class DoctorResetPasswordController {
     @FXML
     private void onClickResetPasswordButton(ActionEvent event) {
         System.out.println("Doctor reset is running");
-        Doctor.setPassword(password.getText());
-        Doctor.setConfirmPassword(confirmPassword.getText());
+        DoctorModel.setPassword(password.getText());
+        DoctorModel.setConfirmPassword(confirmPassword.getText());
         if (!isPasswordMatch()) {
             resetPasswordErrorMessage.setText("⚠️ Password and Confirm Password do not match!");
             return;
@@ -86,7 +86,7 @@ public class DoctorResetPasswordController {
             resetPasswordErrorMessage.setText("⚠️ Password must be at least 8 characters!");
             return;
         } else {
-            resetPassword(Doctor.getPassword(), Doctor.getEmail());
+            resetPassword(DoctorModel.getPassword(), DoctorModel.getEmail());
             System.out.println("password registered in database");
             try {
                 StackPane root = (StackPane) ((Node) event.getSource()).getScene().getRoot();

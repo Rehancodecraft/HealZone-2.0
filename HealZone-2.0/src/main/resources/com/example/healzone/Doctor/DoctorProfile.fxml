@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1200.0" spacing="15" styleClass="profile-container" stylesheets="@../Design/DoctorProfile.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorProfileController">
+<VBox alignment="TOP_CENTER" prefHeight="650.0" prefWidth="1200.0" spacing="15" styleClass="profile-container" stylesheets="@../Design/DoctorProfile.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.controller.doctor.DoctorProfileController">
 
     <!-- Header Section -->
     <VBox spacing="8" styleClass="profile-header">

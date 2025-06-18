@@ -9,7 +9,7 @@
         <?import javafx.scene.layout.VBox?>
         <?import javafx.scene.shape.Circle?>
 
-<VBox fx:id="doctorCard" maxWidth="Infinity" minWidth="1200.0" styleClass="doctor-card" stylesheets="@../Design/doctor-card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.DoctorCardsController">
+<VBox fx:id="doctorCard" maxWidth="Infinity" minWidth="1200.0" styleClass="doctor-card" stylesheets="@../Design/doctor-card.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.controller.doctor.DoctorCardsController">
     <padding>
         <Insets bottom="20" left="20" right="20" top="20" />
     </padding>

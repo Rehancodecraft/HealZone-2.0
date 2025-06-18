@@ -8,7 +8,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.SignUp.PersonalDetailsController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.controller.doctor.SignUp.DoctorPersonalDetailsController">
    <children>
       <FontIcon iconColor="WHITE" iconLiteral="fas-user-md" iconSize="100" layoutX="737.0" layoutY="106.0" text="" />
       <Label layoutX="650.0" layoutY="129.0" text="Create Account" textFill="WHITE">

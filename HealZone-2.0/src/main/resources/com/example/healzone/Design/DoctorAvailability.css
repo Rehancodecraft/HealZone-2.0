@@ -174,8 +174,9 @@
 }
 
 /* ComboBox popup styling */
+/* ComboBox popup styling */
 .availability-combo-popup .list-view {
-    -fx-background-color: rgba(30, 41, 59, 0.95);
+    -fx-background-color: rgba(0, 0, 0, 0.95); /* Black background with slight transparency */
     -fx-border-color: rgba(255, 255, 255, 0.2);
     -fx-border-width: 1;
     -fx-border-radius: 6;
@@ -185,16 +186,16 @@
 
 .availability-combo-popup .list-view .list-cell {
     -fx-background-color: transparent;
-    -fx-text-fill: white;
+    -fx-text-fill: white; /* White text */
     -fx-padding: 8 12;
 }
 
 .availability-combo-popup .list-view .list-cell:hover {
-    -fx-background-color: rgba(96, 165, 250, 0.3);
+    -fx-background-color: rgba(96, 165, 250, 0.3); /* Blue hover effect */
 }
 
 .availability-combo-popup .list-view .list-cell:selected {
-    -fx-background-color: rgba(96, 165, 250, 0.5);
+    -fx-background-color: rgba(96, 165, 250, 0.5); /* Slightly darker blue for selected */
 }
 
 /* Time field styling */

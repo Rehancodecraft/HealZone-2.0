@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<ScrollPane fx:id="confirmAppointmentScrollpane" fitToWidth="true" prefHeight="700.0" prefWidth="600.0" styleClass="ScrollPane" stylesheets="@../Design/confirmappointment.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Patient.ConfirmAppointmentController">
+<ScrollPane fx:id="confirmAppointmentScrollpane" fitToWidth="true" prefHeight="700.0" prefWidth="600.0" styleClass="ScrollPane" stylesheets="@../Design/confirmappointment.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.controller.patient.PatientAppointmentBookingController">
     <content>
         <VBox fx:id="confirmationContainer" maxWidth="Infinity" spacing="0" styleClass="confirmation-container">
             <padding>
@@ -110,22 +110,22 @@
 
                             <VBox spacing="8">
                                 <Label styleClass="field-label" text="Patient Name" />
-                                <TextField fx:id="patientNameField" focusTraversable="false" promptText="Enter patient full name" styleClass="input-field" />
+                                <TextField fx:id="patientNameField" editable="false" focusTraversable="false" promptText="Enter patient full name" styleClass="input-field" />
                             </VBox>
 
                             <VBox spacing="8">
                                 <Label styleClass="field-label" text="Phone Number" />
-                                <TextField fx:id="patientPhoneField" focusTraversable="false" promptText="Enter phone number" styleClass="input-field" />
+                                <TextField fx:id="patientPhoneField" editable="false" focusTraversable="false" promptText="Enter phone number" styleClass="input-field" />
                             </VBox>
 
                             <VBox spacing="8">
                                 <Label styleClass="field-label" text="Age" />
-                                <TextField fx:id="patientAgeField" focusTraversable="false" promptText="Enter age" styleClass="input-field" />
+                                <TextField fx:id="patientAgeField" editable="false" focusTraversable="false" promptText="Enter age" styleClass="input-field" />
                             </VBox>
 
                             <VBox spacing="8">
                                 <Label styleClass="field-label" text="Brief Description (Optional)" />
-                                <TextField fx:id="descriptionField" promptText="Brief description of your concern" styleClass="input-field-large" />
+                                <TextField fx:id="descriptionField" editable="false" promptText="Brief description of your concern" styleClass="input-field-large" />
                             </VBox>
                         </VBox>
                     </children>

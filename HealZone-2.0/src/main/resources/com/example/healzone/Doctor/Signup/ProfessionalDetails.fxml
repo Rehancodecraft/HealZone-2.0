@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import org.kordamp.ikonli.javafx.FontIcon?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.Doctor.SignUp.ProfessionalDetailsController">
+<AnchorPane xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.healzone.controller.doctor.SignUp.DoctorProfessionalDetailsController">
    <children>
       <Label layoutX="629.0" layoutY="120.0" text="Professional Details" textFill="WHITE">
          <font>
@@ -80,5 +80,6 @@
          </children>
       </HBox>
       <TextField fx:id="experience" layoutX="615.0" layoutY="472.0" prefHeight="46.0" prefWidth="368.0" promptText="Years of Experience" styleClass="signUptexfield" stylesheets="@../../Design/SignUp.css" />
+      <FontIcon iconColor="#7e7777" iconLiteral="fas-calendar-minus" iconSize="30" layoutX="628.0" layoutY="506.0" />
    </children>
 </AnchorPane>

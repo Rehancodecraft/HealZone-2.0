@@ -1,7 +1,7 @@
 package com.example.healzone.ResetPassword;
 
-import com.example.healzone.Patient.Patient;
-import com.example.healzone.StartView.MainViewController;
+import com.example.healzone.model.PatientModel;
+import com.example.healzone.controller.shared.MainViewController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
@@ -12,9 +12,9 @@ import javafx.scene.layout.StackPane;
 
 
 
-import static com.example.healzone.Checks.ChecksForPatient.isPasswordMatch;
-import static com.example.healzone.Checks.ChecksForPatient.isPasswordValid;
-import static com.example.healzone.DatabaseConnection.Patients.resetPassword;
+import static com.example.healzone.Checks.ChecksForPatientFields.isPasswordMatch;
+import static com.example.healzone.Checks.ChecksForPatientFields.isPasswordValid;
+import static com.example.healzone.repository.PatientRepository.resetPassword;
 
 public class PatientResetPasswordController {
     @FXML
@@ -79,8 +79,8 @@ public class PatientResetPasswordController {
     }
     @FXML
     private void onClickResetPasswordButton(ActionEvent event) {
-        Patient.setPassword(password.getText());
-        Patient.setConfirmPassword(confirmPassword.getText());
+        PatientModel.setPassword(password.getText());
+        PatientModel.setConfirmPassword(confirmPassword.getText());
         if (!isPasswordMatch()) {
             resetPasswordErrorMessage.setText("⚠️ Password and Confirm Password do not match!");
             return;
@@ -88,7 +88,7 @@ public class PatientResetPasswordController {
             resetPasswordErrorMessage.setText("⚠️ Password must be at least 8 characters!");
             return;
         } else {
-            resetPassword(Patient.getPassword(), Patient.getEmail());
+            resetPassword(PatientModel.getPassword(), PatientModel.getEmail());
             try {
                 StackPane root = (StackPane) ((Node) event.getSource()).getScene().getRoot();
                 MainViewController mainController = (MainViewController) root.getProperties().get("controller");
