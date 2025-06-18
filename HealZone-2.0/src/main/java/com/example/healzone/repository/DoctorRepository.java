@@ -469,6 +469,193 @@ public class DoctorRepository {
         }
         return 0.0;
     }
+    public static List<DoctorCardDataModel> searchDoctorsWithFilters(
+            String searchTerm,
+            String specialtyFilter,
+            String locationFilter,
+            double minRating,
+            String sortType,
+            boolean isAscending,
+            int maxResults) {
+
+        List<DoctorCardDataModel> results = new ArrayList<>();
+        String sql = buildSearchQuery(searchTerm, specialtyFilter, locationFilter, minRating, sortType, isAscending);
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql + " LIMIT ?")) {
+
+            int paramIndex = 1;
+
+            // Set search parameters
+            if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+                String searchPattern = "%" + searchTerm.toLowerCase() + "%";
+                // Set for each search field in the query
+                for (int i = 0; i < 6; i++) {
+                    pstmt.setString(paramIndex++, searchPattern);
+                }
+            }
+
+            // Set filter parameters
+            if (!"All".equals(specialtyFilter)) {
+                pstmt.setString(paramIndex++, specialtyFilter);
+            }
+
+            if (!"All".equals(locationFilter)) {
+                String locationPattern = "%" + locationFilter.toLowerCase() + "%";
+                pstmt.setString(paramIndex++, locationPattern);
+                pstmt.setString(paramIndex++, locationPattern); // For hospital name search too
+            }
+
+            if (minRating > 0) {
+                pstmt.setDouble(paramIndex++, minRating);
+            }
+
+            // Set limit
+            pstmt.setInt(paramIndex, maxResults);
+
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    DoctorCardDataModel doctor = mapResultSetToDoctor(rs);
+                    if (doctor != null) {
+                        results.add(doctor);
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error in searchDoctorsWithFilters: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return results;
+    }
+
+    public static Set<String> getAvailableLocations() {
+        Set<String> locations = new HashSet<>();
+
+        String sql = "SELECT DISTINCT hospital_address FROM practice_information " +
+                "WHERE hospital_address IS NOT NULL AND hospital_address != '' " +
+                "ORDER BY hospital_address";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String address = rs.getString("hospital_address");
+                if (address != null && !address.trim().isEmpty()) {
+                    // Extract city names from addresses
+                    String[] commonCities = {"Karachi", "Lahore", "Islamabad", "Rawalpindi",
+                            "Faisalabad", "Multan", "Peshawar", "Quetta",
+                            "Gujranwala", "Sialkot", "Hyderabad", "Sukkur"};
+
+                    for (String city : commonCities) {
+                        if (address.toLowerCase().contains(city.toLowerCase())) {
+                            locations.add(city);
+                            break; // Add only the first matching city
+                        }
+                    }
+
+                    // Also add short addresses as is
+                    if (address.length() < 25) {
+                        locations.add(address.trim());
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error getting available locations: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return locations;
+    }
+    private static DoctorCardDataModel mapResultSetToDoctor(ResultSet rs) throws SQLException {
+        try {
+            DoctorCardDataModel doctor = new DoctorCardDataModel();
+            doctor.setGovtId(rs.getString("govt_id"));
+            doctor.setFullName(rs.getString("name"));
+            doctor.setSpecialization(rs.getString("specialization"));
+            doctor.setDegrees(rs.getString("degree"));
+            doctor.setExperience(rs.getString("experience"));
+            doctor.setConsultationFee(rs.getString("consultation_fee"));
+            doctor.setHospitalName(rs.getString("hospital_name"));
+            doctor.setHospitalAddress(rs.getString("hospital_address"));
+            doctor.setAverageRating(rs.getDouble("average_rating"));
+
+            return doctor;
+        } catch (SQLException e) {
+            System.err.println("Error mapping doctor from ResultSet: " + e.getMessage());
+            return null;
+        }
+    }
+    private static String buildSearchQuery(String searchTerm, String specialtyFilter,
+                                           String locationFilter, double minRating,
+                                           String sortType, boolean isAscending) {
+        StringBuilder sql = new StringBuilder();
+        sql.append("SELECT DISTINCT d.govt_id, d.first_name || ' ' || d.last_name AS name, pd.specialization, pd.degrees AS degree, pd.experience, ");
+        sql.append("pi.consultation_fee, d.phone_number AS phone, d.email, pi.hospital_name, pi.hospital_address, ");
+        sql.append("COALESCE(AVG(r.rating), 0) as average_rating ");
+        sql.append("FROM doctors d ");
+        sql.append("LEFT JOIN professional_details pd ON d.govt_id = pd.govt_id ");
+        sql.append("LEFT JOIN practice_information pi ON d.govt_id = pi.govt_id ");
+        sql.append("LEFT JOIN doctor_reviews r ON d.govt_id = r.govt_id ");
+
+        // WHERE clause
+        List<String> conditions = new ArrayList<>();
+
+        // Search conditions
+        if (searchTerm != null && !searchTerm.trim().isEmpty()) {
+            conditions.add("(LOWER(d.first_name || ' ' || d.last_name) LIKE ? OR " +
+                    "LOWER(pd.specialization) LIKE ? OR " +
+                    "LOWER(pi.hospital_name) LIKE ? OR " +
+                    "LOWER(pi.hospital_address) LIKE ? OR " +
+                    "LOWER(pd.degrees) LIKE ? OR " +
+                    "CAST(pd.experience AS TEXT) LIKE ?)");
+        }
+
+        // Filter conditions
+        if (!"All".equals(specialtyFilter)) {
+            conditions.add("pd.specialization = ?");
+        }
+
+        if (!"All".equals(locationFilter)) {
+            conditions.add("(LOWER(pi.hospital_address) LIKE ? OR LOWER(pi.hospital_name) LIKE ?)");
+        }
+
+        if (minRating > 0) {
+            conditions.add("COALESCE(AVG(r.rating), 0) >= ?");
+        }
+
+        if (!conditions.isEmpty()) {
+            sql.append("WHERE ").append(String.join(" AND ", conditions));
+        }
+
+        // GROUP BY for aggregation
+        sql.append(" GROUP BY d.govt_id, d.first_name, d.last_name, pd.specialization, pd.degrees, pd.experience, ");
+        sql.append("pi.consultation_fee, d.phone_number, d.email, pi.hospital_name, pi.hospital_address ");
+
+        // ORDER BY
+        sql.append("ORDER BY ");
+        switch (sortType.toLowerCase()) {
+            case "rating":
+                sql.append("average_rating");
+                break;
+            case "experience":
+                sql.append("pd.experience");
+                break;
+            case "fee":
+                sql.append("pi.consultation_fee");
+                break;
+            case "name":
+            default:
+                sql.append("d.first_name || ' ' || d.last_name");
+                break;
+        }
+
+        sql.append(isAscending ? " ASC" : " DESC");
+
+        return sql.toString();
+    }
+
 
     public static List<DoctorCardDataModel> loadDoctorCards(String searchTerm, int limit) {
         List<DoctorCardDataModel> doctorList = new ArrayList<>();
@@ -624,6 +811,25 @@ public class DoctorRepository {
             System.out.println("Old availability cleared for govtId: " + govtId);
         } catch (SQLException e) {
             System.err.println("Error clearing old availability: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    public static void createIndexes() {
+        String[] indexSQLs = {
+                "CREATE INDEX IF NOT EXISTS idx_doctor_name ON doctors(first_name, last_name)",
+                "CREATE INDEX IF NOT EXISTS idx_doctor_specialization ON professional_details(specialization)",
+                "CREATE INDEX IF NOT EXISTS idx_hospital_address ON practice_information(hospital_address)",
+                "CREATE INDEX IF NOT EXISTS idx_hospital_name ON practice_information(hospital_name)",
+                "CREATE INDEX IF NOT EXISTS idx_reviews_doctor_rating ON doctor_reviews(govt_id, rating)"
+        };
+
+        try (Statement stmt = connection.createStatement()) {
+            for (String sql : indexSQLs) {
+                stmt.executeUpdate(sql);
+                System.out.println("Index created: " + sql);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error creating indexes: " + e.getMessage());
             e.printStackTrace();
         }
     }

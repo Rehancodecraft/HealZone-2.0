@@ -18,10 +18,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Duration;
 
 import java.io.IOException;
@@ -29,6 +26,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PatientHomePageController {
     private static PatientHomePageController instance; // Static instance for access
@@ -80,6 +78,18 @@ public class PatientHomePageController {
     private static final int INITIAL_CARD_LIMIT = 10;
     private static final int LOAD_MORE_LIMIT = 5;
     private static final double SIDEBAR_WIDTH = 228.0;
+    private String currentSortType = "name"; // Default sort by name
+    private boolean isAscending = true; // Default ascending order
+    private String currentSpecialtyFilter = "All"; // Default no specialty filter
+    private String currentLocationFilter = "All"; // Default no location filter
+    private double minRatingFilter = 0.0; // Default minimum rating
+    private List<DoctorCardDataModel> allDoctors = new ArrayList<>();
+    private static final int SEARCH_BATCH_SIZE = 20; // Load in batches for better performance
+    private static final int MAX_SEARCH_RESULTS = 100; // Limit total results
+    private boolean isSearching = false;
+    private String lastSearchTerm = "";
+    private List<String> availableLocations = new ArrayList<>();
+    private boolean locationsLoaded = false;
 
     @FXML
     protected void initialize() {
@@ -96,6 +106,209 @@ public class PatientHomePageController {
             loadDashboard(); // Load dashboard by default
         });
     }
+
+    private void loadInitialDoctorCards() {
+        System.out.println("Loading initial doctor cards...");
+
+        if (loadingIndicator != null) {
+            Platform.runLater(() -> loadingIndicator.setVisible(true));
+        }
+
+        Task<List<DoctorCardDataModel>> loadTask = new Task<>() {
+            @Override
+            protected List<DoctorCardDataModel> call() throws Exception {
+                // Load random doctors for initial display
+                return DoctorRepository.loadDoctorCards("", INITIAL_CARD_LIMIT);
+            }
+        };
+
+        loadTask.setOnSucceeded(event -> {
+            List<DoctorCardDataModel> doctors = loadTask.getValue();
+            Platform.runLater(() -> {
+                doctorCardsContainer.getChildren().clear();
+                loadedDoctorIds.clear();
+
+                if (doctors.isEmpty()) {
+                    noResultsMessage.setVisible(true);
+                    loadingIndicator.setVisible(false);
+                    return;
+                }
+
+                // Create cards for initial doctors
+                for (DoctorCardDataModel data : doctors) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorCards.fxml"));
+                        VBox card = loader.load();
+                        DoctorCardsController controller = loader.getController();
+                        controller.setDoctorData(data);
+
+                        loadedDoctorIds.add(data.getGovtId());
+                        doctorCardsContainer.getChildren().add(card);
+
+                        // Add smooth animation
+                        card.setOpacity(0);
+                        FadeTransition fade = new FadeTransition(Duration.millis(200), card);
+                        fade.setFromValue(0);
+                        fade.setToValue(1);
+                        fade.play();
+
+                    } catch (IOException e) {
+                        System.err.println("Error creating initial card: " + e.getMessage());
+                    }
+                }
+
+                loadingIndicator.setVisible(false);
+                adjustScrollPaneSize();
+            });
+        });
+
+        loadTask.setOnFailed(event -> {
+            Platform.runLater(() -> {
+                System.err.println("Error loading initial cards: " + loadTask.getException().getMessage());
+                loadingIndicator.setVisible(false);
+                showErrorAlert("Load Error", "Failed to load initial doctor cards.");
+            });
+        });
+
+        new Thread(loadTask).start();
+    }
+    @FXML
+    protected void onFilterButtonClicked() {
+        showFilterDialog();
+    }
+
+    @FXML
+    protected void onSortButtonClicked() {
+        showSortDialog();
+    }
+    private void showFilterDialog() {
+        // Load locations asynchronously if not already loaded
+        loadAvailableLocationsAsync();
+
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Filter Doctors");
+        dialog.setHeaderText("Select filter criteria");
+
+        VBox content = new VBox(15);
+        content.setPadding(new Insets(20));
+
+        // Specialty filter
+        Label specialtyLabel = new Label("Specialty:");
+        ComboBox<String> specialtyCombo = new ComboBox<>();
+        specialtyCombo.getItems().addAll("All", "Cardiology", "Dermatology", "Neurology",
+                "Orthopedics", "Pediatrics", "Psychiatry", "General Medicine",
+                "Gynecology", "ENT", "Ophthalmology", "Radiology", "Pathology");
+        specialtyCombo.setValue(currentSpecialtyFilter);
+
+        // Location filter
+        Label locationLabel = new Label("Location:");
+        ComboBox<String> locationCombo = new ComboBox<>();
+        locationCombo.getItems().addAll(availableLocations);
+        locationCombo.setValue(currentLocationFilter);
+
+        // Rating filter
+        Label ratingLabel = new Label("Minimum Rating:");
+        Slider ratingSlider = new Slider(0, 5, minRatingFilter);
+        ratingSlider.setShowTickLabels(true);
+        ratingSlider.setShowTickMarks(true);
+        ratingSlider.setMajorTickUnit(1);
+        ratingSlider.setBlockIncrement(0.5);
+        Label ratingValueLabel = new Label(String.format("%.1f", minRatingFilter));
+
+        ratingSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
+            ratingValueLabel.setText(String.format("%.1f", newVal.doubleValue()));
+        });
+
+        HBox ratingBox = new HBox(10, ratingSlider, ratingValueLabel);
+
+        content.getChildren().addAll(
+                specialtyLabel, specialtyCombo,
+                locationLabel, locationCombo,
+                ratingLabel, ratingBox
+        );
+
+        dialog.getDialogPane().setContent(content);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            currentSpecialtyFilter = specialtyCombo.getValue();
+            currentLocationFilter = locationCombo.getValue();
+            minRatingFilter = ratingSlider.getValue();
+
+            // Apply filters immediately
+            applyFiltersAndSort();
+        }
+    }
+
+
+    private void showSortDialog() {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Sort Doctors");
+        dialog.setHeaderText("Select sorting criteria");
+
+        VBox content = new VBox(15);
+        content.setPadding(new Insets(20));
+
+        // Sort type
+        Label sortLabel = new Label("Sort by:");
+        ComboBox<String> sortCombo = new ComboBox<>();
+        sortCombo.getItems().addAll("Name", "Rating", "Experience", "Fee");
+        sortCombo.setValue(capitalizeFirst(currentSortType));
+
+        // Sort order
+        Label orderLabel = new Label("Order:");
+        ComboBox<String> orderCombo = new ComboBox<>();
+        orderCombo.getItems().addAll("Ascending", "Descending");
+        orderCombo.setValue(isAscending ? "Ascending" : "Descending");
+
+        content.getChildren().addAll(sortLabel, sortCombo, orderLabel, orderCombo);
+
+        dialog.getDialogPane().setContent(content);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        Optional<ButtonType> result = dialog.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            currentSortType = sortCombo.getValue().toLowerCase();
+            isAscending = "Ascending".equals(orderCombo.getValue());
+
+            // Apply sorting immediately
+            applyFiltersAndSort();
+        }
+    }
+
+    private void applyFiltersAndSort() {
+        if (!"dashboard".equals(currentView)) {
+            return;
+        }
+
+        // Trigger search with current search term to apply filters and sorting
+        String currentSearchTerm = searchBar.getText().trim();
+        performSearch(currentSearchTerm);
+    }
+    private void clearSearchResults() {
+        Platform.runLater(() -> {
+            doctorCardsContainer.getChildren().clear();
+            loadedDoctorIds.clear();
+            lastSearchTerm = "";
+            isSearching = false;
+
+            if (loadingIndicator != null) {
+                loadingIndicator.setVisible(false);
+            }
+            if (noResultsMessage != null) {
+                noResultsMessage.setVisible(false);
+            }
+        });
+    }
+
+    private String capitalizeFirst(String str) {
+        if (str == null || str.isEmpty()) {
+            return str;
+        }
+        return str.substring(0, 1).toUpperCase() + str.substring(1);
+    }
+
 
     public static PatientHomePageController getInstance() {
         return instance;
@@ -257,12 +470,247 @@ public class PatientHomePageController {
                 cardAnimationTimeline = new Timeline(new KeyFrame(Duration.millis(300), e -> {
                     if ("dashboard".equals(currentView)) {
                         System.out.println("Search triggered: " + newValue.trim());
-                        loadDoctorCardsAsync(newValue.trim(), INITIAL_CARD_LIMIT);
+                        performSearch(newValue.trim());
                     }
                 }));
                 cardAnimationTimeline.play();
             });
         }
+    }
+    private void performSearch(String searchTerm) {
+        if (isSearching) {
+            return;
+        }
+
+        isSearching = true;
+        lastSearchTerm = searchTerm;
+
+        Platform.runLater(() -> {
+            if (loadingIndicator != null) {
+                loadingIndicator.setVisible(true);
+            }
+            if (noResultsMessage != null) {
+                noResultsMessage.setVisible(false);
+            }
+        });
+
+        Task<List<DoctorCardDataModel>> searchTask = new Task<>() {
+            @Override
+            protected List<DoctorCardDataModel> call() throws Exception {
+                List<DoctorCardDataModel> results;
+
+                if (searchTerm.isEmpty()) {
+                    // If search is empty, load all doctors
+                    results = DoctorRepository.loadDoctorCards("", MAX_SEARCH_RESULTS);
+                } else {
+                    // Search with the term
+                    results = DoctorRepository.loadDoctorCards(searchTerm, MAX_SEARCH_RESULTS);
+                }
+
+                // Apply filters
+                results = applyCurrentFilters(results);
+
+                // Apply sorting
+                results = applyCurrentSorting(results);
+
+                return results;
+            }
+        };
+
+        searchTask.setOnSucceeded(event -> {
+            List<DoctorCardDataModel> searchResults = searchTask.getValue();
+            Platform.runLater(() -> {
+                doctorCardsContainer.getChildren().clear();
+                loadedDoctorIds.clear();
+
+                if (searchResults.isEmpty()) {
+                    noResultsMessage.setVisible(true);
+                    loadingIndicator.setVisible(false);
+                    isSearching = false;
+                    return;
+                }
+
+                // Create cards for search results
+                for (DoctorCardDataModel data : searchResults) {
+                    try {
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorCards.fxml"));
+                        VBox card = loader.load();
+                        DoctorCardsController controller = loader.getController();
+                        controller.setDoctorData(data);
+
+                        loadedDoctorIds.add(data.getGovtId());
+                        doctorCardsContainer.getChildren().add(card);
+
+                        // Add animation
+                        card.setOpacity(0);
+                        FadeTransition fade = new FadeTransition(Duration.millis(200), card);
+                        fade.setFromValue(0);
+                        fade.setToValue(1);
+                        fade.play();
+
+                    } catch (IOException e) {
+                        System.err.println("Error creating search result card: " + e.getMessage());
+                    }
+                }
+
+                loadingIndicator.setVisible(false);
+                adjustScrollPaneSize();
+                isSearching = false;
+            });
+        });
+
+        searchTask.setOnFailed(event -> {
+            Platform.runLater(() -> {
+                System.err.println("Search failed: " + searchTask.getException().getMessage());
+                loadingIndicator.setVisible(false);
+                isSearching = false;
+            });
+        });
+
+        new Thread(searchTask).start();
+    }
+    private void createCardsInBatches(List<DoctorCardDataModel> doctors, int startIndex) {
+        if (startIndex >= doctors.size()) {
+            Platform.runLater(() -> {
+                loadingIndicator.setVisible(false);
+                if (doctorCardsContainer.getChildren().isEmpty()) {
+                    noResultsMessage.setVisible(true);
+                }
+                adjustScrollPaneSize();
+            });
+            return;
+        }
+
+        Task<List<VBox>> batchTask = new Task<>() {
+            @Override
+            protected List<VBox> call() throws Exception {
+                List<VBox> cardNodes = new ArrayList<>();
+                int endIndex = Math.min(startIndex + SEARCH_BATCH_SIZE, doctors.size());
+
+                for (int i = startIndex; i < endIndex; i++) {
+                    DoctorCardDataModel data = doctors.get(i);
+
+                    Platform.runLater(() -> {
+                        try {
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorCards.fxml"));
+                            VBox card = loader.load();
+                            DoctorCardsController controller = loader.getController();
+                            controller.setDoctorData(data);
+
+                            // Add card with animation
+                            doctorCardsContainer.getChildren().add(card);
+
+                            // Smooth animation
+                            card.setOpacity(0);
+                            FadeTransition fade = new FadeTransition(Duration.millis(200), card);
+                            fade.setFromValue(0);
+                            fade.setToValue(1);
+                            fade.play();
+
+                        } catch (IOException e) {
+                            System.err.println("Error creating card: " + e.getMessage());
+                        }
+                    });
+                }
+
+                return cardNodes; // Not used but required for Task
+            }
+        };
+
+        batchTask.setOnSucceeded(event -> {
+            // Schedule next batch
+            Timeline nextBatch = new Timeline(new KeyFrame(Duration.millis(100), e -> {
+                createCardsInBatches(doctors, startIndex + SEARCH_BATCH_SIZE);
+            }));
+            nextBatch.play();
+        });
+
+        batchTask.setOnFailed(event -> {
+            System.err.println("Batch creation failed: " + batchTask.getException().getMessage());
+            createCardsInBatches(doctors, startIndex + SEARCH_BATCH_SIZE); // Continue with next batch
+        });
+
+        new Thread(batchTask).start();
+    }
+
+    private List<DoctorCardDataModel> applyCurrentSorting(List<DoctorCardDataModel> doctors) {
+        doctors.sort((d1, d2) -> {
+            int comparison = 0;
+
+            switch (currentSortType) {
+                case "name":
+                    comparison = d1.getFullName().compareToIgnoreCase(d2.getFullName());
+                    break;
+                case "rating":
+                    comparison = Double.compare(d1.getAverageRating(), d2.getAverageRating());
+                    break;
+                case "experience":
+                    comparison = d1.getExperience().compareTo(d2.getExperience());
+                    break;
+                case "fee":
+                    comparison = d1.getConsultationFee().compareTo(d2.getConsultationFee());
+                    break;
+                default:
+                    comparison = d1.getFullName().compareToIgnoreCase(d2.getFullName());
+            }
+
+            return isAscending ? comparison : -comparison;
+        });
+
+        return doctors;
+    }
+    private List<DoctorCardDataModel> applyCurrentFilters(List<DoctorCardDataModel> doctors) {
+        return doctors.stream()
+                .filter(doctor -> {
+                    // Specialty filter
+                    if (!"All".equals(currentSpecialtyFilter)) {
+                        if (doctor.getSpecialization() == null ||
+                                !doctor.getSpecialization().equalsIgnoreCase(currentSpecialtyFilter)) {
+                            return false;
+                        }
+                    }
+
+                    // Enhanced Location filter - check multiple location fields
+                    if (!"All".equals(currentLocationFilter)) {
+                        boolean locationMatch = false;
+
+                        // Check hospital address
+                        if (doctor.getHospitalAddress() != null) {
+                            String address = doctor.getHospitalAddress().toLowerCase();
+                            String filterLocation = currentLocationFilter.toLowerCase();
+
+                            // Direct match
+                            if (address.contains(filterLocation)) {
+                                locationMatch = true;
+                            }
+                            // Check if address contains the city name
+                            else if (address.contains(filterLocation.replace(" ", ""))) {
+                                locationMatch = true;
+                            }
+                        }
+
+                        // Also check hospital name for location indicators
+                        if (!locationMatch && doctor.getHospitalName() != null) {
+                            String hospitalName = doctor.getHospitalName().toLowerCase();
+                            String filterLocation = currentLocationFilter.toLowerCase();
+                            if (hospitalName.contains(filterLocation)) {
+                                locationMatch = true;
+                            }
+                        }
+
+                        if (!locationMatch) {
+                            return false;
+                        }
+                    }
+
+                    // Rating filter
+                    if (doctor.getAverageRating() < minRatingFilter) {
+                        return false;
+                    }
+
+                    return true;
+                })
+                .collect(Collectors.toList());
     }
 
     private void setupScrollListener() {
@@ -274,14 +722,47 @@ public class PatientHomePageController {
             }
         });
     }
+    private void loadAvailableLocationsAsync() {
+        if (locationsLoaded) {
+            return;
+        }
 
-    // Helper method to restore the original scroll pane content structure
+        Task<Set<String>> locationTask = new Task<>() {
+            @Override
+            protected Set<String> call() throws Exception {
+                return DoctorRepository.getAvailableLocations();
+            }
+        };
 
+        locationTask.setOnSucceeded(event -> {
+            Set<String> locations = locationTask.getValue();
+            availableLocations.clear();
+            availableLocations.add("All");
+            availableLocations.addAll(locations.stream().sorted().collect(Collectors.toList()));
+            locationsLoaded = true;
+        });
 
-    // New method to load dashboard
+        new Thread(locationTask).start();
+    }
+    // Update your existing loadDashboard method
     private void loadDashboard() {
         System.out.println("Loading dashboard...");
         currentView = "dashboard";
+
+        // Clear previous search results
+        clearSearchResults();
+
+        // Reset filters when loading dashboard
+        currentSpecialtyFilter = "All";
+        currentLocationFilter = "All";
+        minRatingFilter = 0.0;
+        currentSortType = "name";
+        isAscending = true;
+
+        // Clear search bar
+        if (searchBar != null) {
+            searchBar.clear();
+        }
 
         // Restore original content structure
         restoreOriginalScrollPaneContent();
@@ -293,20 +774,13 @@ public class PatientHomePageController {
         sortButton.setVisible(true);
         sectionTitle.setText("Available Doctors");
 
-        // Clear existing data and reset scroll pane content
-        doctorCardsContainer.getChildren().clear();
-        loadedDoctorIds.clear();
-
-        // Load doctor cards
-        loadDoctorCardsAsync("", INITIAL_CARD_LIMIT);
+        // Load initial random cards instead of empty search
+        loadInitialDoctorCards();
 
         // Animate content
         animateContent();
     }
 
-    private void loadDoctorCardsAsync(String searchTerm, int limit) {
-        loadDoctorCardsAsync(searchTerm, limit, false);
-    }
 
     private void loadDoctorCardsAsync(String searchTerm, int limit, boolean append) {
         if (!"dashboard".equals(currentView)) {

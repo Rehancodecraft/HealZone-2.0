@@ -162,12 +162,12 @@
                            <!-- Filter/Sort Controls -->
                            <HBox spacing="10">
                               <children>
-                                 <Button fx:id="filterButton" mnemonicParsing="false" prefHeight="35.0" styleClass="filterButton" text="Filter">
+                                 <Button fx:id="filterButton" mnemonicParsing="false" onAction="#onFilterButtonClicked" prefHeight="35.0" styleClass="filterButton" text="Filter">
                                     <graphic>
                                        <FontIcon iconLiteral="fas-filter" iconSize="16" />
                                     </graphic>
                                  </Button>
-                                 <Button fx:id="sortButton" mnemonicParsing="false" prefHeight="35.0" styleClass="sortButton" text="Sort">
+                                 <Button fx:id="sortButton" mnemonicParsing="false" onAction="#onSortButtonClicked" prefHeight="35.0" styleClass="sortButton" text="Sort">
                                     <graphic>
                                        <FontIcon iconLiteral="fas-sort" iconSize="16" />
                                     </graphic>

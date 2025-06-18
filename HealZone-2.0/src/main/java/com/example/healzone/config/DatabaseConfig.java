@@ -36,5 +36,6 @@ public class DatabaseConfig {
         createTableForAppointments();
         createTableForDoctorReviews();
         createPrescriptionTable();
+        createIndexes();
     }
 }
