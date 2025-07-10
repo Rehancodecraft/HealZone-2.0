@@ -334,7 +334,7 @@ public class DoctorDashboardController {
     // Updated openPrescriptionPopup method in DoctorDashboardController
     private void openPrescriptionPopup(Map<String, Object> appointmentData) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorPrescription.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/doctor-prescription.fxml"));
             Parent root = loader.load();
 
             DoctorPrescriptionController controller = loader.getController();
@@ -386,7 +386,7 @@ public class DoctorDashboardController {
         }
 
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/PatientHistory.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/patient-history.fxml"));
             Parent historyView = loader.load();
             PatientHistoryController controller = loader.getController();
             controller.setPatientPhone((String) currentAppointment.get("patient_phone"));

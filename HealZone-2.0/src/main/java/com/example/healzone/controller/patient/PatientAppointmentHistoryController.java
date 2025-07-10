@@ -599,7 +599,7 @@ public class PatientAppointmentHistoryController {
                 }
             }
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/PrescriptionView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/prescription-view.fxml"));
             Parent root = loader.load();
 
             PrescriptionViewController controller = loader.getController();

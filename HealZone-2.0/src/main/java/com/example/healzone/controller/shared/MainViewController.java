@@ -25,27 +25,27 @@ public class MainViewController {
     public void initialize() {
         root.getProperties().put("controller", this);
         System.out.println("Inside initialize: contentPane = " + contentPane);
-        Platform.runLater(() -> loadView("/com/example/healzone/Patient/PatientLogin.fxml"));
+        Platform.runLater(() -> loadView("/com/example/healzone/Patient/patient-login.fxml"));
     }
 
     public void loadPatientLogin() {
 
-        loadView("/com/example/healzone/Patient/PatientLogin.fxml");
+        loadView("/com/example/healzone/Patient/patient-login.fxml");
     }
 
     public void loadDoctorLogin() {
 
-        loadView("/com/example/healzone/Doctor/DoctorLogin.fxml");
+        loadView("/com/example/healzone/Doctor/doctor-login.fxml");
     }
 
     public void loadPatientSignup() {
-        loadView("/com/example/healzone/Patient/PatientSignUp.fxml");
+        loadView("/com/example/healzone/Patient/patient-signup.fxml");
     }
     public void loadPatientEmailVerification() {
-        loadView("/com/example/healzone/ResetPassword/VerifyPatientEmail.fxml");
+        loadView("/com/example/healzone/ResetPassword/verify-patient-email.fxml");
     }
     public void loadDoctorEmailVerification() {
-        loadView("/com/example/healzone/ResetPassword/VerifyDoctorEmail.fxml");
+        loadView("/com/example/healzone/ResetPassword/verify-doctor-email.fxml");
     }
     public void loadEmailVerificationForRegisterPatient() {
         loadView("/com/example/healzone/EmailVerification/VerifyEmailForRegisterPatient.fxml");
@@ -54,37 +54,37 @@ public class MainViewController {
         loadView("/com/example/healzone/EmailVerification/VerifyEmailForRegisterDoctor.fxml");
     }
     public void loadDoctorPersonalDetails() {
-        loadView("/com/example/healzone/Doctor/Signup/PersonalDetails.fxml");
+        loadView("/com/example/healzone/Doctor/Signup/personal-details.fxml");
     }
     public void loadDoctorPracticeInformation() {
-        loadView("/com/example/healzone/Doctor/Signup/PracticeInformation.fxml");
+        loadView("/com/example/healzone/Doctor/Signup/practice-information.fxml");
     }
     public void loadDoctorProfessionalDetails() {
-        loadView("/com/example/healzone/Doctor/Signup/ProfessionalDetails.fxml");
+        loadView("/com/example/healzone/Doctor/Signup/professional-details.fxml");
     }
     public void loadDoctorSecurity() {
-        loadView("/com/example/healzone/Doctor/Signup/Security.fxml");
+        loadView("/com/example/healzone/Doctor/Signup/security.fxml");
     }
     public void loadDoctorTimeTable() {
-        loadView("/com/example/healzone/Doctor/Signup/TimeTable.fxml");
+        loadView("/com/example/healzone/Doctor/Signup/time-table.fxml");
     }
     public void loadOTPVerificationForRegisterPatient(){
         loadView("/com/example/healzone/EmailVerification/OTPverificationForRegisterPatient.fxml");
     }
     public void loadOTPVerificationForRegisterDoctor(){
-        loadView("/com/example/healzone/EmailVerification/OTPverificationForRegisterDoctor.fxml");
+        loadView("/com/example/healzone/EmailVerification/otp-verification-for-registerDoctor.fxml");
     }
     public void loadDoctorOTPVerification(){
-        loadView("/com/example/healzone/ResetPassword/DoctorOTPverification.fxml");
+        loadView("/com/example/healzone/ResetPassword/doctor-OTP-verification.fxml");
     }
     public void loadPatientOTPVerification(){
-        loadView("/com/example/healzone/ResetPassword/PatientOTPverification.fxml");
+        loadView("/com/example/healzone/ResetPassword/patient-OTP-verification.fxml");
     }
     public void loadPatientResetPassword(){
-        loadView("/com/example/healzone/ResetPassword/PatientResetPassword.fxml");
+        loadView("/com/example/healzone/ResetPassword/patient-reset-password.fxml");
     }
     public void loadDoctorResetPassword(){
-        loadView("/com/example/healzone/ResetPassword/DoctorResetPassword.fxml");
+        loadView("/com/example/healzone/ResetPassword/doctor-reset-password.fxml");
     }
 
     protected void loadView(String fxmlPath) {

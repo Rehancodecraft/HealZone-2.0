@@ -150,7 +150,7 @@ public class DoctorCardsController {
 
         try {
             // Load the ConfirmAppointment.fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/ConfirmApppointment.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/confirm-appointment.fxml"));
             ScrollPane confirmationScrollPane = loader.load();
 
             // Get the controller for ConfirmAppointment and pass the doctor data

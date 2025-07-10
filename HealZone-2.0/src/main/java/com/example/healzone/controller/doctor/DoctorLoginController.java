@@ -94,7 +94,7 @@ public class DoctorLoginController {
             doctorLoginErrorMessage.setText("Logged in successfully: " + DoctorModel.getFirstName() + " " + DoctorModel.getLastName());
             System.out.println("LoggedIn");
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/DoctorHomePage.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/doctor-homepage.fxml"));
             Parent homePage = loader.load();
             homePage.setOpacity(0);
             homePage.setScaleX(0.98);

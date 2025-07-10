@@ -14,7 +14,7 @@ public class DatabaseConfig {
         try {
             String pgUrl = "jdbc:postgresql://localhost:5432/HealZone";
             String pgUser = "postgres";
-            String pgPassword = "Rehan*17112006";
+            String pgPassword = "iamrehan";
             connection = DriverManager.getConnection(pgUrl, pgUser, pgPassword);
             connection.setAutoCommit(true);
             System.out.println("Connected to HealZone database");

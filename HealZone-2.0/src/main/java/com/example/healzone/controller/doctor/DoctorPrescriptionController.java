@@ -668,7 +668,7 @@ public class DoctorPrescriptionController implements Initializable {
             PrescriptionPrintModel prescriptionData = createPrescriptionData();
 
             // Load prescription view controller
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/PrescriptionView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/prescription-view.fxml"));
             Parent root = loader.load();
 
             PrescriptionViewController controller = loader.getController();

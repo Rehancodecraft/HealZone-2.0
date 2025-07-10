@@ -260,11 +260,11 @@ public class DoctorHomePageController {
             @Override
             protected Parent call() throws Exception {
                 try {
-                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/DoctorDashboard.fxml");
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorDashboard.fxml"));
+                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/doctor-dashboard.fxml");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/doctor-dashboard.fxml"));
 
                     if (loader.getLocation() == null) {
-                        throw new IOException("FXML file not found: /com/example/healzone/Doctor/DoctorDashboard.fxml");
+                        throw new IOException("FXML file not found: /com/example/healzone/Doctor/doctor-dashboard.fxml");
                     }
 
                     Parent dashboard = loader.load();
@@ -425,11 +425,11 @@ public class DoctorHomePageController {
             @Override
             protected Parent call() throws Exception {
                 try {
-                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/DoctorAppointmentHistory.fxml");
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorAppointmentHistory.fxml"));
+                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/doctor-appointment-history.fxml");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/doctor-appointment-history.fxml"));
 
                     if (loader.getLocation() == null) {
-                        throw new IOException("FXML file not found: /com/example/healzone/Doctor/DoctorAppointmentHistory.fxml");
+                        throw new IOException("FXML file not found: /com/example/healzone/Doctor/doctor-appointment-history.fxml");
                     }
 
                     Parent historyPage = loader.load();
@@ -488,8 +488,8 @@ public class DoctorHomePageController {
             @Override
             protected Parent call() throws Exception {
                 try {
-                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/DoctorProfile.fxml");
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorProfile.fxml"));
+                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/doctor-profile.fxml");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/doctor-profile.fxml"));
                     Parent profilePage = loader.load();
                     DoctorProfileController controller = loader.getController();
 
@@ -566,8 +566,8 @@ public class DoctorHomePageController {
             @Override
             protected Parent call() throws Exception {
                 try {
-                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/DoctorAvailability.fxml");
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorAvailability.fxml"));
+                    System.out.println("Attempting to load FXML: /com/example/healzone/Doctor/doctor-availability.fxml");
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/doctor-availability.fxml"));
                     Parent availabilityPage = loader.load();
                     DoctorAvailabilityController controller = loader.getController();
 
@@ -624,7 +624,7 @@ public class DoctorHomePageController {
 
     private void logout() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/MainView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/main-view.fxml"));
             Parent loginPage = loader.load();
             if (rootPane != null) {
                 Scene scene = rootPane.getScene();

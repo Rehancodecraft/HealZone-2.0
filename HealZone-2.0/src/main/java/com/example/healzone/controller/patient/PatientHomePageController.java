@@ -137,7 +137,7 @@ public class PatientHomePageController {
                 // Create cards for initial doctors
                 for (DoctorCardDataModel data : doctors) {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorCards.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/doctor-cards.fxml"));
                         VBox card = loader.load();
                         DoctorCardsController controller = loader.getController();
                         controller.setDoctorData(data);
@@ -533,7 +533,7 @@ public class PatientHomePageController {
                 // Create cards for search results
                 for (DoctorCardDataModel data : searchResults) {
                     try {
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorCards.fxml"));
+                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/doctor-cards.fxml"));
                         VBox card = loader.load();
                         DoctorCardsController controller = loader.getController();
                         controller.setDoctorData(data);
@@ -592,7 +592,7 @@ public class PatientHomePageController {
 
                     Platform.runLater(() -> {
                         try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorCards.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/doctor-cards.fxml"));
                             VBox card = loader.load();
                             DoctorCardsController controller = loader.getController();
                             controller.setDoctorData(data);
@@ -815,7 +815,7 @@ public class PatientHomePageController {
                     String doctorId = data.getGovtId();
                     if (loadedDoctorIds.contains(doctorId)) continue;
 
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/DoctorCards.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Doctor/doctor-cards.fxml"));
                     VBox card = loader.load();
                     DoctorCardsController controller = loader.getController();
                     controller.setDoctorData(data);
@@ -917,7 +917,7 @@ public class PatientHomePageController {
 
     @FXML
     protected void onLogOutButtonClicked(ActionEvent event) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/MainView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/StartView/main-view.fxml"));
         Parent mainView = loader.load();
         MainViewController mainController = loader.getController();
         mainView.getProperties().put("controller", mainView);
@@ -1003,7 +1003,7 @@ public class PatientHomePageController {
                 } else {
                     for (UpcomingAppointmentModel appt : appointments) {
                         try {
-                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/UpcomingAppointments.fxml"));
+                            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/upcoming-appointments.fxml"));
                             VBox card = loader.load();
                             UpcomingAppointmentController controller = loader.getController();
                             controller.initializeReceipt(appt);
@@ -1069,7 +1069,7 @@ public class PatientHomePageController {
             @Override
             protected Parent call() throws Exception {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/PatientAppointmentHistory.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/patient-appointment-history.fxml"));
                     Parent historyView = loader.load();
                     PatientAppointmentHistoryController historyController = loader.getController();
 
@@ -1152,7 +1152,7 @@ public class PatientHomePageController {
             @Override
             protected Parent call() throws Exception {
                 try {
-                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/PatientProfile.fxml"));
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/healzone/Patient/patient-profile.fxml"));
                     Parent profileView = loader.load();
                     PatientProfileController profileController = loader.getController();
 

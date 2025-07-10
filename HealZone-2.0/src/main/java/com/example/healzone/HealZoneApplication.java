@@ -1,6 +1,5 @@
 package com.example.healzone;
 
-
 import com.example.healzone.controller.shared.MainViewController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +14,7 @@ public class HealZoneApplication extends Application {
         public void start(Stage primaryStage) throws Exception {
             connectToDatabase();
 
-            FXMLLoader loader = new FXMLLoader(HealZoneApplication.class.getResource("StartView/MainView.fxml"));
+            FXMLLoader loader = new FXMLLoader(HealZoneApplication.class.getResource("StartView/main-view.fxml"));
             StackPane root = loader.load();
 
             MainViewController controller = loader.getController();
@@ -26,6 +25,6 @@ public class HealZoneApplication extends Application {
             primaryStage.show();
         }
     public static void main(String[] args) {
-        launch(args); // This launches the JavaFX Application Thread
+        launch(args);
     }
 }
