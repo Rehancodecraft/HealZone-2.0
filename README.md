@@ -2,7 +2,13 @@
 
 ![HealZone Banner](HealZone-2.0/src/main/resources/com/example/healzone/Images/1.jpg)
 
-Hi, everyone!  I’m **Rehan Shafiq**, a Software Engineering student at **COMSATS University Islamabad, Sahiwal Campus**. Welcome to the complete documentation for **HealZone-2.0**, my project built as part of my coursework. HealZone is a desktop application that makes booking doctor appointments super easy, eliminating the hassle of waiting in long hospital lines. This document covers everything about the project — from what it does, how it’s built, to how you can set it up and use it. Let’s dive in!
+[![Java](https://img.shields.io/badge/Java-11%2B-blue.svg)](https://www.oracle.com/java/)
+[![JavaFX](https://img.shields.io/badge/JavaFX-%E2%9C%94-green.svg)](https://openjfx.io/)
+[![PostgreSQL](https://img.shields.io/badge/Database-PostgreSQL-blue.svg)](https://www.postgresql.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![Last Updated](https://img.shields.io/badge/last%20update-July%202025-orange)](https://github.com/Rehancodecraft/HealZone-2.0/commits/main)
+
+HealZone-2.0 is a modern, user-friendly desktop application that streamlines doctor appointment bookings. No more waiting in hospital lines—patients can check doctor schedules and book appointments from home. This repository contains source code, documentation, and deployment instructions for the project.
 
 > **Last Updated**: July 18, 2025  
 > **Author**: Rehan Shafiq [](https://github.com/Rehancodecraft)  
@@ -31,26 +37,34 @@ Hi, everyone!  I’m **Rehan Shafiq**, a Software Engineering student at **COMSA
 
 ## Introduction
 
-**HealZone-2.0** is a user-friendly desktop application built to simplify the process of booking doctor appointments. No more standing in long lines or wondering if your doctor is available! With HealZone, patients can check doctor schedules, book appointments online, and arrive at the hospital at the right time — all from the comfort of their homes.
+
+Booking a doctor’s appointment in person can be time-consuming and frustrating. HealZone-2.0 brings the process online, making it easy for patients to find doctors, check availability, and schedule appointments efficiently.
 
 ### Why HealZone?
 Visiting a hospital to book an appointment is often frustrating. You wait in queues, check doctor availability, and sometimes leave without an appointment. HealZone solves this by bringing the entire process online, saving time and effort for both patients and doctors.
 
 ### Technologies Used
 Here’s the tech stack I used to build HealZone:
-- **Programming Language**: Java
-- **UI Framework**: JavaFX
-- **Styles**: CSS
-- **Database**: PostgreSQL (with SQLite support)
-- **Build Tool**: Maven
-- **Libraries**: JavaFX, PostgreSQL JDBC, SQLite JDBC
-- **IDE**: IntelliJ IDEA
-- **Operating System**: Windows/Linux
+## Tech Stack
+
+| Category        | Technology          |
+|-----------------|--------------------|
+| Language        | Java               |
+| UI Framework    | JavaFX             |
+| Styles          | CSS                |
+| Database        | PostgreSQL, SQLite |
+| Build Tool      | Maven              |
+| IDE             | IntelliJ IDEA      |
+| OS              | Windows/Linux      |
+
+---
 
 ### Who Is This For?
-- **Patients**: Book appointments, view doctor schedules, and access prescriptions.
-- **Doctors**: Manage availability, write prescriptions, and view appointment history.
-- **Developers**: Understand the code and extend the system.
+- **Patients:** Book appointments, access doctor schedules, view prescriptions.
+- **Doctors:** Manage schedules, write prescriptions, view history.
+- **Developers:** Understand, use, and extend the system.
+
+---
 
 ### Project Goals
 HealZone aims to:
@@ -312,6 +326,7 @@ Use Git to clone the project:
 
 ```bash
 git clone https://github.com/Rehancodecraft/HealZone-2.0.git
+cd HealZone-2.0
 ```
 ### 4. Database Setup
 
@@ -384,3 +399,30 @@ To connect with a different database, update the JDBC URL, username, and passwor
 ```
  >   ⚠️ Always use proper version control and maintain backups before making any structural or functional changes.
 
+---
+## Contributing
+
+Contributions are welcome! Please open issues or submit pull requests for any improvements or bug fixes.
+
+1. Fork this repository
+2. Create a new branch (`git checkout -b feature/your-feature`)
+3. Commit your changes (`git commit -m 'Add some feature'`)
+4. Push to the branch (`git push origin feature/your-feature`)
+5. Open a pull request
+---
+
+## License
+
+This project is licensed under the MIT License. See [LICENSE](LICENSE) for more information.
+
+---
+
+## References
+
+- [JavaFX Documentation](https://openjfx.io/)
+- [PostgreSQL Documentation](https://www.postgresql.org/docs/)
+- [Maven Documentation](https://maven.apache.org/guides/)
+
+---
+
+> For any questions or support, feel free to contact [rehan.codecraft@gmail.com](mailto:rehan.codecraft@gmail.com).
