@@ -176,9 +176,16 @@ Detailed test cases will be added in this section with screenshots.
 4. **Write Prescriptions**: Create and save prescriptions for patients.
 
 Screenshots:
-- Login Screen: ![Login](https://raw.githubusercontent.com/Rehancodecraft/HealZone-2.0/main/src/main/resources/com/example/healzone/Images/ScreenShoots/1-h.png)
-- Patient Registration: ![Registration](https://raw.githubusercontent.com/Rehancodecraft/HealZone-2.0/main/src/main/resources/com/example/healzone/Images/ScreenShoots/2-h.png)
-- Doctor Dashboard: ![Dashboard](https://raw.githubusercontent.com/Rehancodecraft/HealZone-2.0/main/src/main/resources/com/example/healzone/Images/ScreenShoots/3-h.png)
+- ![Login](/src/main/resources/com/example/healzone/Images/ScreenShoots/1-h.png)
+  ![Patient Registration](src/main/resources/com/example/healzone/Images/ScreenShoots/2-h.png)
+  ![Doctor Dashboard](src/main/resources/com/example/healzone/Images/ScreenShoots/3-h.png)
+  ![Appointment Booking](src/main/resources/com/example/healzone/Images/ScreenShoots/4-h.png)
+  ![Doctor Availability](src/main/resources/com/example/healzone/Images/ScreenShoots/5-h.png)
+  ![Prescription View](src/main/resources/com/example/healzone/Images/ScreenShoots/6-h.png)
+  ![Upcoming Appointments](src/main/resources/com/example/healzone/Images/ScreenShoots/7-h.png)
+  ![Patient History](src/main/resources/com/example/healzone/Images/ScreenShoots/8-h.png)
+  ![Doctor Profile](src/main/resources/com/example/healzone/Images/ScreenShoots/9-h.png)
+  ![More UI Screens](src/main/resources/com/example/healzone/Images/ScreenShoots/10-h.png)
 
 *More screenshots to be added in this section.*
 
