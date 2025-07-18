@@ -185,7 +185,7 @@ The architecture diagram below illustrates the major components and interactions
 ##  Use Case Diagram
 This use case diagram highlights the primary actors and their interactions with the system.
 
-![Use Case](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/Patient usecase.png)
+![Use Case](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/Patient%20usecase.png)
 ![Use Case](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/Doctorusecase.png)
 ---
 
