@@ -2,7 +2,7 @@
 
 ![HealZone Banner](HealZone-2.0/src/main/resources/com/example/healzone/Images/1.jpg)
 
-Hi, everyone! 👋 I’m **Rehan Shafiq**, a Software Engineering student at **COMSATS University Islamabad, Sahiwal Campus**. Welcome to the complete documentation for **HealZone-2.0**, my project built as part of my coursework. HealZone is a desktop application that makes booking doctor appointments super easy, eliminating the hassle of waiting in long hospital lines. This document covers everything about the project — from what it does, how it’s built, to how you can set it up and use it. Let’s dive in! 🚀
+Hi, everyone!  I’m **Rehan Shafiq**, a Software Engineering student at **COMSATS University Islamabad, Sahiwal Campus**. Welcome to the complete documentation for **HealZone-2.0**, my project built as part of my coursework. HealZone is a desktop application that makes booking doctor appointments super easy, eliminating the hassle of waiting in long hospital lines. This document covers everything about the project — from what it does, how it’s built, to how you can set it up and use it. Let’s dive in!
 
 > **Last Updated**: July 18, 2025  
 > **Author**: Rehan Shafiq [](https://github.com/Rehancodecraft)  
