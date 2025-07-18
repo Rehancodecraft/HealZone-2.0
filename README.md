@@ -178,7 +178,7 @@ Detailed test cases will be added in this section with screenshots.
 ##  System Architecture
 The architecture diagram below illustrates the major components and interactions within the HealZone-2.0 system.
 
-![Architecture](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/Architechure diagram.jpg)
+- ![Architecture Diagram](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/Architechure%20diagram.jpg)
 
 ---
 
