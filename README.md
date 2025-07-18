@@ -1,6 +1,6 @@
 # 📘 HealZone-2.0 Documentation
 
-![HealZone Banner](https://raw.githubusercontent.com/Rehancodecraft/HealZone-2.0/main/src/main/resources/com/example/healzone/Images/HealZone.png)
+![HealZone Banner](HealZone-2.0/src/main/resources/com/example/healzone/Images/1.jpg)
 
 Hi, everyone! 👋 I’m **Rehan Shafiq**, a Software Engineering student at **COMSATS University Islamabad, Sahiwal Campus**. Welcome to the complete documentation for **HealZone-2.0**, my project built as part of my coursework. HealZone is a desktop application that makes booking doctor appointments super easy, eliminating the hassle of waiting in long hospital lines. This document covers everything about the project — from what it does, how it’s built, to how you can set it up and use it. Let’s dive in! 🚀
 
@@ -145,7 +145,7 @@ HealZone uses a modular architecture with separate components for patients and d
 
 *Note*: I’ll embed the diagrams here once created using Draw.io. For now, here’s a placeholder for the ER Diagram:
 
-![ER Diagram](https://via.placeholder.com/600x400?text=ER+Diagram)
+![ER Diagram](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/erd.jpg)
 
 ---
 
@@ -175,38 +175,212 @@ Detailed test cases will be added in this section with screenshots.
 3. **Manage Appointments**: View and mark appointments as attended.
 4. **Write Prescriptions**: Create and save prescriptions for patients.
 
-Screenshots:
-- ![Login](/src/main/resources/com/example/healzone/Images/ScreenShoots/1-h.png)
-  ![Patient Registration](src/main/resources/com/example/healzone/Images/ScreenShoots/2-h.png)
-  ![Doctor Dashboard](src/main/resources/com/example/healzone/Images/ScreenShoots/3-h.png)
-  ![Appointment Booking](src/main/resources/com/example/healzone/Images/ScreenShoots/4-h.png)
-  ![Doctor Availability](src/main/resources/com/example/healzone/Images/ScreenShoots/5-h.png)
-  ![Prescription View](src/main/resources/com/example/healzone/Images/ScreenShoots/6-h.png)
-  ![Upcoming Appointments](src/main/resources/com/example/healzone/Images/ScreenShoots/7-h.png)
-  ![Patient History](src/main/resources/com/example/healzone/Images/ScreenShoots/8-h.png)
-  ![Doctor Profile](src/main/resources/com/example/healzone/Images/ScreenShoots/9-h.png)
-  ![More UI Screens](src/main/resources/com/example/healzone/Images/ScreenShoots/10-h.png)
+##  System Architecture
+The architecture diagram below illustrates the major components and interactions within the HealZone-2.0 system.
 
-*More screenshots to be added in this section.*
+![Architecture](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/Architechure diagram.jpg)
 
 ---
 
-## Deployment Steps
+##  Use Case Diagram
+This use case diagram highlights the primary actors and their interactions with the system.
 
-1. **Clone the Repository**:
-   ```bash
-   git clone https://github.com/Rehancodecraft/HealZone-2.0.git
-   Open in IDE: Use IntelliJ IDEA and open the project folder.
-Configure Database:
+![Use Case](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/Patient usecase.png)
+![Use Case](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/Doctorusecase.png)
+---
 
-    Create a PostgreSQL database named HealZone.
-    Update credentials in src/main/java/com/example/healzone/config/DatabaseConfig.java.
+## 📸 Screenshots
 
-Install Dependencies:
-bash
+---
+
+### 🔐 Login & Registration
+
+- ![Login](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/1-h.png)
+- ![Patient Registration](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/2-h.png)
+- ![Login](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/1.2-h.png)
+- ![Patient Registration](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/2.2-h.png)
+
+---
+
+### Patient Dashboard
+
+- ![Doctor Dashboard](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/3-h.png)
+
+---
+
+### Book Appointment & View in Upcoming
+
+- ![Appointment Booking](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/4-h.png)
+- ![Doctor Availability](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/5-h.png)
+
+---
+
+### View History of Appointments with Prescriptions
+
+- ![Prescription View](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/6-h.png)
+
+---
+
+### Update Profile
+- ![Upcoming Appointments](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/7-h.png)
+
+---
+
+### Doctor Dashboard
+
+- ![Patient History](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/8-h.png)
+
+---
+
+### 👨‍⚕️ Prescription Writing
+
+- ![Doctor Profile](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/9-h.png)
+- ![Screen 14](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/14-h.png)
+
+---
+
+###   Doctor Upcoming Appointments
+
+- ![More UI Screens](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/10-h.png)
+---
+### Doctor History of Appointments
+- ![Screen 11](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/11-h.png)
+---
+### Update Availability
+- ![Screen 12](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/12-h.png)
+---
+### Update Profile
+- ![Screen 13](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/13-h.png)
+
+---
+
+### Forget Password
+
+
+- ![Screen 15](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/15-h.png)
+
+---
+
+### Email Verification & OTP
+
+- ![Screen 16](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/16-h.png)
+- ![Screen 17](HealZone-2.0/src/main/resources/com/example/healzone/Images/ScreenShoots/17-h.png)
+
+---
+
+
+## Deployment Guide
+
+This section outlines the complete steps required to set up, configure, and run the HealZone-2.0 application on a development machine.
+
+---
+
+### 1. System Requirements
+
+#### Software Requirements
+- **Java Development Kit (JDK)**: Version 17 or higher
+- **Apache Maven**: Version 3.6+
+- **IntelliJ IDEA**: Recommended IDE (with JavaFX plugin installed)
+- **PostgreSQL**: Version 12 or higher
+- **Scene Builder**: For GUI layout preview (optional but recommended)
+
+#### Hardware Requirements
+- **Processor**: Intel i3 or equivalent (minimum), i5 or higher recommended
+- **RAM**: Minimum 4 GB (8 GB recommended)
+- **Storage**: At least 500 MB free for project files and dependencies
+- **Operating System**: Windows, macOS, or Linux (Ubuntu preferred for development)
+
+---
+
+### 2. Required Libraries & Tools
+
+The following libraries and tools are utilized in this project:
+
+- **JavaFX** – GUI framework
+- **PostgreSQL JDBC Driver** – For database connectivity
+- **Apache Maven** – Dependency and build management
+- **JFoenix** (optional) – Enhanced UI components
+- **ControlsFX** (optional) – Additional UI controls
+
+> All dependencies are managed automatically via Maven and defined in the `pom.xml` file.
+
+---
+
+### 3. Clone the Repository
+
+Use Git to clone the project:
+
+```bash
+git clone https://github.com/Rehancodecraft/HealZone-2.0.git
+```
+### 4. Database Setup
+
+#### Step 1: Create the PostgreSQL Database
+- Launch **pgAdmin** or your preferred PostgreSQL client.
+- Create a new database named: HealZone
+- Copy Script from **HealZone-2.0-Script-for-psql** and paste in **pgAdmin** to create database
+#### Step 2: Update Database Configuration
+- Navigate to the following file:
+```swift
+src/main/java/com/example/healzone/config/DatabaseConfig.java
+```
+- Update the PostgreSQL credentials to match your local configuration:
+```bash
+private static final String URL = "jdbc:postgresql://localhost:5432/HealZone";
+private static final String USER = "your_username";
+private static final String PASSWORD = "your_password";
+```
+### 5. Build the Project
+
+- Open your terminal inside the project root directory and run the following command:
+```bash
 mvn clean install
-Run the Application:
-bash
+```
 
-    mvn javafx:run
+This command will compile the project and download all required dependencies defined in pom.xml.
+### 3. Run the Application
+
+To launch the JavaFX desktop application, execute the following command:
+```bash
+mvn javafx:run
+```
+Alternatively, you can run the application from within IntelliJ IDEA by executing the Main class using the built-in run configuration.
+### 7. Troubleshooting Tips
+
+   - Ensure the JavaFX SDK is properly configured in your IDE settings.
+
+   - Make sure the PostgreSQL service is running and accessible.
+
+   - Verify the JDBC URL, username, and password inside DatabaseConfig.java.
+
+   - If the Maven build fails:
+```bash
+   mvn clean install -U
+   ```
+
+   This forces Maven to update dependencies and rebuild the project.
+
+   Delete the target/ directory manually if stale build artifacts cause unexpected errors.
+
+### 8. Customization Notes
+
+You can customize or extend the functionality of HealZone-2.0 by modifying the following components:
+- FXML Layouts
+
+  Located in:
+```swift
+src/main/resources/com/example/healzone/Fxml/
+```
+
+- Business Logic
+Java classes can be updated or extended in:
+```swift
+src/main/java/com/example/healzone/
+```
+- Database Configuration
+To connect with a different database, update the JDBC URL, username, and password in:
+```swift
+    src/main/java/com/example/healzone/config/DatabaseConfig.java
+```
+ >   ⚠️ Always use proper version control and maintain backups before making any structural or functional changes.
 

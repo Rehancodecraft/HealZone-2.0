@@ -1,0 +1,193 @@
+BEGIN;
+
+
+CREATE TABLE IF NOT EXISTS public.doctor_reviews
+(
+    review_id serial NOT NULL,
+    govt_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    phone_number character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    rating integer NOT NULL,
+    review_text text COLLATE pg_catalog."default",
+    satisfaction_score integer,
+    review_date timestamp without time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT doctor_reviews_pkey PRIMARY KEY (review_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.doctors
+(
+    govt_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    first_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    last_name character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    phone_number character varying(20) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT doctors_pkey PRIMARY KEY (govt_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.professional_details
+(
+    professional_id serial NOT NULL,
+    govt_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    specialization character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    degrees text COLLATE pg_catalog."default" NOT NULL,
+    medical_license_number character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    bio text COLLATE pg_catalog."default",
+    experience character varying(3) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT professional_details_pkey PRIMARY KEY (professional_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.practice_information
+(
+    practice_id serial NOT NULL,
+    govt_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    hospital_name character varying(150) COLLATE pg_catalog."default" NOT NULL,
+    hospital_address text COLLATE pg_catalog."default" NOT NULL,
+    consultation_fee character varying(4) COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT practice_information_pkey PRIMARY KEY (practice_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.doctor_availability
+(
+    id serial NOT NULL,
+    govt_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    day_of_week character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    start_time time without time zone NOT NULL,
+    end_time time without time zone NOT NULL,
+    CONSTRAINT doctor_availability_pkey PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS public.doctor_security
+(
+    security_id serial NOT NULL,
+    govt_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    password text COLLATE pg_catalog."default" NOT NULL,
+    user_agreement boolean DEFAULT false,
+    CONSTRAINT doctor_security_pkey PRIMARY KEY (security_id)
+);
+
+CREATE TABLE IF NOT EXISTS public.appointments
+(
+    doctor_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    appointment_number character varying(8) COLLATE pg_catalog."default" NOT NULL,
+    patient_phone character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    patient_age character varying(10) COLLATE pg_catalog."default",
+    patient_gender character varying(10) COLLATE pg_catalog."default",
+    appointment_date date NOT NULL,
+    day_of_week character varying(10) COLLATE pg_catalog."default" NOT NULL,
+    start_time time without time zone,
+    end_time time without time zone,
+    consultation_fee character varying(4) COLLATE pg_catalog."default" NOT NULL,
+    hospital_name character varying(150) COLLATE pg_catalog."default" NOT NULL,
+    hospital_address text COLLATE pg_catalog."default" NOT NULL,
+    doctor_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    patient_name character varying(100) COLLATE pg_catalog."default",
+    speciality character varying(100) COLLATE pg_catalog."default",
+    status character varying(20) COLLATE pg_catalog."default",
+    created_at timestamp with time zone DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT appointments_pkey PRIMARY KEY (appointment_number)
+);
+
+CREATE TABLE IF NOT EXISTS public.patients
+(
+    name character varying(100) COLLATE pg_catalog."default",
+    father_name character varying(100) COLLATE pg_catalog."default",
+    phone_number character varying(15) COLLATE pg_catalog."default" NOT NULL,
+    email character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    age character varying(3) COLLATE pg_catalog."default",
+    gender character varying(10) COLLATE pg_catalog."default",
+    password text COLLATE pg_catalog."default",
+    CONSTRAINT patients_pkey PRIMARY KEY (phone_number)
+);
+
+CREATE TABLE IF NOT EXISTS public.prescriptions
+(
+    id serial NOT NULL,
+    doctor_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    patient_id character varying(50) COLLATE pg_catalog."default" NOT NULL,
+    patient_name character varying(100) COLLATE pg_catalog."default" NOT NULL,
+    appointment_number character varying(8) COLLATE pg_catalog."default" NOT NULL,
+    date date NOT NULL,
+    diagnosis text COLLATE pg_catalog."default",
+    precautions text COLLATE pg_catalog."default",
+    followup character varying(50) COLLATE pg_catalog."default",
+    notes text COLLATE pg_catalog."default",
+    medicines text COLLATE pg_catalog."default" NOT NULL,
+    CONSTRAINT prescriptions_pkey PRIMARY KEY (id)
+);
+
+ALTER TABLE IF EXISTS public.doctor_reviews
+    ADD CONSTRAINT doctor_reviews_govt_id_fkey FOREIGN KEY (govt_id)
+    REFERENCES public.doctors (govt_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.doctor_reviews
+    ADD CONSTRAINT doctor_reviews_phone_number_fkey FOREIGN KEY (phone_number)
+    REFERENCES public.patients (phone_number) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE SET NULL;
+
+
+ALTER TABLE IF EXISTS public.professional_details
+    ADD CONSTRAINT professional_details_govt_id_fkey FOREIGN KEY (govt_id)
+    REFERENCES public.doctors (govt_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.practice_information
+    ADD CONSTRAINT practice_information_govt_id_fkey FOREIGN KEY (govt_id)
+    REFERENCES public.doctors (govt_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.doctor_availability
+    ADD CONSTRAINT doctor_availability_govt_id_fkey FOREIGN KEY (govt_id)
+    REFERENCES public.doctors (govt_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.doctor_security
+    ADD CONSTRAINT doctor_security_govt_id_fkey FOREIGN KEY (govt_id)
+    REFERENCES public.doctors (govt_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.appointments
+    ADD CONSTRAINT appointments_doctor_id_fkey FOREIGN KEY (doctor_id)
+    REFERENCES public.doctors (govt_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.appointments
+    ADD CONSTRAINT appointments_patient_phone_fkey FOREIGN KEY (patient_phone)
+    REFERENCES public.patients (phone_number) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.prescriptions
+    ADD CONSTRAINT prescriptions_appointment_number_fkey FOREIGN KEY (appointment_number)
+    REFERENCES public.appointments (appointment_number) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.prescriptions
+    ADD CONSTRAINT prescriptions_doctor_id_fkey FOREIGN KEY (doctor_id)
+    REFERENCES public.doctors (govt_id) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE CASCADE;
+
+
+ALTER TABLE IF EXISTS public.prescriptions
+    ADD CONSTRAINT prescriptions_patient_id_fkey FOREIGN KEY (patient_id)
+    REFERENCES public.patients (phone_number) MATCH SIMPLE
+    ON UPDATE NO ACTION
+    ON DELETE SET NULL;
+
+END;
